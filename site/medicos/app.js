@@ -1,4 +1,4 @@
-import { createPlatformSession, escapeHtml, humanizeError, optionalValue } from "/shared/platform.js?v=20260722-workspace-shell";
+import { createPlatformSession, escapeHtml, humanizeError, optionalValue } from "/shared/platform.js?v=20260722-workspace-nav";
 
 const session = createPlatformSession({ moduleId: "medicos" });
 
@@ -67,6 +67,7 @@ const elements = {
   userMeta: document.querySelector("#user-meta"),
   userName: document.querySelector("#user-name"),
   workflowSummary: document.querySelector("#workflow-summary"),
+  workspaceNav: document.querySelector("#workspace-nav"),
 };
 
 bootstrap().catch((error) => {

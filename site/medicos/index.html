@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>OpenHealth Bridge | Portal medico</title>
-  <link rel="stylesheet" href="/backoffice/styles.css?v=20260722-workspace-desk">
-  <link rel="stylesheet" href="/medicos/styles.css?v=20260722-workspace-desk">
+  <link rel="stylesheet" href="/backoffice/styles.css?v=20260722-workspace-nav">
+  <link rel="stylesheet" href="/medicos/styles.css?v=20260722-workspace-nav">
 </head>
 <body>
   <div class="shell">
@@ -72,6 +72,8 @@
     </section>
 
     <section id="app-shell" class="hidden">
+      <nav id="workspace-nav" class="workspace-nav hidden" aria-label="Secciones del workspace"></nav>
+      <main class="workspace-content">
       <section class="panel user-panel">
         <div>
           <p class="eyebrow">Sesion</p>
@@ -124,7 +126,7 @@
 
       <div class="workspace">
         <section class="column">
-          <section class="panel patient-search-panel">
+          <section id="patient-search-panel" class="panel patient-search-panel">
             <div class="section-heading">
               <div>
                 <p class="eyebrow">Pacientes</p>
@@ -168,7 +170,7 @@
             </div>
           </section>
 
-          <section class="panel">
+          <section id="clinical-queue" class="panel">
             <div class="section-heading">
               <div>
                 <p class="eyebrow">Bandeja clinica</p>
@@ -359,9 +361,10 @@
           </section>
         </section>
       </div>
+      </main>
     </section>
   </div>
 
-  <script type="module" src="/medicos/app.js?v=20260722-workspace-shell"></script>
+  <script type="module" src="/medicos/app.js?v=20260722-workspace-nav"></script>
 </body>
 </html>

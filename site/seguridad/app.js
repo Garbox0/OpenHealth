@@ -1,4 +1,4 @@
-import { createPlatformSession, escapeHtml, humanizeError, optionalValue } from "/shared/platform.js?v=20260722-workspace-shell";
+import { createPlatformSession, escapeHtml, humanizeError, optionalValue } from "/shared/platform.js?v=20260722-workspace-nav";
 
 const session = createPlatformSession({ moduleId: "seguridad" });
 
@@ -28,6 +28,7 @@ const elements = {
   userMeta: document.querySelector("#user-meta"),
   userName: document.querySelector("#user-name"),
   userSearchForm: document.querySelector("#user-search-form"),
+  workspaceNav: document.querySelector("#workspace-nav"),
 };
 
 bootstrap().catch((error) => {

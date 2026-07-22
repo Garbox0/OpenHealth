@@ -37,6 +37,25 @@ export const PLATFORM_MODULES = {
   },
 };
 
+const WORKSPACE_SECTIONS = {
+  backoffice: [
+    ["Admisión", "#create-panel"],
+    ["Pacientes", "#patient-section"],
+    ["Bandeja", "#case-queue"],
+    ["Seguimiento", "#case-detail-panel"],
+  ],
+  medicos: [
+    ["Casos activos", "#clinical-queue"],
+    ["Historias clínicas", "#patient-search-panel"],
+    ["Documentar", "#case-detail-panel"],
+  ],
+  seguridad: [
+    ["Usuarios", "#users"],
+    ["Nuevo usuario", "#new-user"],
+    ["Grupos y roles", "#groups"],
+  ],
+};
+
 export function createPlatformSession({ moduleId }) {
   const currentModule = PLATFORM_MODULES[moduleId];
   const tenant = getTenantContext();
@@ -291,6 +310,27 @@ export function createPlatformSession({ moduleId }) {
         )
         .join("");
       elements.moduleNav.classList.toggle("hidden", modules.length === 0);
+    }
+    if (elements.workspaceNav) {
+      const sections = WORKSPACE_SECTIONS[moduleId] || [];
+      elements.workspaceNav.innerHTML = sections
+        .map(
+          ([label, target]) => `
+            <a class="workspace-section-link" href="${target}">${escapeHtml(label)}</a>
+          `,
+        )
+        .join("");
+      for (const link of elements.workspaceNav.querySelectorAll(".workspace-section-link")) {
+        link.addEventListener("click", (event) => {
+          const target = document.querySelector(link.getAttribute("href"));
+          if (!target || target.classList.contains("hidden")) {
+            return;
+          }
+          event.preventDefault();
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      }
+      elements.workspaceNav.classList.toggle("hidden", sections.length === 0);
     }
   }
 
