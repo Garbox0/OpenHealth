@@ -28,13 +28,14 @@ Si damos a la institucion un backend simple para registrar, marcar y seguir caso
 Usuarios primarios:
 
 - recepcion o admision;
+- medicos de la clinica;
 - auditoria medica;
 - facturacion;
 - soporte operativo.
 
 Usuario secundario:
 
-- medico tratante, que necesita visibilidad del contexto del caso.
+- IT de la clinica, que necesita gestionar usuarios, roles y accesos sin entrar a una consola externa.
 
 Usuario futuro:
 
@@ -114,6 +115,8 @@ Campos sugeridos para el primer corte:
 - unifica el contexto operativo del caso;
 - deja trazabilidad basica;
 - permite busqueda y consulta;
+- prepara una historia/expediente inicial por paciente;
+- permite avanzar hacia documentos, derivaciones y firma electronica;
 - prepara terreno para integraciones futuras.
 
 ## Lo que no hace todavia
@@ -123,6 +126,7 @@ Campos sugeridos para el primer corte:
 - automatizar decisiones clinicas;
 - liquidar facturacion;
 - orquestar todo el ciclo del siniestro.
+- prometer conectividad con todas las ART antes de tener convenios o integraciones reales.
 
 ## Modelo base sugerido
 

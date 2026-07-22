@@ -91,6 +91,7 @@ La API valida:
 - [docs/raspberry-access.md](D:/Proyectos/Salud/docs/raspberry-access.md)
 - [docs/tenant-onboarding.md](D:/Proyectos/Salud/docs/tenant-onboarding.md)
 - [docs/multi-tenant-readiness.md](D:/Proyectos/Salud/docs/multi-tenant-readiness.md)
+- [docs/competitor-access.md](D:/Proyectos/Salud/docs/competitor-access.md)
 - [src/openhealth_bridge/api.py](D:/Proyectos/Salud/src/openhealth_bridge/api.py)
 - [src/openhealth_bridge/security_api.py](D:/Proyectos/Salud/src/openhealth_bridge/security_api.py)
 - [src/openhealth_bridge/tenancy.py](D:/Proyectos/Salud/src/openhealth_bridge/tenancy.py)
@@ -127,6 +128,10 @@ python -m uv run pytest
 4. definir storage real por tenant;
 5. preparar onboarding interno para nuevas clinicas sin tocar codigo;
 6. recien despues evaluar infraestructura mas compleja.
+
+## Contexto de competencia
+
+Access Informatica ofrece una suite amplia para prestadores, servicios medicos de empresas y ART. El objetivo de OpenHealth Bridge no es copiar esa amplitud desde el inicio, sino competir con una plataforma moderna, multi-tenant, actualizable centralmente y con mejor experiencia para clinicas.
 
 ## Nota importante para cualquier otra IA
 

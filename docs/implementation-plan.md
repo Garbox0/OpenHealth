@@ -80,13 +80,18 @@ La autenticacion base ya quedo resuelta para entorno local con Keycloak y bearer
 
 Siguiente paso:
 
-- sumar el backoffice web de operacion;
-- definir tenancy por organizacion;
-- reemplazar el realm demo por configuracion desplegable por ambiente.
+- fortalecer la experiencia del tenant demo `Central Salud`;
+- hacer que el portal medico tenga expediente, documentos, derivaciones y firma operativa;
+- cerrar Seguridad e IT como modulo propio tenant-aware;
+- preparar integraciones ART sin prometer conectividad real hasta tener convenio o canal tecnico.
 
 ## Norte funcional
 
-La primera vista de producto sera el backoffice ART. La vista medica y la vista paciente se construiran despues sobre el mismo core.
+La primera venta apunta a clinicas. La plataforma debe sentirse como el espacio de trabajo de cada clinica: login unico, roles internos, expediente usable, trazabilidad y casos ART/incidente preparados.
+
+Referencia competitiva:
+
+- [Competencia: Access Informatica](competitor-access.md)
 
 ## Definicion de listo para Fase 0
 
