@@ -54,6 +54,7 @@ async function bootstrap() {
 
 function applyTenantBrand() {
   document.documentElement.dataset.tenant = tenant.id;
+  document.documentElement.dataset.tenantKind = tenant.kind;
   const brand = tenant.brand || {};
   if (brand.logoUrl) {
     elements.tenantLogo.innerHTML = `<img src="${escapeHtml(brand.logoUrl)}" alt="">`;

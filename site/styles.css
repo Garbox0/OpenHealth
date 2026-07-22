@@ -89,6 +89,12 @@ a {
   align-items: start;
 }
 
+.tenant-identity {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
 .actions,
 .role-row {
   display: flex;
@@ -111,7 +117,7 @@ a {
   place-items: center;
   width: 72px;
   height: 72px;
-  margin-bottom: 22px;
+  margin: 0;
   border-radius: 22px;
   color: #fff;
   background: linear-gradient(135deg, var(--brand), var(--brand-2));
@@ -139,6 +145,30 @@ h1 {
   font-size: clamp(3rem, 8vw, 6.2rem);
   letter-spacing: -0.07em;
   line-height: 0.9;
+}
+
+:root[data-tenant-kind="clinic"] .site-shell {
+  width: min(900px, calc(100% - 32px));
+}
+
+:root[data-tenant-kind="clinic"] .landing-card {
+  display: grid;
+  min-height: 420px;
+  padding: clamp(30px, 5vw, 48px);
+}
+
+:root[data-tenant-kind="clinic"] .landing-topline {
+  align-items: center;
+}
+
+:root[data-tenant-kind="clinic"] h1 {
+  max-width: none;
+  font-size: clamp(3.2rem, 7vw, 5.3rem);
+}
+
+:root[data-tenant-kind="clinic"] .product-signature {
+  align-self: end;
+  margin-top: 26px;
 }
 
 .landing-topline + .dashboard {
@@ -364,7 +394,8 @@ p {
 
 @media (max-width: 900px) {
   .landing-topline,
-  .session-summary {
+  .session-summary,
+  .tenant-identity {
     flex-direction: column;
   }
 
