@@ -45,6 +45,7 @@ Estado al 21 de julio de 2026.
 
 - Login OIDC con Keycloak.
 - Frontend usa Authorization Code + PKCE.
+- Tokens web guardados en `sessionStorage`, no persistidos en `localStorage`.
 - `directAccessGrantsEnabled=false` para evitar password grant publico.
 - Brute force protection activado en realm `openhealth`.
 

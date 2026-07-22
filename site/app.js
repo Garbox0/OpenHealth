@@ -1,5 +1,5 @@
 import { createPlatformSession, escapeHtml, humanizeError } from "/shared/platform.js";
-import { getTenantContext } from "/shared/tenant.js";
+import { getTenantContext, getTenantModuleCards } from "/shared/tenant.js";
 
 const tenant = getTenantContext();
 const session = createPlatformSession({ moduleId: "home" });
@@ -15,6 +15,7 @@ const elements = {
   title: document.querySelector("#landing-title"),
   tenantLogo: document.querySelector("#tenant-logo"),
   userName: document.querySelector("#user-name"),
+  workspaceGrid: document.querySelector("#workspace-grid"),
 };
 
 elements.loginButton.addEventListener("click", () => session.startLogin());
@@ -35,18 +36,16 @@ async function bootstrap() {
 
   await session.bootstrap();
   if (!session.isAuthenticated()) {
-    renderSignedOut("Inicia sesion con tu usuario institucional. Te llevamos automaticamente al area que corresponde a tu rol.");
+    renderSignedOut("Inicia sesion con tu usuario institucional. Despues ves solo las secciones habilitadas para tu rol.");
     return;
   }
 
-  routeAuthenticatedUser();
+  renderDashboard();
 }
 
 function applyTenantBrand() {
+  document.documentElement.dataset.tenant = tenant.id;
   const brand = tenant.brand || {};
-  if (brand.accent) {
-    document.documentElement.style.setProperty("--brand", brand.accent);
-  }
   if (brand.logoUrl) {
     elements.tenantLogo.innerHTML = `<img src="${escapeHtml(brand.logoUrl)}" alt="">`;
     return;
@@ -58,39 +57,42 @@ function renderSignedOut(message) {
   elements.loginButton.classList.remove("hidden");
   elements.logoutButton.classList.add("hidden");
   elements.sessionPanel.classList.add("hidden");
+  elements.workspaceGrid.innerHTML = "";
   elements.status.textContent = message;
 }
 
-function routeAuthenticatedUser() {
+function renderDashboard() {
   const actor = session.state.actor;
-  const target = targetPathForRoles(actor.roles);
+  const visibleCards = getTenantModuleCards(tenant).filter((card) =>
+    actor.roles.some((role) => card.roles.includes(role)),
+  );
 
   elements.loginButton.classList.add("hidden");
   elements.logoutButton.classList.remove("hidden");
   elements.sessionPanel.classList.remove("hidden");
-  elements.userName.textContent = `${actor.username} | ${actor.tenant_name}`;
+  elements.userName.textContent = actor.username;
   elements.roleList.innerHTML = actor.roles.map((role) => `<span class="pill">${escapeHtml(humanizeRole(role))}</span>`).join("");
 
-  if (!target) {
+  if (visibleCards.length === 0) {
     elements.status.textContent = "Tu usuario no tiene un modulo asignado. Pedile a IT que revise tus permisos.";
+    elements.workspaceGrid.innerHTML = "";
     return;
   }
 
-  elements.status.textContent = "Sesion validada. Redirigiendo a tu area de trabajo...";
-  window.location.replace(target);
+  elements.status.textContent = "Sesion segura activa. Elegi una seccion para trabajar.";
+  elements.workspaceGrid.innerHTML = visibleCards.map(renderWorkspaceCard).join("");
 }
 
-function targetPathForRoles(roles) {
-  if (roles.includes("admin")) {
-    return "/seguridad/";
-  }
-  if (roles.includes("doctor")) {
-    return "/medicos/";
-  }
-  if (roles.some((role) => ["admission", "medical_auditor", "billing", "support"].includes(role))) {
-    return "/backoffice/";
-  }
-  return null;
+function renderWorkspaceCard(card) {
+  const roleText = card.roles.map(humanizeRole).join(", ");
+  return `
+    <a class="workspace-card" href="${escapeHtml(card.href)}">
+      <small>${escapeHtml(roleText)}</small>
+      <strong>${escapeHtml(card.title)}</strong>
+      <span>${escapeHtml(card.description)}</span>
+      <span>${escapeHtml(card.features.join(" / "))}</span>
+    </a>
+  `;
 }
 
 function humanizeRole(role) {

@@ -83,9 +83,9 @@ export function createPlatformSession({ moduleId }) {
     const stateValue = randomString(32);
     const challenge = await pkceChallenge(verifier);
 
-    localStorage.setItem(STORAGE_KEYS.codeVerifier, verifier);
-    localStorage.setItem(STORAGE_KEYS.authState, stateValue);
-    localStorage.setItem(STORAGE_KEYS.returnTo, redirectUri);
+    sessionStorage.setItem(STORAGE_KEYS.codeVerifier, verifier);
+    sessionStorage.setItem(STORAGE_KEYS.authState, stateValue);
+    sessionStorage.setItem(STORAGE_KEYS.returnTo, redirectUri);
 
     const params = new URLSearchParams({
       client_id: AUTH_CONFIG.clientId,
@@ -115,9 +115,9 @@ export function createPlatformSession({ moduleId }) {
     }
 
     const redirectUri = currentRedirectUri();
-    const expectedState = localStorage.getItem(STORAGE_KEYS.authState);
-    const verifier = localStorage.getItem(STORAGE_KEYS.codeVerifier);
-    const returnTo = localStorage.getItem(STORAGE_KEYS.returnTo) || redirectUri;
+    const expectedState = sessionStorage.getItem(STORAGE_KEYS.authState);
+    const verifier = sessionStorage.getItem(STORAGE_KEYS.codeVerifier);
+    const returnTo = sessionStorage.getItem(STORAGE_KEYS.returnTo) || redirectUri;
 
     if (!expectedState || returnedState !== expectedState || !verifier) {
       throw new Error("La respuesta de autenticacion no coincide con la sesion actual.");
@@ -301,10 +301,7 @@ export function createPlatformSession({ moduleId }) {
   }
 
   function applyTenantBrand() {
-    const brand = tenant.brand || {};
-    if (brand.accent) {
-      document.documentElement.style.setProperty("--brand", brand.accent);
-    }
+    document.documentElement.dataset.tenant = tenant.id;
   }
 
   function renderTenantLogo(element) {
@@ -353,6 +350,7 @@ export function createPlatformSession({ moduleId }) {
   }
 
   function clearTokens() {
+    sessionStorage.removeItem(STORAGE_KEYS.tokenSet);
     localStorage.removeItem(STORAGE_KEYS.tokenSet);
     clearPendingLogin();
     state.actor = null;
@@ -402,17 +400,21 @@ function currentRedirectUri() {
 }
 
 function clearPendingLogin() {
+  sessionStorage.removeItem(STORAGE_KEYS.authState);
+  sessionStorage.removeItem(STORAGE_KEYS.codeVerifier);
+  sessionStorage.removeItem(STORAGE_KEYS.returnTo);
   localStorage.removeItem(STORAGE_KEYS.authState);
   localStorage.removeItem(STORAGE_KEYS.codeVerifier);
   localStorage.removeItem(STORAGE_KEYS.returnTo);
 }
 
 function persistTokenSet(tokenSet) {
-  localStorage.setItem(STORAGE_KEYS.tokenSet, JSON.stringify(tokenSet));
+  sessionStorage.setItem(STORAGE_KEYS.tokenSet, JSON.stringify(tokenSet));
 }
 
 function readTokenSet() {
-  const raw = localStorage.getItem(STORAGE_KEYS.tokenSet);
+  const raw = sessionStorage.getItem(STORAGE_KEYS.tokenSet);
+  localStorage.removeItem(STORAGE_KEYS.tokenSet);
   return raw ? JSON.parse(raw) : null;
 }
 

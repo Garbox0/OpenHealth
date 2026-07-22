@@ -62,18 +62,21 @@ export function getTenantModuleCards(tenant) {
       roles: ["admin", "admission", "medical_auditor", "billing", "support"],
       title: "Backoffice ART",
       description: employeeCopy,
+      features: ["admision", "casos ART", "auditoria", "seguimiento"],
     },
     {
       href: "/medicos/",
       roles: ["admin", "doctor"],
       title: "Portal medico",
       description: "Vista clinica real para revisar casos, contexto del paciente y notas del equipo.",
+      features: ["pacientes", "expediente", "documentos", "derivaciones"],
     },
     {
       href: "/seguridad/",
       roles: ["admin"],
       title: "Seguridad e IT",
       description: "Panel propio para usuarios, grupos y permisos dentro de la plataforma.",
+      features: ["usuarios", "roles", "grupos", "permisos"],
     },
   ];
 }
@@ -85,12 +88,14 @@ export function getPlatformCards() {
       href: "https://api.aerosftp.com/docs",
       title: "API y Swagger",
       description: "Documentacion viva para probar endpoints reales.",
+      features: ["health", "contratos", "pruebas"],
     },
     {
       href: "https://auth.aerosftp.com/admin",
       title: "Motor de identidad",
       description:
         "Keycloak queda como backend de acceso mientras migramos toda la gestion a la UI propia.",
+      features: ["OIDC", "PKCE", "SSO"],
     },
   ];
 }

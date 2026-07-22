@@ -1,0 +1,285 @@
+:root {
+  color-scheme: light;
+  --bg: #eef5f3;
+  --card: rgba(250, 253, 252, 0.92);
+  --ink: #10212b;
+  --muted: #57707a;
+  --line: rgba(16, 33, 43, 0.12);
+  --brand: #006d77;
+  --brand-2: #2a9d8f;
+  --danger: #b42318;
+  --shadow: 0 26px 80px rgba(17, 55, 67, 0.14);
+}
+
+:root[data-tenant="centralsalud"] {
+  --brand: #006d77;
+  --brand-2: #2a9d8f;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Aptos Display", "Segoe UI Variable Text", "Trebuchet MS", sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at top left, rgba(0, 109, 119, 0.18), transparent 26%),
+    radial-gradient(circle at bottom right, rgba(42, 157, 143, 0.18), transparent 30%),
+    linear-gradient(rgba(0, 109, 119, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 109, 119, 0.055) 1px, transparent 1px),
+    var(--bg);
+  background-size: auto, auto, 34px 34px, 34px 34px;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+}
+
+button {
+  border: 0;
+  border-radius: 14px;
+  padding: 1rem 1.22rem;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 800;
+}
+
+.site-shell {
+  width: min(1040px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 48px 0;
+}
+
+.landing-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-top: 6px solid var(--brand);
+  border-radius: 32px;
+  padding: clamp(28px, 5vw, 54px);
+  background: var(--card);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(14px);
+}
+
+.landing-card::after {
+  content: "";
+  position: absolute;
+  right: 32px;
+  bottom: 32px;
+  width: 96px;
+  height: 96px;
+  border-radius: 28px;
+  background:
+    linear-gradient(90deg, transparent 42%, rgba(0, 109, 119, 0.13) 42% 58%, transparent 58%),
+    linear-gradient(0deg, transparent 42%, rgba(0, 109, 119, 0.13) 42% 58%, transparent 58%);
+  pointer-events: none;
+}
+
+.landing-topline,
+.session-summary {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: start;
+}
+
+.actions,
+.role-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.eyebrow {
+  margin: 0 0 12px;
+  color: var(--brand);
+  font-size: 0.85rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.tenant-logo {
+  display: inline-grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  margin-bottom: 22px;
+  border-radius: 22px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--brand), var(--brand-2));
+  box-shadow: 0 16px 34px rgba(0, 109, 119, 0.26);
+  font-weight: 900;
+  letter-spacing: -0.08em;
+  font-size: 1.45rem;
+  overflow: hidden;
+}
+
+.tenant-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(3rem, 9vw, 6.2rem);
+  letter-spacing: -0.07em;
+  line-height: 0.9;
+}
+
+h2 {
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  letter-spacing: -0.055em;
+  line-height: 1;
+}
+
+p {
+  color: var(--muted);
+  font-size: 1.12rem;
+  line-height: 1.65;
+  max-width: 64ch;
+}
+
+.primary {
+  color: #fff;
+  background: linear-gradient(135deg, var(--brand), #088c99);
+  box-shadow: 0 14px 30px rgba(0, 109, 119, 0.25);
+}
+
+.ghost {
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.64);
+  border: 1px solid var(--line);
+}
+
+.dashboard {
+  display: grid;
+  gap: 24px;
+  margin-top: 32px;
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.62);
+}
+
+.workspace-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.workspace-card {
+  display: grid;
+  gap: 10px;
+  min-height: 188px;
+  padding: 20px 22px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  text-decoration: none;
+  color: inherit;
+  background: rgba(255, 255, 255, 0.74);
+  transition: transform 140ms ease, border-color 140ms ease, background 140ms ease;
+}
+
+.workspace-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(15, 118, 110, 0.3);
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.workspace-card small {
+  color: var(--brand);
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.workspace-card strong {
+  font-size: 1.28rem;
+}
+
+.workspace-card span {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.pill {
+  display: inline-flex;
+  border-radius: 999px;
+  padding: 0.44rem 0.76rem;
+  color: var(--brand);
+  background: rgba(15, 118, 110, 0.1);
+  font: 800 0.85rem Aptos, "Segoe UI", sans-serif;
+}
+
+.status {
+  margin-top: 22px;
+  color: var(--brand);
+  font-weight: 800;
+}
+
+.security-note {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 14px 16px;
+  border-radius: 16px;
+  color: var(--brand);
+  background: rgba(0, 109, 119, 0.08);
+}
+
+.security-note span {
+  color: var(--muted);
+}
+
+.product-signature {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 38px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+  opacity: 0.82;
+}
+
+.product-signature span {
+  color: var(--muted);
+  font-size: 0.74rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.product-signature img {
+  width: min(180px, 52vw);
+  height: auto;
+  display: block;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.error {
+  color: var(--danger);
+}
+
+@media (max-width: 900px) {
+  .landing-topline,
+  .session-summary {
+    flex-direction: column;
+  }
+
+  .workspace-grid {
+    grid-template-columns: 1fr;
+  }
+}
