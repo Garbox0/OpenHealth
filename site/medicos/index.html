@@ -124,6 +124,28 @@
 
       <div class="workspace">
         <section class="column">
+          <section class="panel patient-search-panel">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Pacientes</p>
+                <h2>Buscar expediente</h2>
+              </div>
+            </div>
+
+            <form id="patient-search-form" class="filter-bar patient-search-form">
+              <label>
+                <span>Paciente</span>
+                <input name="q" placeholder="Apellido, DNI, email o telefono">
+              </label>
+
+              <div class="filter-actions">
+                <button class="secondary" type="submit">Buscar</button>
+              </div>
+            </form>
+
+            <div id="patient-list" class="patient-list"></div>
+          </section>
+
           <section class="panel">
             <div class="section-heading">
               <div>

@@ -6,7 +6,7 @@ from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
 from pydantic import BaseModel, ConfigDict, Field
-from sqlalchemy import select
+from sqlalchemy import or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from openhealth_bridge.auth import ActorContext, require_roles
@@ -316,6 +316,45 @@ async def create_patient(
     await session.commit()
     await session.refresh(patient)
     return patient
+
+
+@router.get("/patients", response_model=list[PatientRead])
+async def list_patients(
+    session: SessionDep,
+    tenant: TenantDep,
+    _: Annotated[
+        ActorContext,
+        Depends(
+            require_roles(
+                "admin",
+                "admission",
+                "medical_auditor",
+                "billing",
+                "support",
+                "doctor",
+            )
+        ),
+    ],
+    q: str | None = None,
+    limit: Annotated[int, Query(ge=1, le=50)] = 20,
+) -> list[Patient]:
+    statement = select(Patient).where(Patient.tenant_id == tenant.id)
+
+    search_term = q.strip() if q else ""
+    if search_term:
+        pattern = f"%{search_term}%"
+        statement = statement.where(
+            or_(
+                Patient.family_name.ilike(pattern),
+                Patient.given_names.ilike(pattern),
+                Patient.document_number.ilike(pattern),
+                Patient.email.ilike(pattern),
+                Patient.phone.ilike(pattern),
+            )
+        )
+
+    result = await session.scalars(statement.order_by(Patient.updated_at.desc()).limit(limit))
+    return list(result.all())
 
 
 @router.get("/patients/{patient_id}", response_model=PatientRead)

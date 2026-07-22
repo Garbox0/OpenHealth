@@ -374,6 +374,69 @@
   text-decoration: none;
 }
 
+.patient-search-panel {
+  overflow: hidden;
+}
+
+.patient-search-form {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.patient-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.patient-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 15px;
+  border: 1px solid rgba(0, 109, 119, 0.13);
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at top right, rgba(0, 109, 119, 0.08), transparent 34%),
+    rgba(255, 255, 255, 0.9);
+  box-shadow: 0 14px 26px rgba(17, 55, 67, 0.06);
+}
+
+.patient-card strong {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--ink);
+  font-family: "Aptos Display", "Bahnschrift", "Trebuchet MS", sans-serif;
+  font-size: 1.02rem;
+}
+
+.patient-card p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.patient-meta {
+  display: flex;
+  grid-column: 1 / -1;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.patient-meta span {
+  display: inline-flex;
+  padding: 0.34rem 0.62rem;
+  border-radius: 999px;
+  color: var(--muted);
+  background: rgba(231, 244, 246, 0.72);
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.patient-case-button {
+  min-height: 42px;
+  white-space: nowrap;
+}
+
 .medical-case-list {
   gap: 14px;
 }
@@ -626,6 +689,8 @@
 @media (max-width: 1080px) {
   .clinical-actions,
   .workflow-summary,
+  .patient-search-form,
+  .patient-card,
   .two-field-grid {
     grid-template-columns: 1fr;
   }

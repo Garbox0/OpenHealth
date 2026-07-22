@@ -160,6 +160,76 @@ def test_create_and_read_incident_case_flow(client: TestClient) -> None:
     assert encounter_detail_response.json()["has_incident_case"] is True
 
 
+def test_list_patients_searches_by_name_and_document(client: TestClient) -> None:
+    first_response = client.post(
+        "/api/v1/patients",
+        json={
+            "family_name": "Ramos",
+            "given_names": "Clara",
+            "document_type": "dni",
+            "document_number": "30111222",
+            "email": "clara.ramos@example.com",
+        },
+    )
+    second_response = client.post(
+        "/api/v1/patients",
+        json={
+            "family_name": "Suarez",
+            "given_names": "Mateo",
+            "document_type": "dni",
+            "document_number": "40999888",
+        },
+    )
+
+    assert first_response.status_code == 201
+    assert second_response.status_code == 201
+
+    by_name = client.get("/api/v1/patients?q=ram")
+    by_document = client.get("/api/v1/patients?q=999888")
+
+    assert by_name.status_code == 200
+    assert [patient["document_number"] for patient in by_name.json()] == ["30111222"]
+    assert by_document.status_code == 200
+    assert [patient["family_name"] for patient in by_document.json()] == ["Suarez"]
+
+
+def test_doctor_can_list_patients(client: TestClient) -> None:
+    client.post(
+        "/api/v1/patients",
+        json={"family_name": "Medica", "given_names": "Visible"},
+    )
+
+    cast(FastAPI, client.app).dependency_overrides[get_actor_context] = lambda: ActorContext(
+        actor_id="doctor",
+        username="doctor",
+        roles=frozenset({"doctor"}),
+        subject="doctor-subject",
+    )
+
+    response = client.get("/api/v1/patients")
+
+    assert response.status_code == 200
+    assert response.json()[0]["family_name"] == "Medica"
+
+
+def test_patient_list_is_isolated_by_tenant_host(client: TestClient) -> None:
+    client.post(
+        "/api/v1/patients",
+        json={"family_name": "Tenant", "given_names": "Paciente"},
+    )
+
+    same_tenant = client.get("/api/v1/patients")
+    other_tenant = client.get(
+        "/api/v1/patients",
+        headers={"host": "centralsalud.aerosftp.com"},
+    )
+
+    assert same_tenant.status_code == 200
+    assert len(same_tenant.json()) == 1
+    assert other_tenant.status_code == 200
+    assert other_tenant.json() == []
+
+
 def test_updating_case_status_creates_status_event(client: TestClient) -> None:
     patient_id = client.post(
         "/api/v1/patients",

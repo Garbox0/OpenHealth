@@ -13,6 +13,7 @@ const DATE_TIME_FORMATTER = new Intl.DateTimeFormat("es-AR", {
 
 const state = {
   caseSummaries: [],
+  patients: [],
   selectedCase: null,
   selectedCaseId: null,
 };
@@ -39,6 +40,8 @@ const elements = {
   noteForm: document.querySelector("#case-note-form"),
   nextActionPanel: document.querySelector("#next-action-panel"),
   overviewStats: document.querySelector("#overview-stats"),
+  patientList: document.querySelector("#patient-list"),
+  patientSearchForm: document.querySelector("#patient-search-form"),
   priorityList: document.querySelector("#priority-list"),
   referralFeedback: document.querySelector("#referral-feedback"),
   referralForm: document.querySelector("#case-referral-form"),
@@ -64,6 +67,7 @@ bootstrap().catch((error) => {
 });
 
 elements.filtersForm.addEventListener("submit", handleFilterSubmit);
+elements.patientSearchForm.addEventListener("submit", handlePatientSearch);
 elements.heroLoginButton.addEventListener("click", () => session.startLogin());
 elements.loginButton.addEventListener("click", () => session.startLogin());
 elements.logoutButton.addEventListener("click", () => session.logout());
@@ -87,7 +91,21 @@ async function bootstrap() {
   }
 
   renderSignedIn();
+  await loadPatients();
   await loadCases();
+}
+
+async function loadPatients(searchTerm = "") {
+  elements.patientList.innerHTML = renderEmpty("Buscando pacientes...");
+
+  const params = new URLSearchParams();
+  if (searchTerm) {
+    params.set("q", searchTerm);
+  }
+
+  const patients = await session.apiFetch(`/patients${params.size ? `?${params}` : ""}`);
+  state.patients = patients;
+  renderPatientList(patients);
 }
 
 async function loadCases() {
@@ -150,6 +168,23 @@ async function loadCaseDetail(caseId) {
 
 async function handleFilterSubmit(event) {
   event.preventDefault();
+  await loadCases();
+}
+
+async function handlePatientSearch(event) {
+  event.preventDefault();
+  const form = new FormData(elements.patientSearchForm);
+  await loadPatients(optionalValue(form.get("q")) || "");
+}
+
+async function handleSelectPatient(patientId) {
+  const patient = state.patients.find((item) => item.id === patientId);
+  if (!patient) {
+    return;
+  }
+
+  const searchValue = optionalValue(patient.document_number) || formatPatientName(patient);
+  elements.filtersForm.elements.q.value = searchValue;
   await loadCases();
 }
 
@@ -265,6 +300,7 @@ async function handleAddSignature() {
 
 function renderSignedOut(message) {
   state.caseSummaries = [];
+  state.patients = [];
   state.selectedCase = null;
   state.selectedCaseId = null;
   elements.appShell.classList.add("hidden");
@@ -289,6 +325,37 @@ function renderSignedIn() {
   elements.authPanel.classList.add("hidden");
   elements.heroLoginButton.classList.add("hidden");
   session.renderSignedInChrome(elements);
+}
+
+function renderPatientList(patients) {
+  if (patients.length === 0) {
+    elements.patientList.innerHTML = renderEmpty("No encontramos pacientes con ese criterio.");
+    return;
+  }
+
+  elements.patientList.innerHTML = patients
+    .map(
+      (patient) => `
+        <article class="patient-card">
+          <div>
+            <strong>${escapeHtml(formatPatientName(patient))}</strong>
+            <p>${escapeHtml(formatPatientDocument(patient))}</p>
+          </div>
+          <div class="patient-meta">
+            <span>${escapeHtml(optionalValue(patient.phone) || "Sin telefono")}</span>
+            <span>${escapeHtml(optionalValue(patient.email) || "Sin email")}</span>
+          </div>
+          <button class="ghost patient-case-button" type="button" data-patient-id="${patient.id}">
+            Ver casos
+          </button>
+        </article>
+      `,
+    )
+    .join("");
+
+  for (const node of elements.patientList.querySelectorAll(".patient-case-button")) {
+    node.addEventListener("click", () => handleSelectPatient(node.dataset.patientId));
+  }
 }
 
 function renderOverview() {
@@ -876,6 +943,10 @@ function renderFlag(flag) {
 
 function formatPatientName(patient) {
   return `${patient.family_name}, ${patient.given_names}`;
+}
+
+function formatPatientDocument(patient) {
+  return `${patient.document_type || "doc"} ${patient.document_number || "sin numero"}`;
 }
 
 function formatDate(value) {
