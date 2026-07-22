@@ -16,9 +16,8 @@ El modelo objetivo es:
 
 - landing principal: `https://www.aerosftp.com`
 - tenant demo: `https://centralsalud.aerosftp.com`
-- portal medico: `https://www.aerosftp.com/medicos/`
-- seguridad e IT: `https://www.aerosftp.com/seguridad/`
-- API: `https://api.aerosftp.com/docs`
+- el tenant es el unico punto de entrada; el login redirige automaticamente al workspace segun `admin`, `administrative` o `doctor`.
+- API: `https://api.aerosftp.com/health/ready`
 - Keycloak: `https://auth.aerosftp.com`
 
 ## Stack tecnico
@@ -36,6 +35,7 @@ El modelo objetivo es:
 
 - login real OIDC;
 - sesion compartida entre modulos;
+- tres roles iniciales: IT, Administrativo y Medico;
 - portal medico inicial;
 - modulo propio de Seguridad e IT;
 - tenant demo `Central Salud`;
@@ -49,8 +49,7 @@ El modelo objetivo es:
 - UI medica mucho mas profunda;
 - expediente clinico mas completo;
 - upload binario real;
-- firma electronica;
-- derivaciones;
+- firma simple de trazabilidad y derivaciones internas;
 - administracion tenant-aware de usuarios;
 - storage segregado por tenant;
 - integraciones reales con ART;

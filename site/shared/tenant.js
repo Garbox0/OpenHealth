@@ -59,7 +59,7 @@ export function getTenantModuleCards(tenant) {
   return [
     {
       href: "/backoffice/",
-      roles: ["admin", "admission", "medical_auditor", "billing", "support"],
+      roles: ["admin", "administrative"],
       title: "Backoffice ART",
       description: employeeCopy,
       features: ["admision", "casos ART", "auditoria", "seguimiento"],
@@ -88,7 +88,7 @@ export function getTenantDefaultModuleHref(roles) {
   if (roles.includes("doctor")) {
     return "/medicos/";
   }
-  if (roles.some((role) => ["admission", "medical_auditor", "billing", "support"].includes(role))) {
+  if (roles.includes("administrative")) {
     return "/backoffice/";
   }
   return null;

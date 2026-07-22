@@ -35,11 +35,8 @@ Cliente OIDC de desarrollo:
 Usuarios demo:
 
 - `admin`
-- `admission`
-- `auditor`
-- `billing`
+- `administrative`
 - `doctor`
-- `support`
 
 Esos usuarios demo se preparan automaticamente cuando levantas `docker compose`. Las contrasenas reales no se versionan: en la Raspberry quedan en `.env.tunnel`; en local se pueden definir con `OPENHEALTH_USER_*_PASSWORD`.
 
@@ -63,12 +60,8 @@ Authorization: Bearer ACCESS_TOKEN
 Roles soportados por la API:
 
 - `admin`
-- `admission`
-- `medical_auditor`
-- `billing`
-- `support`
+- `administrative`
 - `doctor`
-- `patient`
 
 ## Endpoints de salud
 

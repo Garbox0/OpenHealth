@@ -49,10 +49,10 @@ def client() -> Generator[TestClient]:
         app = create_app()
         app.dependency_overrides[get_db_session] = override_db_session
         app.dependency_overrides[get_actor_context] = lambda: ActorContext(
-            actor_id="admission",
-            username="admission",
-            roles=frozenset({"admission"}),
-            subject="admission-subject",
+            actor_id="administrative",
+            username="administrative",
+            roles=frozenset({"administrative"}),
+            subject="administrative-subject",
         )
 
         with TestClient(app, base_url="https://www.aerosftp.com") as test_client:
@@ -151,7 +151,7 @@ def test_create_and_read_incident_case_flow(client: TestClient) -> None:
     )
     assert events_response.status_code == 200
     assert events_response.json()[0]["event_type"] == "case_created"
-    assert events_response.json()[0]["actor_id"] == "admission"
+    assert events_response.json()[0]["actor_id"] == "administrative"
 
     encounter_detail_response = client.get(
         f"/api/v1/encounters/{encounter_id}",
@@ -299,7 +299,7 @@ def test_updating_case_status_creates_status_event(client: TestClient) -> None:
 
     update_response = client.patch(
         f"/api/v1/incident-cases/{incident_case_id}",
-        json={"status": "in_review", "current_owner_role": "admission"},
+        json={"status": "in_review", "current_owner_role": "administrative"},
     )
     assert update_response.status_code == 200
     assert update_response.json()["status"] == "in_review"
@@ -585,7 +585,7 @@ def test_doctor_can_route_case_but_not_change_status(client: TestClient) -> None
 
     route_response = client.patch(
         f"/api/v1/incident-cases/{incident_case_id}",
-        json={"current_owner_role": "medical_auditor"},
+        json={"current_owner_role": "administrative"},
     )
     status_response = client.patch(
         f"/api/v1/incident-cases/{incident_case_id}",
@@ -593,7 +593,7 @@ def test_doctor_can_route_case_but_not_change_status(client: TestClient) -> None
     )
 
     assert route_response.status_code == 200
-    assert route_response.json()["current_owner_role"] == "medical_auditor"
+    assert route_response.json()["current_owner_role"] == "administrative"
     assert status_response.status_code == 403
 
 
@@ -632,9 +632,9 @@ def test_me_returns_actor_context(client: TestClient) -> None:
 
     assert response.status_code == 200
     assert response.json() == {
-        "actor_id": "admission",
-        "username": "admission",
-        "roles": ["admission"],
+        "actor_id": "administrative",
+        "username": "administrative",
+        "roles": ["administrative"],
         "tenant_slug": "openhealth",
         "tenant_name": "OpenHealth Bridge",
     }

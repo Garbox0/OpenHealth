@@ -8,7 +8,7 @@ Estado al 21 de julio de 2026.
 
 - Tenant obligatorio por hostname o `X-OpenHealth-Tenant`.
 - Queries filtradas por `tenant_id`.
-- Roles separados: `admin`, `admission`, `medical_auditor`, `billing`, `support`, `doctor`, `patient`.
+- Roles separados: `admin`, `administrative`, `doctor`.
 - El rol `doctor` puede derivar y documentar, pero no cambiar estados administrativos.
 
 ### A02 Cryptographic Failures

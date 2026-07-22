@@ -25,7 +25,7 @@ SYSTEM_TENANTS = (
     },
 )
 
-SYSTEM_ACTORS = ("admin", "admission", "auditor", "billing", "doctor", "support")
+SYSTEM_ACTORS = ("admin", "administrative", "doctor")
 SessionDep = Annotated[AsyncSession, Depends(get_db_session)]
 ActorDep = Annotated[ActorContext, Depends(get_actor_context)]
 

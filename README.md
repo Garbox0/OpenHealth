@@ -121,7 +121,7 @@ Y los permisos no se gestionan con una tabla propia dentro de la app, sino con `
 Importante:
 
 - `admin` significa `IT/superusuario`, no administrativo operativo;
-- los administrativos operativos van con `admission`, `billing`, `medical_auditor` o `support`;
+- los administrativos operativos van con `administrative`;
 - los medicos van con `doctor`.
 
 Referencia:
@@ -269,11 +269,8 @@ python -m uv run pytest
 Usuarios demo del realm `openhealth`:
 
 - `admin`
-- `admission`
-- `auditor`
-- `billing`
+- `administrative`
 - `doctor`
-- `support`
 
 Las contrasenas reales no se documentan: en la Raspberry quedan en `.env.tunnel`; en local se pueden definir con `OPENHEALTH_USER_*_PASSWORD`.
 
@@ -281,7 +278,7 @@ Grupos demo:
 
 - `IT`: `admin`
 - `Medicos`: `doctor`
-- `Administrativos`: `admission`, `auditor`, `billing`, `support`
+- `Administrativos`: `administrative`
 
 Pedir un token:
 
@@ -290,8 +287,8 @@ curl -X POST http://localhost:8081/realms/openhealth/protocol/openid-connect/tok
   -H "Content-Type: application/x-www-form-urlencoded" ^
   -d "client_id=openhealth-dev" ^
   -d "grant_type=password" ^
-  -d "username=admission" ^
-  -d "password=%OPENHEALTH_USER_ADMISSION_PASSWORD%"
+  -d "username=administrative" ^
+  -d "password=%OPENHEALTH_USER_ADMINISTRATIVE_PASSWORD%"
 ```
 
 Usar ese `access_token` contra la API:

@@ -24,7 +24,7 @@ CoverageType = Literal["art", "private", "unknown"]
 EncounterStatus = Literal["open", "in_progress", "closed"]
 IncidentType = Literal["work_accident", "commute_accident", "occupational_exposure", "other"]
 IncidentStatus = Literal["open", "in_review", "authorized", "rejected", "closed"]
-IncidentCaseOwnerRole = Literal["admission", "medical_auditor", "billing", "support"]
+IncidentCaseOwnerRole = Literal["administrative"]
 IncidentStatusFilter = Annotated[IncidentStatus | None, Query(alias="status")]
 
 ALLOWED_STATUS_TRANSITIONS: dict[IncidentStatus, set[IncidentStatus]] = {
@@ -267,9 +267,7 @@ def get_effective_actor_id(explicit_actor_id: str | None, actor: ActorContext) -
 
 
 def ensure_update_allowed_for_actor(actor: ActorContext, changes: dict[str, object]) -> None:
-    if "doctor" not in actor.roles or actor.roles.intersection(
-        {"admin", "admission", "medical_auditor", "billing", "support"}
-    ):
+    if "doctor" not in actor.roles or actor.roles.intersection({"admin", "administrative"}):
         return
 
     if set(changes) <= {"current_owner_role"}:
@@ -290,7 +288,6 @@ async def get_me(
                 "billing",
                 "support",
                 "doctor",
-                "patient",
             )
         ),
     ],

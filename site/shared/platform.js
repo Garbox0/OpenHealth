@@ -18,12 +18,12 @@ export const PLATFORM_MODULES = {
   home: {
     href: "/",
     label: "Inicio",
-    roles: ["admin", "admission", "medical_auditor", "billing", "support", "doctor", "patient"],
+    roles: ["admin", "administrative", "doctor"],
   },
   backoffice: {
     href: "/backoffice/",
     label: "Backoffice",
-    roles: ["admin", "admission", "medical_auditor", "billing", "support"],
+    roles: ["admin", "administrative"],
   },
   medicos: {
     href: "/medicos/",
@@ -366,12 +366,8 @@ function renderRolePill(role) {
 function humanizeRole(role) {
   const labels = {
     admin: "IT administrador",
-    admission: "Admision",
-    auditor: "Auditoria",
-    billing: "Facturacion",
+    administrative: "Administrativo",
     doctor: "Medico",
-    medical_auditor: "Auditoria medica",
-    support: "Soporte",
   };
   return labels[role] || role;
 }

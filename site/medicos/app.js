@@ -1090,10 +1090,11 @@ function humanizeIncidentType(incidentType) {
 
 function humanizeOwnerRole(ownerRole) {
   const labels = {
-    admission: "Admision",
-    medical_auditor: "Auditoria medica",
-    billing: "Facturacion",
-    support: "Soporte",
+    administrative: "Administrativo",
+    admission: "Administrativo",
+    medical_auditor: "Administrativo",
+    billing: "Administrativo",
+    support: "Administrativo",
   };
   return ownerRole ? labels[ownerRole] || ownerRole : "Sin owner";
 }
@@ -1125,8 +1126,8 @@ function guessMimeType(fileName) {
 
 function ownerRoleForDestination(destination) {
   const roles = {
-    "Administracion": "admission",
-    "ART / Auditoria": "medical_auditor",
+    "Administracion": "administrative",
+    "ART / Auditoria": "administrative",
   };
   return roles[destination] || null;
 }

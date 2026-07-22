@@ -12,24 +12,30 @@ from jwt import PyJWKClient
 
 from openhealth_bridge.config import Settings, get_settings
 
-UserRole = Literal[
-    "admin",
+ApplicationRole = Literal["admin", "administrative", "doctor"]
+LegacyRole = Literal[
     "admission",
     "medical_auditor",
     "billing",
     "support",
-    "doctor",
-    "patient",
 ]
+UserRole = ApplicationRole | LegacyRole
 
-ALLOWED_ROLES: set[UserRole] = {
+ALLOWED_ROLES: set[ApplicationRole] = {
     "admin",
-    "admission",
-    "medical_auditor",
-    "billing",
-    "support",
+    "administrative",
     "doctor",
-    "patient",
+}
+
+# Older case data still carries these routing names. They are not login roles anymore.
+ROLE_ALIASES: dict[UserRole, ApplicationRole] = {
+    "admin": "admin",
+    "administrative": "administrative",
+    "doctor": "doctor",
+    "admission": "administrative",
+    "medical_auditor": "administrative",
+    "billing": "administrative",
+    "support": "administrative",
 }
 
 http_bearer = HTTPBearer(auto_error=False)
@@ -39,7 +45,7 @@ http_bearer = HTTPBearer(auto_error=False)
 class ActorContext:
     actor_id: str
     username: str
-    roles: frozenset[UserRole]
+    roles: frozenset[ApplicationRole]
     subject: str
 
 
@@ -128,7 +134,7 @@ ActorDep = Annotated[ActorContext, Depends(get_actor_context)]
 
 
 def require_roles(*roles: UserRole) -> Callable[[ActorDep], Awaitable[ActorContext]]:
-    allowed_roles = set(roles)
+    allowed_roles = {ROLE_ALIASES[role] for role in roles}
 
     async def dependency(actor: ActorDep) -> ActorContext:
         if actor.roles.isdisjoint(allowed_roles):

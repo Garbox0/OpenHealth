@@ -23,23 +23,15 @@ La regla base es simple:
 
 - `admin`
   Uso: IT o superusuario de plataforma.
-- `admission`
-  Uso: admision y apertura operativa de casos.
-- `medical_auditor`
-  Uso: auditoria medica y control documental.
-- `billing`
-  Uso: facturacion y seguimiento economico.
-- `support`
-  Uso: soporte operativo o buzon administrativo.
+- `administrative`
+  Uso: admision, seguimiento, auditoria y operatoria administrativa.
 - `doctor`
   Uso: trabajo clinico.
-- `patient`
-  Uso: futuro portal paciente.
 
 ## Mapeo recomendado
 
 - Grupo `Administrativos`
-  Roles: `admission`, `medical_auditor`, `billing`, `support`
+  Roles: `administrative`
 - Grupo `Medicos`
   Roles: `doctor`
 - Grupo `IT`
@@ -55,7 +47,7 @@ Ese home inicia sesion por SSO y redirige automaticamente al area correspondient
 
 - `admin` -> `Seguridad e IT`.
 - `doctor` -> `Portal medico`.
-- `admission`, `medical_auditor`, `billing`, `support` -> `Backoffice`.
+- `administrative` -> `Backoffice`.
 
 Los modulos usan el mismo token OIDC y el mismo tenant, asi que el usuario no deberia reloguearse al moverse entre secciones permitidas.
 
@@ -65,7 +57,7 @@ Los modulos usan el mismo token OIDC y el mismo tenant, asi que el usuario no de
 
 `admin` significa acceso tecnico total: configuracion, soporte de plataforma, cambios de seguridad o recuperacion.
 
-Para usuarios de operacion diaria conviene evitar `admin` y usar los roles especificos.
+Para usuarios de operacion diaria conviene evitar `admin` y usar `administrative` o `doctor`.
 
 ## Gestion autonoma
 

@@ -265,7 +265,7 @@ function resetCaseForm() {
   }
   elements.createForm.querySelector("[name='coverage_type']").value = "art";
   elements.createForm.querySelector("[name='incident_type']").value = "work_accident";
-  elements.createForm.querySelector("[name='current_owner_role']").value = "admission";
+  elements.createForm.querySelector("[name='current_owner_role']").value = "administrative";
   elements.createForm.querySelector("[name='incident_date']").value = todayIso();
 }
 
@@ -473,7 +473,7 @@ function renderCaseDetail() {
     .join("");
 
   elements.statusForm.querySelector("[name='status']").value = incidentCase.status;
-  elements.statusForm.querySelector("[name='current_owner_role']").value = incidentCase.current_owner_role || "admission";
+  elements.statusForm.querySelector("[name='current_owner_role']").value = "administrative";
 
   elements.eventList.innerHTML =
     events.length === 0
@@ -629,24 +629,25 @@ function humanizeIncidentType(incidentType) {
 
 function humanizeOwnerRole(ownerRole) {
   const labels = {
-    admission: "Admision",
-    medical_auditor: "Auditoria medica",
-    billing: "Facturacion",
-    support: "Soporte",
+    administrative: "Administrativo",
+    admission: "Administrativo",
+    medical_auditor: "Administrativo",
+    billing: "Administrativo",
+    support: "Administrativo",
   };
   return ownerRole ? labels[ownerRole] || ownerRole : "Sin asignar";
 }
 
 function canAccessModule() {
-  return session.hasAnyRole(["admin", "admission", "medical_auditor", "billing", "support"]);
+  return session.hasAnyRole(["admin", "administrative"]);
 }
 
 function canCreateCases() {
-  return session.hasAnyRole(["admin", "admission", "support"]);
+  return session.hasAnyRole(["admin", "administrative"]);
 }
 
 function canMutateCases() {
-  return session.hasAnyRole(["admin", "admission", "medical_auditor", "billing", "support"]);
+  return session.hasAnyRole(["admin", "administrative"]);
 }
 
 function highlightSelectedCase() {

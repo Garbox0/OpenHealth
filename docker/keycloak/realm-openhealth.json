@@ -15,18 +15,14 @@
   "roles": {
     "realm": [
       { "name": "admin" },
-      { "name": "admission" },
-      { "name": "medical_auditor" },
-      { "name": "billing" },
-      { "name": "support" },
-      { "name": "doctor" },
-      { "name": "patient" }
+      { "name": "administrative" },
+      { "name": "doctor" }
     ]
   },
   "groups": [
     {
       "name": "Administrativos",
-      "realmRoles": ["admission", "medical_auditor", "billing", "support"]
+      "realmRoles": ["administrative"]
     },
     {
       "name": "Medicos",
@@ -82,33 +78,13 @@
       "groups": ["/IT"]
     },
     {
-      "username": "admission",
+      "username": "administrative",
       "enabled": true,
-      "email": "admission@openhealth.local",
+      "email": "administrative@openhealth.local",
       "emailVerified": true,
-      "firstName": "Admission",
+      "firstName": "Administrativo",
       "lastName": "OpenHealth",
-      "realmRoles": ["admission"],
-      "groups": ["/Administrativos"]
-    },
-    {
-      "username": "auditor",
-      "enabled": true,
-      "email": "auditor@openhealth.local",
-      "emailVerified": true,
-      "firstName": "Auditor",
-      "lastName": "OpenHealth",
-      "realmRoles": ["medical_auditor"],
-      "groups": ["/Administrativos"]
-    },
-    {
-      "username": "billing",
-      "enabled": true,
-      "email": "billing@openhealth.local",
-      "emailVerified": true,
-      "firstName": "Billing",
-      "lastName": "OpenHealth",
-      "realmRoles": ["billing"],
+      "realmRoles": ["administrative"],
       "groups": ["/Administrativos"]
     },
     {
@@ -120,16 +96,6 @@
       "lastName": "OpenHealth",
       "realmRoles": ["doctor"],
       "groups": ["/Medicos"]
-    },
-    {
-      "username": "support",
-      "enabled": true,
-      "email": "support@openhealth.local",
-      "emailVerified": true,
-      "firstName": "Support",
-      "lastName": "OpenHealth",
-      "realmRoles": ["support"],
-      "groups": ["/Administrativos"]
     }
   ]
 }

@@ -91,12 +91,9 @@ function renderNoWorkspace() {
 function humanizeRole(role) {
   const labels = {
     admin: "IT administrador",
-    admission: "Admision",
-    billing: "Facturacion",
+    administrative: "Administrativo",
     doctor: "Medico",
-    medical_auditor: "Auditoria medica",
     patient: "Paciente",
-    support: "Soporte",
   };
   return labels[role] || role;
 }
