@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenHealth Bridge | Portal medico</title>
+  <link rel="stylesheet" href="/backoffice/styles.css">
+  <link rel="stylesheet" href="/medicos/styles.css">
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand-stack">
+        <div>
+          <div class="product-lockup">
+            <img src="/assets/openhealth-wordmark.svg" alt="OpenHealth Bridge">
+          </div>
+          <p class="eyebrow">OpenHealth Bridge</p>
+          <h1>Portal medico</h1>
+          <p id="tenant-badge" class="tenant-badge"></p>
+        </div>
+        <nav id="module-nav" class="module-nav hidden" aria-label="Modulos"></nav>
+      </div>
+
+      <div class="topbar-actions">
+        <button id="login-button" class="ghost">Iniciar sesion</button>
+        <button id="logout-button" class="ghost hidden">Cerrar sesion</button>
+      </div>
+    </header>
+
+    <section id="auth-panel" class="panel hero medical-hero">
+      <div class="medical-hero-copy">
+        <p class="eyebrow">Trabajo clinico</p>
+        <h2>Una estacion clinica pensada para revisar, documentar y derivar sin friccion.</h2>
+        <p id="auth-copy">
+          Este portal reutiliza la misma sesion del tenant y ordena el caso clinico para que el
+          profesional vea rapido el contexto, deje trazabilidad y siga trabajando sin saltar entre sistemas.
+        </p>
+
+        <div class="hero-actions">
+          <button id="hero-login-button" class="primary">Entrar al portal medico</button>
+        </div>
+      </div>
+
+      <div class="medical-hero-grid" aria-hidden="true">
+        <article class="preview-card">
+          <span class="preview-label">Expediente unificado</span>
+          <strong>Paciente, atencion, cobertura y trazabilidad clinica.</strong>
+          <p>Todo el contexto operativo del caso en una sola lectura.</p>
+        </article>
+        <article class="preview-card">
+          <span class="preview-label">Sesion unica</span>
+          <strong>SSO real entre recepcion, medicos y seguridad.</strong>
+          <p>El usuario entra una vez y se mueve segun su rol.</p>
+        </article>
+        <article class="preview-card">
+          <span class="preview-label">Escala por clinica</span>
+          <strong>Un workspace por tenant, sin mezclar informacion.</strong>
+          <p>El host define la clinica y el backend filtra por tenant.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="app-shell" class="hidden">
+      <section class="panel user-panel">
+        <div>
+          <p class="eyebrow">Sesion</p>
+          <strong id="user-name">Sin sesion</strong>
+          <p id="user-meta">Esperando autenticacion.</p>
+          <p class="tenant-meta">Tenant: <span id="tenant-name">OpenHealth</span> | Soporte: <span id="tenant-support">admin@aerosftp.com</span></p>
+        </div>
+
+        <div id="role-list" class="pill-row">
+          <span class="pill">sin roles</span>
+        </div>
+      </section>
+
+      <section class="panel workspace-overview">
+        <div class="section-heading split-heading">
+          <div>
+            <p class="eyebrow">Panorama de guardia</p>
+            <h2>Que necesita atencion en este workspace</h2>
+          </div>
+          <p class="inline-copy">
+            Misma sesion, mismo tenant, misma fuente de verdad para el equipo clinico.
+          </p>
+        </div>
+
+        <div id="overview-stats" class="overview-grid"></div>
+        <div id="attention-strip" class="attention-banner"></div>
+      </section>
+
+      <section class="clinical-command-center">
+        <article class="panel priority-panel">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Prioridad clinica</p>
+              <h2>Orden sugerido de trabajo</h2>
+            </div>
+          </div>
+          <div id="priority-list" class="priority-list"></div>
+        </article>
+
+        <article class="panel workflow-panel">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Ruta del expediente</p>
+              <h2>Pendientes del equipo</h2>
+            </div>
+          </div>
+          <div id="workflow-summary" class="workflow-summary"></div>
+        </article>
+      </section>
+
+      <div class="workspace">
+        <section class="column">
+          <section class="panel">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Bandeja clinica</p>
+                <h2>Casos para revisar hoy</h2>
+              </div>
+            </div>
+
+            <form id="filters-form" class="filter-bar">
+              <label>
+                <span>Buscar</span>
+                <input name="q" placeholder="Paciente, documento, medico, ART">
+              </label>
+
+              <label>
+                <span>Estado</span>
+                <select name="status">
+                  <option value="">Todos</option>
+                  <option value="open">Open</option>
+                  <option value="in_review">In review</option>
+                  <option value="authorized">Authorized</option>
+                  <option value="rejected">Rejected</option>
+                  <option value="closed">Closed</option>
+                </select>
+              </label>
+
+              <label>
+                <span>Cobertura</span>
+                <select name="coverage_type">
+                  <option value="">Todas</option>
+                  <option value="art">ART</option>
+                  <option value="private">Privada</option>
+                  <option value="unknown">Desconocida</option>
+                </select>
+              </label>
+
+              <div class="filter-actions">
+                <button class="secondary" type="submit">Filtrar</button>
+                <button class="ghost" id="refresh-cases-button" type="button">Actualizar</button>
+              </div>
+            </form>
+
+            <div id="case-list" class="case-list medical-case-list"></div>
+          </section>
+        </section>
+
+        <section class="column wide">
+          <section id="case-detail-panel" class="panel hidden">
+            <div class="section-heading split-heading">
+              <div>
+                <p class="eyebrow">Caso</p>
+                <h2 id="detail-title">Selecciona un caso</h2>
+              </div>
+              <p id="selected-case-meta" class="inline-copy"></p>
+            </div>
+
+            <div id="selected-case-banner" class="record-banner"></div>
+            <div id="selected-case-alerts" class="flag-list"></div>
+            <div id="selected-case-worklist" class="case-worklist"></div>
+            <div id="detail-summary" class="detail-grid medical-detail-grid"></div>
+
+            <div class="section-heading compact-heading">
+              <div>
+                <p class="eyebrow">Acciones del medico</p>
+                <h2>Documentar, derivar y firmar</h2>
+              </div>
+              <p class="inline-copy">
+                Todas las acciones quedan como eventos trazables del expediente.
+              </p>
+            </div>
+
+            <section class="clinical-actions">
+              <form id="case-note-form" class="stack-form action-card">
+                <label>
+                  <span>Agregar nota clinica</span>
+                  <textarea
+                    name="summary"
+                    rows="4"
+                    placeholder="Paciente evaluado, conducta indicada, observaciones relevantes"
+                    required
+                  ></textarea>
+                </label>
+
+                <div class="form-actions">
+                  <button class="secondary" type="submit">Guardar nota</button>
+                  <p id="note-feedback" class="feedback"></p>
+                </div>
+              </form>
+
+              <form id="case-referral-form" class="stack-form action-card">
+                <div class="two-field-grid">
+                  <label>
+                    <span>Derivar a</span>
+                    <select name="destination" required>
+                      <option value="">Elegir destino</option>
+                      <option value="Traumatologia">Traumatologia</option>
+                      <option value="Diagnostico por imagenes">Diagnostico por imagenes</option>
+                      <option value="Kinesiologia">Kinesiologia</option>
+                      <option value="Administracion">Administracion</option>
+                      <option value="ART / Auditoria">ART / Auditoria</option>
+                    </select>
+                  </label>
+                  <label>
+                    <span>Prioridad</span>
+                    <select name="priority">
+                      <option value="normal">Normal</option>
+                      <option value="alta">Alta</option>
+                      <option value="urgente">Urgente</option>
+                    </select>
+                  </label>
+                </div>
+
+                <label>
+                  <span>Motivo de derivacion</span>
+                  <textarea
+                    name="summary"
+                    rows="3"
+                    placeholder="Motivo, interconsulta solicitada o documentacion pendiente"
+                    required
+                  ></textarea>
+                </label>
+
+                <div class="form-actions">
+                  <button class="secondary" type="submit">Registrar derivacion</button>
+                  <p id="referral-feedback" class="feedback"></p>
+                </div>
+              </form>
+
+              <form id="case-document-form" class="stack-form action-card">
+                <div class="two-field-grid">
+                  <label>
+                    <span>Tipo de documento</span>
+                    <select name="document_type" required>
+                      <option value="clinical_attachment">Adjunto clinico</option>
+                      <option value="xray">Rayos X</option>
+                      <option value="lab_result">Laboratorio</option>
+                      <option value="consent">Consentimiento</option>
+                      <option value="art_form">Formulario ART</option>
+                    </select>
+                  </label>
+                  <label>
+                    <span>Nombre de archivo</span>
+                    <input name="file_name" placeholder="rx-mano-derecha.pdf" required>
+                  </label>
+                </div>
+
+                <label>
+                  <span>Referencia o ubicacion</span>
+                  <input name="storage_key" placeholder="PACS/RX-2026-0001 o tenant/clinica/caso/archivo.pdf" required>
+                </label>
+
+                <div class="form-actions">
+                  <button class="secondary" type="submit">Adjuntar referencia</button>
+                  <p id="document-feedback" class="feedback"></p>
+                </div>
+              </form>
+
+              <div class="signature-card action-card">
+                <div>
+                  <p class="eyebrow">Firma simple</p>
+                  <strong>Firmar trazabilidad del expediente</strong>
+                  <p>
+                    Registra fecha, usuario y rol. No reemplaza firma digital legal con certificado.
+                  </p>
+                </div>
+                <div class="form-actions">
+                  <button id="signature-button" class="primary" type="button">Firmar evento</button>
+                  <p id="signature-feedback" class="feedback"></p>
+                </div>
+              </div>
+            </section>
+
+            <section class="subpanel">
+              <div class="subpanel-heading">
+                <h3>Linea de tiempo</h3>
+                <p>Seguimiento operativo y clinico sobre el mismo expediente.</p>
+              </div>
+              <div id="event-list" class="timeline"></div>
+            </section>
+
+            <section class="subpanel">
+              <div class="subpanel-heading">
+                <h3>Documentos asociados</h3>
+                <p>Adjuntos que ya forman parte del expediente del paciente.</p>
+              </div>
+              <div id="document-list" class="document-list"></div>
+            </section>
+          </section>
+        </section>
+      </div>
+    </section>
+  </div>
+
+  <script type="module" src="/medicos/app.js"></script>
+</body>
+</html>

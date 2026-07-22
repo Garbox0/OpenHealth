@@ -1,0 +1,28 @@
+services:
+  api:
+    environment:
+      OPENHEALTH_OIDC_ISSUER_URL: https://auth.aerosftp.com/realms/openhealth
+      OPENHEALTH_OIDC_JWKS_URL: http://keycloak:8080/realms/openhealth/protocol/openid-connect/certs
+
+  keycloak:
+    environment:
+      KC_HOSTNAME: auth.aerosftp.com
+      KC_PROXY_HEADERS: xforwarded
+
+  caddy:
+    image: caddy:2
+    depends_on:
+      - api
+      - keycloak
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./site:/srv/site:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+  caddy_config:

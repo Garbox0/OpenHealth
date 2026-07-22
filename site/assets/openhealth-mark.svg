@@ -1,0 +1,10 @@
+<svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">OpenHealth Bridge</title>
+  <desc id="desc">Abstract health bridge mark in teal colors.</desc>
+  <rect width="96" height="96" rx="28" fill="#EEF5F3"/>
+  <path d="M25 28C25 22.4772 29.4772 18 35 18H38C43.5228 18 48 22.4772 48 28V68C48 73.5229 43.5228 78 38 78H35C29.4772 78 25 73.5229 25 68V28Z" fill="#006D77"/>
+  <path d="M48 28C48 22.4772 52.4772 18 58 18H61C66.5229 18 71 22.4772 71 28V68C71 73.5229 66.5229 78 61 78H58C52.4772 78 48 73.5229 48 68V28Z" fill="#2A9D8F"/>
+  <path d="M31 48C31 43.5817 34.5817 40 39 40H57C61.4183 40 65 43.5817 65 48C65 52.4183 61.4183 56 57 56H39C34.5817 56 31 52.4183 31 48Z" fill="#F8FCFB"/>
+  <path d="M42 48C42 44.6863 44.6863 42 48 42C51.3137 42 54 44.6863 54 48C54 51.3137 51.3137 54 48 54C44.6863 54 42 51.3137 42 48Z" fill="#006D77"/>
+  <path d="M48 34C55.732 34 62 40.268 62 48C62 55.732 55.732 62 48 62" stroke="#10212B" stroke-width="4" stroke-linecap="round"/>
+</svg>

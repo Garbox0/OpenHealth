@@ -1,0 +1,27 @@
+services:
+  api:
+    environment:
+      OPENHEALTH_OIDC_ISSUER_URL: https://auth.aerosftp.com/realms/openhealth
+      OPENHEALTH_OIDC_JWKS_URL: http://keycloak:8080/realms/openhealth/protocol/openid-connect/certs
+
+  keycloak:
+    environment:
+      KC_HOSTNAME: auth.aerosftp.com
+      KC_PROXY_HEADERS: xforwarded
+
+  site:
+    image: caddy:2
+    restart: unless-stopped
+    command: ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
+    volumes:
+      - ./deploy/caddy/Caddyfile.tunnel:/etc/caddy/Caddyfile:ro
+      - ./site:/srv/site:ro
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TUNNEL_TOKEN}
+    depends_on:
+      - api
+      - keycloak
+      - site
+    restart: unless-stopped

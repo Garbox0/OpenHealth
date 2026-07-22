@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenHealth Bridge | Backoffice</title>
+  <link rel="stylesheet" href="/backoffice/styles.css">
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand-stack">
+        <div>
+          <div class="product-lockup">
+            <img src="/assets/openhealth-wordmark.svg" alt="OpenHealth Bridge">
+          </div>
+          <p class="eyebrow">OpenHealth Bridge</p>
+          <h1>Backoffice ART</h1>
+          <p id="tenant-badge" class="tenant-badge"></p>
+        </div>
+        <nav id="module-nav" class="module-nav hidden" aria-label="Modulos"></nav>
+      </div>
+
+      <div class="topbar-actions">
+        <button id="login-button" class="ghost">Iniciar sesion</button>
+        <button id="logout-button" class="ghost hidden">Cerrar sesion</button>
+      </div>
+    </header>
+
+    <section id="auth-panel" class="panel hero">
+      <div>
+        <p class="eyebrow">Operacion real</p>
+        <h2>Una sola bandeja para admision, auditoria y seguimiento.</h2>
+        <p id="auth-copy">
+          Entramos una sola vez y navegamos toda la plataforma segun el rol. Este primer corte ya permite
+          crear casos, listar incidentes y seguir su trazabilidad.
+        </p>
+      </div>
+
+      <div class="hero-actions">
+        <button id="hero-login-button" class="primary">Entrar al backoffice</button>
+      </div>
+    </section>
+
+    <section id="app-shell" class="hidden">
+      <section class="panel user-panel">
+        <div>
+          <p class="eyebrow">Sesion</p>
+          <strong id="user-name">Sin sesion</strong>
+          <p id="user-meta">Esperando autenticacion.</p>
+          <p class="tenant-meta">Tenant: <span id="tenant-name">OpenHealth</span> | Soporte: <span id="tenant-support">admin@aerosftp.com</span></p>
+        </div>
+
+        <div id="role-list" class="pill-row">
+          <span class="pill">sin roles</span>
+        </div>
+      </section>
+
+      <div class="workspace">
+        <section class="column">
+          <section id="create-panel" class="panel">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Alta operativa</p>
+                <h2>Nuevo caso ART o incidente</h2>
+              </div>
+            </div>
+
+            <form id="case-create-form" class="stack-form">
+              <div class="grid two">
+                <label>
+                  <span>Apellido</span>
+                  <input name="family_name" required>
+                </label>
+
+                <label>
+                  <span>Nombres</span>
+                  <input name="given_names" required>
+                </label>
+
+                <label>
+                  <span>Tipo documento</span>
+                  <input name="document_type" value="dni">
+                </label>
+
+                <label>
+                  <span>Numero documento</span>
+                  <input name="document_number">
+                </label>
+
+                <label>
+                  <span>Telefono</span>
+                  <input name="phone">
+                </label>
+
+                <label>
+                  <span>Email</span>
+                  <input name="email" type="email">
+                </label>
+              </div>
+
+              <div class="grid two">
+                <label>
+                  <span>Profesional</span>
+                  <input name="practitioner_name" placeholder="Dra. Perez">
+                </label>
+
+                <label>
+                  <span>Institucion</span>
+                  <input name="provider_name" placeholder="Clinica Central">
+                </label>
+
+                <label class="full">
+                  <span>Motivo de consulta</span>
+                  <textarea name="chief_complaint" rows="2"></textarea>
+                </label>
+              </div>
+
+              <div class="grid two">
+                <label>
+                  <span>Cobertura</span>
+                  <select name="coverage_type">
+                    <option value="art">ART</option>
+                    <option value="private">Privada</option>
+                    <option value="unknown">Desconocida</option>
+                  </select>
+                </label>
+
+                <label>
+                  <span>Tipo de incidente</span>
+                  <select name="incident_type">
+                    <option value="work_accident">Accidente laboral</option>
+                    <option value="commute_accident">Accidente in itinere</option>
+                    <option value="occupational_exposure">Exposicion ocupacional</option>
+                    <option value="other">Otro</option>
+                  </select>
+                </label>
+
+                <label>
+                  <span>Fecha del incidente</span>
+                  <input name="incident_date" type="date" required>
+                </label>
+
+                <label>
+                  <span>ART</span>
+                  <input name="art_name" placeholder="ART Demo">
+                </label>
+
+                <label>
+                  <span>Empleador</span>
+                  <input name="employer_name">
+                </label>
+
+                <label>
+                  <span>Reportado por</span>
+                  <input name="reported_by" placeholder="admision">
+                </label>
+
+                <label>
+                  <span>Rol actual</span>
+                  <select name="current_owner_role">
+                    <option value="admission">Admision</option>
+                    <option value="medical_auditor">Auditoria medica</option>
+                    <option value="billing">Facturacion</option>
+                    <option value="support">Soporte</option>
+                  </select>
+                </label>
+
+                <label class="full">
+                  <span>Notas</span>
+                  <textarea name="notes" rows="3"></textarea>
+                </label>
+              </div>
+
+              <div class="form-actions">
+                <button class="primary" type="submit">Crear paciente, atencion y caso</button>
+                <p id="create-feedback" class="feedback"></p>
+              </div>
+            </form>
+          </section>
+        </section>
+
+        <section class="column wide">
+          <section class="panel">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Bandeja</p>
+                <h2>Casos abiertos y en seguimiento</h2>
+              </div>
+            </div>
+
+            <form id="filters-form" class="filter-bar">
+              <label>
+                <span>Estado</span>
+                <select name="status">
+                  <option value="">Todos</option>
+                  <option value="open">Open</option>
+                  <option value="in_review">In review</option>
+                  <option value="authorized">Authorized</option>
+                  <option value="rejected">Rejected</option>
+                  <option value="closed">Closed</option>
+                </select>
+              </label>
+
+              <label>
+                <span>Cobertura</span>
+                <select name="coverage_type">
+                  <option value="">Todas</option>
+                  <option value="art">ART</option>
+                  <option value="private">Privada</option>
+                  <option value="unknown">Desconocida</option>
+                </select>
+              </label>
+
+              <label>
+                <span>Desde</span>
+                <input name="incident_date_from" type="date">
+              </label>
+
+              <label>
+                <span>Hasta</span>
+                <input name="incident_date_to" type="date">
+              </label>
+
+              <div class="filter-actions">
+                <button class="secondary" type="submit">Filtrar</button>
+                <button class="ghost" id="refresh-cases-button" type="button">Actualizar</button>
+              </div>
+            </form>
+
+            <div id="case-list" class="case-list"></div>
+          </section>
+
+          <section id="case-detail-panel" class="panel hidden">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Detalle</p>
+                <h2 id="detail-title">Caso seleccionado</h2>
+              </div>
+            </div>
+
+            <div id="detail-summary" class="detail-grid"></div>
+
+            <form id="case-status-form" class="stack-form inline-form">
+              <div class="grid two">
+                <label>
+                  <span>Estado</span>
+                  <select name="status">
+                    <option value="open">Open</option>
+                    <option value="in_review">In review</option>
+                    <option value="authorized">Authorized</option>
+                    <option value="rejected">Rejected</option>
+                    <option value="closed">Closed</option>
+                  </select>
+                </label>
+
+                <label>
+                  <span>Rol actual</span>
+                  <select name="current_owner_role">
+                    <option value="admission">Admision</option>
+                    <option value="medical_auditor">Auditoria medica</option>
+                    <option value="billing">Facturacion</option>
+                    <option value="support">Soporte</option>
+                  </select>
+                </label>
+              </div>
+
+              <div class="form-actions">
+                <button class="secondary" type="submit">Actualizar caso</button>
+                <p id="status-feedback" class="feedback"></p>
+              </div>
+            </form>
+
+            <form id="case-note-form" class="stack-form inline-form">
+              <label>
+                <span>Agregar nota operativa</span>
+                <textarea name="summary" rows="3" placeholder="Se solicito documentacion complementaria"></textarea>
+              </label>
+
+              <div class="form-actions">
+                <button class="secondary" type="submit">Registrar evento</button>
+                <p id="note-feedback" class="feedback"></p>
+              </div>
+            </form>
+
+            <section class="subpanel">
+              <h3>Eventos</h3>
+              <div id="event-list" class="timeline"></div>
+            </section>
+
+            <section class="subpanel">
+              <h3>Documentos</h3>
+              <div id="document-list" class="document-list"></div>
+            </section>
+          </section>
+        </section>
+      </div>
+    </section>
+  </div>
+
+  <script type="module" src="/backoffice/app.js"></script>
+</body>
+</html>

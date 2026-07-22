@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenHealth Bridge | Seguridad</title>
+  <link rel="stylesheet" href="/backoffice/styles.css">
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand-stack">
+        <div>
+          <div class="product-lockup">
+            <img src="/assets/openhealth-wordmark.svg" alt="OpenHealth Bridge">
+          </div>
+          <p class="eyebrow">OpenHealth Bridge</p>
+          <h1>Seguridad e IT</h1>
+          <p id="tenant-badge" class="tenant-badge"></p>
+        </div>
+        <nav id="module-nav" class="module-nav hidden" aria-label="Modulos"></nav>
+      </div>
+
+      <div class="topbar-actions">
+        <button id="login-button" class="ghost">Iniciar sesion</button>
+        <button id="logout-button" class="ghost hidden">Cerrar sesion</button>
+      </div>
+    </header>
+
+    <section id="auth-panel" class="panel hero">
+      <div>
+        <p class="eyebrow">Accesos</p>
+        <h2>Usuarios, grupos y permisos desde tu propia plataforma.</h2>
+        <p id="auth-copy">
+          Este modulo lo usa IT para gestionar accesos sin salir de OpenHealth Bridge. Keycloak queda por
+          detras como motor de identidad, no como experiencia operativa del cliente. La sesion es unica.
+        </p>
+      </div>
+
+      <div class="hero-actions">
+        <button id="hero-login-button" class="primary">Entrar a seguridad</button>
+      </div>
+    </section>
+
+    <section id="app-shell" class="hidden">
+      <section class="panel user-panel">
+        <div>
+          <p class="eyebrow">Sesion</p>
+          <strong id="user-name">Sin sesion</strong>
+          <p id="user-meta">Esperando autenticacion.</p>
+          <p class="tenant-meta">Tenant: <span id="tenant-name">OpenHealth</span> | Soporte: <span id="tenant-support">admin@aerosftp.com</span></p>
+        </div>
+
+        <div id="role-list" class="pill-row">
+          <span class="pill">sin roles</span>
+        </div>
+      </section>
+
+      <div class="workspace">
+        <section class="column">
+          <section class="panel">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Alta</p>
+                <h2>Nuevo usuario</h2>
+              </div>
+            </div>
+
+            <form id="create-user-form" class="stack-form">
+              <div class="grid two">
+                <label>
+                  <span>Usuario</span>
+                  <input name="username" required>
+                </label>
+
+                <label>
+                  <span>Email</span>
+                  <input name="email" type="email">
+                </label>
+
+                <label>
+                  <span>Nombre</span>
+                  <input name="first_name">
+                </label>
+
+                <label>
+                  <span>Apellido</span>
+                  <input name="last_name">
+                </label>
+
+                <label class="full">
+                  <span>Password inicial</span>
+                  <input name="password" type="password" required>
+                </label>
+              </div>
+
+              <fieldset class="stack-form">
+                <legend>Grupos</legend>
+                <div id="create-group-options" class="pill-row"></div>
+              </fieldset>
+
+              <label>
+                <span>Activo</span>
+                <input name="enabled" type="checkbox" checked>
+              </label>
+
+              <div class="form-actions">
+                <button class="primary" type="submit">Crear usuario</button>
+                <p id="create-feedback" class="feedback"></p>
+              </div>
+            </form>
+          </section>
+
+          <section class="panel">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Grupos</p>
+                <h2>Dominios operativos</h2>
+              </div>
+            </div>
+
+            <div id="group-list" class="case-list"></div>
+          </section>
+        </section>
+
+        <section class="column wide">
+          <section class="panel">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Usuarios</p>
+                <h2>Accesos y permisos</h2>
+              </div>
+            </div>
+
+            <form id="user-search-form" class="filter-bar">
+              <label>
+                <span>Buscar</span>
+                <input name="search" placeholder="Usuario, mail, nombre">
+              </label>
+
+              <div class="filter-actions">
+                <button class="secondary" type="submit">Buscar</button>
+                <button class="ghost" id="refresh-users-button" type="button">Actualizar</button>
+              </div>
+            </form>
+
+            <div id="user-list" class="case-list"></div>
+          </section>
+        </section>
+      </div>
+    </section>
+  </div>
+
+  <script type="module" src="/seguridad/app.js"></script>
+</body>
+</html>

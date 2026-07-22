@@ -1,0 +1,95 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: docker/api.Dockerfile
+    restart: unless-stopped
+    env_file:
+      - .env.api
+    environment:
+      OPENHEALTH_DATABASE_URL: ${OPENHEALTH_DATABASE_URL:?set OPENHEALTH_DATABASE_URL}
+      OPENHEALTH_DATABASE_ECHO: "false"
+      OPENHEALTH_REQUIRE_AUTH: "true"
+      OPENHEALTH_OIDC_ISSUER_URL: http://localhost:8081/realms/openhealth
+      OPENHEALTH_OIDC_JWKS_URL: http://keycloak:8080/realms/openhealth/protocol/openid-connect/certs
+      OPENHEALTH_OIDC_CLIENT_ID: openhealth-dev
+      OPENHEALTH_KEYCLOAK_ADMIN_BASE_URL: http://keycloak:8080
+      OPENHEALTH_KEYCLOAK_ADMIN_REALM: openhealth
+      OPENHEALTH_KEYCLOAK_ADMIN_CLIENT_ID: admin-cli
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health/live')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    env_file:
+      - .env.postgres
+    volumes:
+      - ${POSTGRES_DATA_DIR_HOST:-postgres_data}:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d openhealth_bridge"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  postgres-backup:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    env_file:
+      - .env.postgres
+    environment:
+      POSTGRES_BACKUP_INTERVAL_SECONDS: "21600"
+      POSTGRES_BACKUP_RETENTION_DAYS: "14"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ${POSTGRES_BACKUP_DIR_HOST:-./backups/postgres}:/backups
+    command:
+      - /bin/sh
+      - -ec
+      - |
+        mkdir -p /backups
+        while true; do
+          timestamp="$$(date -u +%Y%m%dT%H%M%SZ)"
+          file="/backups/$${POSTGRES_DB}_$${timestamp}.dump"
+          export PGPASSWORD="$${POSTGRES_PASSWORD}"
+          pg_dump -h postgres -U "$${POSTGRES_USER}" -d "$${POSTGRES_DB}" -Fc -f "$${file}"
+          find /backups -type f -name '*.dump' -mtime +"$${POSTGRES_BACKUP_RETENTION_DAYS}" -delete
+          sleep "$${POSTGRES_BACKUP_INTERVAL_SECONDS}"
+        done
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.7.0
+    restart: unless-stopped
+    env_file:
+      - .env.keycloak-bootstrap
+    command:
+      - start-dev
+      - --import-realm
+    volumes:
+      - ./docker/keycloak/realm-openhealth.json:/opt/keycloak/data/import/realm-openhealth.json:ro
+      - ${KEYCLOAK_DATA_DIR_HOST:-keycloak_data}:/opt/keycloak/data
+
+  keycloak-setup:
+    image: quay.io/keycloak/keycloak:26.7.0
+    depends_on:
+      - keycloak
+    env_file:
+      - .env.keycloak-setup
+    entrypoint:
+      - /bin/sh
+      - /opt/keycloak/init-demo-users.sh
+    volumes:
+      - ./docker/keycloak/init-demo-users.sh:/opt/keycloak/init-demo-users.sh:ro
+
+volumes:
+  postgres_data:
+  keycloak_data:

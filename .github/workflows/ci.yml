@@ -1,0 +1,63 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: openhealth_bridge
+          POSTGRES_USER: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d openhealth_bridge"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      OPENHEALTH_DATABASE_URL: postgresql+asyncpg://postgres@127.0.0.1:5432/openhealth_bridge
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install uv
+        run: python -m pip install uv
+
+      - name: Install dependencies
+        run: python -m uv sync --dev
+
+      - name: Lint
+        run: python -m uv run ruff check .
+
+      - name: Format check
+        run: python -m uv run ruff format --check .
+
+      - name: Type check
+        run: python -m uv run mypy src tests
+
+      - name: Unit tests
+        run: python -m uv run pytest
+
+      - name: Validate migrations
+        run: python -m uv run alembic upgrade head
+
+      - name: Build API image
+        run: docker build -f docker/api.Dockerfile .
+
+      - name: Dependency check
+        run: python -m uv pip check --python .venv/bin/python
