@@ -367,6 +367,7 @@ Primer corte de gestion propia sobre identidad:
 - `POST /api/v1/patients`
 - `GET /api/v1/patients/{id}`
 - `POST /api/v1/encounters`
+- `GET /api/v1/encounters`
 - `GET /api/v1/encounters/{id}`
 - `POST /api/v1/incident-cases`
 - `GET /api/v1/incident-cases`

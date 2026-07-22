@@ -212,6 +212,52 @@ def test_doctor_can_list_patients(client: TestClient) -> None:
     assert response.json()[0]["family_name"] == "Medica"
 
 
+def test_doctor_can_list_a_patients_encounters(client: TestClient) -> None:
+    patient_id = client.post(
+        "/api/v1/patients",
+        json={"family_name": "Medica", "given_names": "Expediente"},
+    ).json()["id"]
+    encounter_id = client.post(
+        "/api/v1/encounters",
+        json={"patient_id": patient_id, "chief_complaint": "Control clinico"},
+    ).json()["id"]
+
+    cast(FastAPI, client.app).dependency_overrides[get_actor_context] = lambda: ActorContext(
+        actor_id="doctor",
+        username="doctor",
+        roles=frozenset({"doctor"}),
+        subject="doctor-subject",
+    )
+
+    response = client.get(f"/api/v1/encounters?patient_id={patient_id}")
+
+    assert response.status_code == 200
+    encounter = response.json()[0]
+    assert encounter["id"] == encounter_id
+    assert encounter["patient_id"] == patient_id
+    assert encounter["chief_complaint"] == "Control clinico"
+    assert encounter["has_incident_case"] is False
+
+
+def test_encounter_list_is_isolated_by_tenant_host(client: TestClient) -> None:
+    patient_id = client.post(
+        "/api/v1/patients",
+        json={"family_name": "Tenant", "given_names": "Atencion"},
+    ).json()["id"]
+    client.post("/api/v1/encounters", json={"patient_id": patient_id})
+
+    same_tenant = client.get(f"/api/v1/encounters?patient_id={patient_id}")
+    other_tenant = client.get(
+        f"/api/v1/encounters?patient_id={patient_id}",
+        headers={"host": "centralsalud.aerosftp.com"},
+    )
+
+    assert same_tenant.status_code == 200
+    assert len(same_tenant.json()) == 1
+    assert other_tenant.status_code == 200
+    assert other_tenant.json() == []
+
+
 def test_patient_list_is_isolated_by_tenant_host(client: TestClient) -> None:
     client.post(
         "/api/v1/patients",

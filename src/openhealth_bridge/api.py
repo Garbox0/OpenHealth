@@ -8,6 +8,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
 from pydantic import BaseModel, ConfigDict, Field
 from sqlalchemy import or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
 from openhealth_bridge.auth import ActorContext, require_roles
 from openhealth_bridge.db import get_db_session
@@ -394,6 +395,38 @@ async def create_encounter(
     await session.commit()
     await session.refresh(encounter, attribute_names=["incident_cases"])
     return serialize_encounter(encounter)
+
+
+@router.get("/encounters", response_model=list[EncounterRead])
+async def list_encounters(
+    session: SessionDep,
+    tenant: TenantDep,
+    _: Annotated[
+        ActorContext,
+        Depends(
+            require_roles(
+                "admin",
+                "admission",
+                "medical_auditor",
+                "billing",
+                "support",
+                "doctor",
+            )
+        ),
+    ],
+    patient_id: UUID | None = None,
+) -> list[EncounterRead]:
+    statement = (
+        select(Encounter)
+        .where(Encounter.tenant_id == tenant.id)
+        .options(selectinload(Encounter.incident_cases))
+        .order_by(Encounter.started_at.desc())
+    )
+    if patient_id is not None:
+        statement = statement.where(Encounter.patient_id == patient_id)
+
+    result = await session.scalars(statement)
+    return [serialize_encounter(encounter) for encounter in result.all()]
 
 
 @router.get("/encounters/{encounter_id}", response_model=EncounterRead)

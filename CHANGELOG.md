@@ -20,6 +20,8 @@
 - se alineo el lockup de Central Salud en el login, se agrego un unico powered by y se unifico la marca OpenHealth.
 - se definio `openhealth-logo.svg` como unico logo oficial y se eliminaron variantes paralelas de marca.
 - se agrego busqueda/listado de pacientes por tenant y una entrada desde el workspace medico hacia los casos del paciente.
+- se agrego ficha de expediente en el portal medico con datos de contacto, atenciones y casos asociados, siempre filtrados por tenant.
+- se agrego listado de atenciones por paciente para que el portal consulte el historial sin cruzar clinicas.
 - se eliminaron passwords demo hardcodeadas del repo y el stack Docker ahora exige secretos por entorno;
 - se movieron credenciales administrativas runtime de Keycloak a un `env_file` no versionado;
 - se movieron credenciales bootstrap de Keycloak a un `env_file` no versionado;

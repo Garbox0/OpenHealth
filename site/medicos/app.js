@@ -16,6 +16,8 @@ const state = {
   patients: [],
   selectedCase: null,
   selectedCaseId: null,
+  selectedPatient: null,
+  selectedPatientRecord: null,
 };
 
 const elements = {
@@ -41,6 +43,12 @@ const elements = {
   nextActionPanel: document.querySelector("#next-action-panel"),
   overviewStats: document.querySelector("#overview-stats"),
   patientList: document.querySelector("#patient-list"),
+  patientRecordCaseList: document.querySelector("#patient-case-list"),
+  patientRecordEncounterList: document.querySelector("#patient-encounter-list"),
+  patientRecordMeta: document.querySelector("#patient-record-meta"),
+  patientRecordPanel: document.querySelector("#patient-record-panel"),
+  patientRecordSummary: document.querySelector("#patient-record-summary"),
+  patientRecordTitle: document.querySelector("#patient-record-title"),
   patientSearchForm: document.querySelector("#patient-search-form"),
   priorityList: document.querySelector("#priority-list"),
   referralFeedback: document.querySelector("#referral-feedback"),
@@ -183,8 +191,40 @@ async function handleSelectPatient(patientId) {
     return;
   }
 
+  await loadPatientRecord(patient);
   const searchValue = optionalValue(patient.document_number) || formatPatientName(patient);
   elements.filtersForm.elements.q.value = searchValue;
+  await loadCases();
+}
+
+async function loadPatientRecord(patient) {
+  state.selectedPatient = patient;
+  state.selectedPatientRecord = null;
+  elements.patientRecordPanel.classList.remove("hidden");
+  elements.patientRecordTitle.textContent = formatPatientName(patient);
+  elements.patientRecordMeta.textContent = "Cargando expediente...";
+  elements.patientRecordSummary.innerHTML = "";
+  elements.patientRecordEncounterList.innerHTML = renderEmpty("Buscando atenciones...");
+  elements.patientRecordCaseList.innerHTML = renderEmpty("Buscando casos asociados...");
+
+  const [encounters, cases] = await Promise.all([
+    session.apiFetch(`/encounters?patient_id=${patient.id}`),
+    session.apiFetch(`/incident-cases?patient_id=${patient.id}`),
+  ]);
+  state.selectedPatientRecord = { cases, encounters, patient };
+  renderPatientRecord();
+}
+
+async function handleOpenPatientCase(caseId) {
+  if (!state.selectedPatient) {
+    return;
+  }
+
+  state.selectedCaseId = caseId;
+  elements.filtersForm.elements.q.value =
+    optionalValue(state.selectedPatient.document_number) || formatPatientName(state.selectedPatient);
+  elements.filtersForm.elements.status.value = "";
+  elements.filtersForm.elements.coverage_type.value = "";
   await loadCases();
 }
 
@@ -303,7 +343,10 @@ function renderSignedOut(message) {
   state.patients = [];
   state.selectedCase = null;
   state.selectedCaseId = null;
+  state.selectedPatient = null;
+  state.selectedPatientRecord = null;
   elements.appShell.classList.add("hidden");
+  elements.patientRecordPanel.classList.add("hidden");
   elements.authPanel.classList.remove("hidden");
   elements.heroLoginButton.classList.remove("hidden");
   showAuthMessage(message);
@@ -346,7 +389,7 @@ function renderPatientList(patients) {
             <span>${escapeHtml(optionalValue(patient.email) || "Sin email")}</span>
           </div>
           <button class="ghost patient-case-button" type="button" data-patient-id="${patient.id}">
-            Ver casos
+            Ver expediente
           </button>
         </article>
       `,
@@ -355,6 +398,59 @@ function renderPatientList(patients) {
 
   for (const node of elements.patientList.querySelectorAll(".patient-case-button")) {
     node.addEventListener("click", () => handleSelectPatient(node.dataset.patientId));
+  }
+}
+
+function renderPatientRecord() {
+  const record = state.selectedPatientRecord;
+  if (!record) {
+    return;
+  }
+
+  const { cases, encounters, patient } = record;
+  elements.patientRecordTitle.textContent = formatPatientName(patient);
+  elements.patientRecordMeta.textContent = formatPatientDocument(patient);
+  elements.patientRecordSummary.innerHTML = renderDetailList([
+    ["Edad", formatAge(patient.birth_date)],
+    ["Telefono", optionalValue(patient.phone) || "Sin telefono"],
+    ["Email", optionalValue(patient.email) || "Sin email"],
+    ["Actualizado", formatDateTime(patient.updated_at)],
+  ]);
+  elements.patientRecordEncounterList.innerHTML = encounters.length
+    ? encounters
+        .map(
+          (encounter) => `
+            <article class="record-card">
+              <div>
+                <strong>${escapeHtml(formatDateTime(encounter.started_at))}</strong>
+                <p>${escapeHtml(optionalValue(encounter.chief_complaint) || "Sin motivo registrado")}</p>
+              </div>
+              <span class="record-status">${escapeHtml(humanizeStatus(encounter.status))}</span>
+            </article>
+          `,
+        )
+        .join("")
+    : renderEmpty("Todavia no hay atenciones registradas.");
+  elements.patientRecordCaseList.innerHTML = cases.length
+    ? cases
+        .map(
+          (incidentCase) => `
+            <article class="record-card">
+              <div>
+                <strong>${escapeHtml(humanizeIncidentType(incidentCase.incident_type))}</strong>
+                <p>${escapeHtml(`${humanizeCoverage(incidentCase.coverage_type)} | ${formatDate(incidentCase.incident_date)}`)}</p>
+              </div>
+              <button class="ghost record-case-button" type="button" data-case-id="${incidentCase.id}">
+                Abrir caso
+              </button>
+            </article>
+          `,
+        )
+        .join("")
+    : renderEmpty("No hay casos asociados a este expediente.");
+
+  for (const node of elements.patientRecordCaseList.querySelectorAll(".record-case-button")) {
+    node.addEventListener("click", () => handleOpenPatientCase(node.dataset.caseId));
   }
 }
 

@@ -437,6 +437,73 @@
   white-space: nowrap;
 }
 
+.patient-record-panel {
+  display: grid;
+  gap: 18px;
+  border-top: 5px solid var(--brand);
+  background:
+    radial-gradient(circle at top right, rgba(42, 157, 143, 0.14), transparent 34%),
+    rgba(255, 255, 255, 0.94);
+}
+
+.patient-record-summary {
+  padding: 16px;
+  border-radius: 18px;
+  background: rgba(231, 244, 246, 0.78);
+}
+
+.record-section {
+  display: grid;
+  gap: 10px;
+}
+
+.record-section > .eyebrow {
+  margin: 0;
+}
+
+.record-list {
+  display: grid;
+  gap: 10px;
+}
+
+.record-card {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  padding: 14px;
+  border: 1px solid rgba(0, 109, 119, 0.12);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.86);
+}
+
+.record-card strong,
+.record-card p {
+  display: block;
+  margin: 0;
+}
+
+.record-card strong {
+  color: var(--ink);
+}
+
+.record-card p {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.record-status {
+  flex: 0 0 auto;
+  padding: 0.34rem 0.62rem;
+  border-radius: 999px;
+  color: var(--brand-dark);
+  background: rgba(0, 109, 119, 0.1);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
 .medical-case-list {
   gap: 14px;
 }
@@ -698,6 +765,7 @@
   .attention-banner,
   .record-banner,
   .next-action-card,
+  .record-card,
   .event-topline,
   .document-topline,
   .detail-row {
