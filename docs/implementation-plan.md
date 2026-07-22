@@ -95,6 +95,8 @@ El siguiente corte no agrega modulos especulativos. Convierte el flujo ya implem
 
 La UI debe ser una aplicacion unica por tenant: navegacion persistente segun rol, bandeja de trabajo y detalle del expediente; no una coleccion de landings o tarjetas independientes.
 
+La vista diaria prioriza la accion: se ocultan los contadores y resumenes secundarios hasta que exista una necesidad real de analitica. En escritorio, bandeja y detalle usan scroll independiente para conservar contexto.
+
 ## Norte funcional
 
 La primera venta apunta a clinicas. La plataforma debe sentirse como el espacio de trabajo de cada clinica: login unico, roles internos, expediente usable, trazabilidad y casos ART/incidente preparados.

@@ -1106,3 +1106,154 @@ body.workspace-active textarea {
     border-bottom: 1px solid var(--line);
   }
 }
+
+/* The workspace is the product. Summary tiles are deliberately kept out of the daily view. */
+body.workspace-active .user-panel,
+body.workspace-active .admin-command-center,
+body.workspace-active .workspace-overview,
+body.workspace-active .clinical-command-center {
+  display: none;
+}
+
+body.workspace-active .workspace {
+  grid-template-columns: minmax(340px, 0.72fr) minmax(620px, 1.68fr);
+  min-height: calc(100vh - 116px);
+  height: calc(100vh - 116px);
+  align-items: stretch;
+  gap: 24px;
+}
+
+body.workspace-active .workspace > .column,
+body.workspace-active .workspace > .wide {
+  min-height: 0;
+  align-content: start;
+  overflow-y: auto;
+  padding: 2px 8px 28px 2px;
+  scrollbar-color: rgba(0, 109, 119, 0.34) transparent;
+}
+
+body.workspace-active .workspace > .column::-webkit-scrollbar,
+body.workspace-active .workspace > .wide::-webkit-scrollbar {
+  width: 8px;
+}
+
+body.workspace-active .workspace > .column::-webkit-scrollbar-thumb,
+body.workspace-active .workspace > .wide::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(0, 109, 119, 0.24);
+}
+
+body.workspace-active .workspace .panel {
+  border-radius: 14px;
+  padding: 22px;
+  background: rgba(255, 255, 255, 0.86);
+}
+
+body.workspace-active .workspace .case-list,
+body.workspace-active .workspace .timeline,
+body.workspace-active .workspace .document-list {
+  gap: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.56);
+}
+
+body.workspace-active .workspace .case-card,
+body.workspace-active .workspace .event-card,
+body.workspace-active .workspace .document-card,
+body.workspace-active .workspace .group-card,
+body.workspace-active .workspace .user-card {
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  padding: 16px;
+  background: transparent;
+}
+
+body.workspace-active .workspace .case-card:last-child,
+body.workspace-active .workspace .event-card:last-child,
+body.workspace-active .workspace .document-card:last-child,
+body.workspace-active .workspace .group-card:last-child,
+body.workspace-active .workspace .user-card:last-child {
+  border-bottom: 0;
+}
+
+body.workspace-active .workspace .case-card:hover {
+  transform: none;
+  background: rgba(231, 244, 246, 0.62);
+}
+
+body.workspace-active .workspace .case-card.active {
+  border-color: var(--line);
+  background: rgba(231, 244, 246, 0.82);
+  box-shadow: inset 4px 0 0 var(--brand);
+}
+
+body.workspace-active .workspace .detail-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+body.workspace-active .workspace .detail-card {
+  min-height: 112px;
+  padding: 14px;
+  border: 0;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  background: transparent;
+}
+
+body.workspace-active .workspace .detail-card:nth-child(3n) {
+  border-right: 0;
+}
+
+body.workspace-active .workspace .detail-card:nth-last-child(-n + 3) {
+  border-bottom: 0;
+}
+
+body.workspace-active .workspace .subpanel,
+body.workspace-active .workspace .patient-picker,
+body.workspace-active .workspace .action-card {
+  border-radius: 12px;
+  box-shadow: none;
+}
+
+body.workspace-active .workspace .section-heading + .filter-bar {
+  margin-top: -2px;
+}
+
+@media (max-width: 1180px) {
+  body.workspace-active .workspace {
+    height: auto;
+    min-height: 0;
+    grid-template-columns: 1fr;
+  }
+
+  body.workspace-active .workspace > .column,
+  body.workspace-active .workspace > .wide {
+    overflow: visible;
+    padding: 0;
+  }
+}
+
+@media (max-width: 760px) {
+  body.workspace-active .workspace .detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  body.workspace-active .workspace .detail-card,
+  body.workspace-active .workspace .detail-card:nth-child(3n),
+  body.workspace-active .workspace .detail-card:nth-last-child(-n + 3) {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  body.workspace-active .workspace .detail-card:last-child {
+    border-bottom: 0;
+  }
+}

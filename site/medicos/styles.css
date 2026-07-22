@@ -813,6 +813,7 @@ body.workspace-active .record-card {
 
 body.workspace-active .clinical-actions {
   grid-template-columns: 1fr;
+  gap: 10px;
 }
 
 body.workspace-active .action-card {
@@ -824,4 +825,5 @@ body.workspace-active .action-card {
     grid-template-columns: 1fr;
     justify-items: start;
   }
+
 }
