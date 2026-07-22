@@ -81,7 +81,7 @@ button {
 .session-summary {
   display: flex;
   justify-content: space-between;
-  gap: 18px;
+  gap: 28px;
   align-items: start;
 }
 
@@ -134,6 +134,10 @@ h1 {
   font-size: clamp(3rem, 9vw, 6.2rem);
   letter-spacing: -0.07em;
   line-height: 0.9;
+}
+
+.landing-topline + .dashboard {
+  margin-top: 28px;
 }
 
 h2 {

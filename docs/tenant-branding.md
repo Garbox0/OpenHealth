@@ -20,6 +20,7 @@ Central Salud:
 - acento: `#006d77`
 - logo actual: `site/assets/tenants/central-salud-mark.svg`
 - firma de plataforma: `site/assets/openhealth-wordmark.svg`
+- theme login: `docker/keycloak/themes/openhealth`
 
 ## Implementacion actual
 
@@ -42,3 +43,16 @@ Cuando el cliente entregue logo:
 ## Pendiente recomendado
 
 Mover esta configuracion a backend/base de datos cuando haya mas de 2 clientes, para que soporte pueda actualizar marca sin redeploy.
+
+## Login Keycloak
+
+El login usa un theme propio para no romper OIDC/PKCE ni manejar passwords en nuestra app.
+
+Para adaptar el login a otro cliente hoy:
+
+1. cambiar `displayName`/`displayNameHtml` del realm o cliente visible;
+2. ajustar `--tenant-mark-text` en `docker/keycloak/themes/openhealth/login/resources/css/openhealth.css`;
+3. si hay logo real del cliente, reemplazar el monograma por un asset del theme;
+4. mantener siempre visible la firma de plataforma OpenHealth.
+
+Cuando haya varios clientes reales conviene mover esta marca a una configuracion central y generar theme/assets por tenant.

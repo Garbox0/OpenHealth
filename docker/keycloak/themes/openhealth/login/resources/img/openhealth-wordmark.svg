@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 96" role="img" aria-labelledby="title desc">
+  <title id="title">OpenHealth Bridge</title>
+  <desc id="desc">OpenHealth Bridge wordmark.</desc>
+  <defs>
+    <linearGradient id="g" x1="18" y1="18" x2="78" y2="78" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#006D77"/>
+      <stop offset="1" stop-color="#2A9D8F"/>
+    </linearGradient>
+  </defs>
+  <rect x="16" y="18" width="60" height="60" rx="16" fill="url(#g)"/>
+  <path d="M33 33h13v11h11V33h13v30H57V52H46v11H33V33Z" fill="#F8FEFC"/>
+  <path d="M45 28h12v40H45z" fill="#F8FEFC" opacity=".58"/>
+  <path d="M28 44h46v12H28z" fill="#F8FEFC" opacity=".58"/>
+  <text x="94" y="48" fill="#10212B" font-family="Aptos Display, Segoe UI, sans-serif" font-size="28" font-weight="800">OpenHealth</text>
+  <text x="96" y="70" fill="#006D77" font-family="Aptos Display, Segoe UI, sans-serif" font-size="11" font-weight="900" letter-spacing="5">BRIDGE</text>
+</svg>

@@ -1,4 +1,5 @@
 :root {
+  --tenant-mark-text: "CS";
   --ohb-bg: #eef5f3;
   --ohb-card: rgba(250, 253, 252, 0.94);
   --ohb-ink: #10212b;
@@ -18,6 +19,7 @@ body {
     linear-gradient(90deg, rgba(0, 109, 119, 0.055) 1px, transparent 1px),
     var(--ohb-bg);
   background-size: auto, auto, 34px 34px, 34px 34px;
+  min-height: 100vh;
 }
 
 .pf-v5-theme-dark {
@@ -28,8 +30,23 @@ body {
   background: transparent;
 }
 
+.pf-v5-c-login {
+  min-height: 100vh;
+}
+
+.pf-v5-c-login__container {
+  display: grid;
+  grid-template-columns: minmax(320px, 680px) minmax(280px, 520px);
+  gap: clamp(42px, 7vw, 96px);
+  align-items: center;
+  justify-content: center;
+  width: min(1360px, calc(100% - 48px));
+  margin: 0 auto;
+}
+
 #kc-header {
-  margin-bottom: 28px;
+  margin: 0;
+  order: 2;
 }
 
 #kc-header-wrapper {
@@ -39,15 +56,16 @@ body {
   letter-spacing: -0.07em;
   line-height: 0.9;
   text-transform: none;
+  text-align: left;
 }
 
 #kc-header-wrapper::before {
-  content: "CS";
+  content: var(--tenant-mark-text);
   display: grid;
   place-items: center;
   width: 72px;
   height: 72px;
-  margin: 0 auto 20px;
+  margin: 0 0 22px;
   border-radius: 22px;
   color: #fff;
   background: linear-gradient(135deg, var(--ohb-brand), var(--ohb-accent));
@@ -70,13 +88,17 @@ body {
 
 .pf-v5-c-login__main,
 .login-pf-page .card-pf {
+  position: relative;
   overflow: hidden;
+  order: 1;
   border: 1px solid var(--ohb-line);
   border-top: 6px solid var(--ohb-brand);
   border-radius: 28px;
   background: var(--ohb-card);
   box-shadow: 0 26px 80px rgba(17, 55, 67, 0.14);
   backdrop-filter: blur(14px);
+  width: min(680px, 100%);
+  padding-bottom: 22px;
 }
 
 .pf-v5-c-login__main::after,
@@ -95,8 +117,14 @@ body {
 }
 
 .pf-v5-c-login__main-header,
+.login-pf-header,
+.pf-v5-c-login__main-body {
+  padding-inline: clamp(26px, 4vw, 60px);
+}
+
+.pf-v5-c-login__main-header,
 .login-pf-header {
-  padding-top: 34px;
+  padding-top: clamp(32px, 5vw, 58px);
 }
 
 #kc-page-title,
@@ -105,6 +133,16 @@ body {
   font-size: clamp(1.8rem, 4vw, 2.8rem);
   font-weight: 900;
   letter-spacing: -0.055em;
+}
+
+#kc-page-title::after {
+  content: "Usa tu usuario institucional.";
+  display: block;
+  margin-top: 12px;
+  color: var(--ohb-muted);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0;
 }
 
 .pf-v5-c-form__label,
@@ -118,6 +156,7 @@ label {
 .pf-c-form-control,
 input[type="text"],
 input[type="password"] {
+  min-height: 52px;
   color: var(--ohb-ink);
   border: 1px solid var(--ohb-line);
   border-radius: 14px;
@@ -127,6 +166,7 @@ input[type="password"] {
 .pf-v5-c-button.pf-m-primary,
 .pf-c-button.pf-m-primary,
 #kc-login {
+  min-height: 52px;
   border: 0;
   border-radius: 14px;
   color: #fff;
@@ -149,4 +189,39 @@ a {
 .pf-v5-c-login__main-footer-band,
 .login-pf-signup {
   background: rgba(0, 109, 119, 0.07);
+}
+
+.pf-v5-c-login__main-footer::after {
+  content: "";
+  display: block;
+  width: 180px;
+  height: 54px;
+  margin: 20px clamp(26px, 4vw, 60px) 0;
+  background: url("../img/openhealth-wordmark.svg") left center / contain no-repeat;
+  opacity: 0.82;
+}
+
+@media (max-width: 960px) {
+  .pf-v5-c-login__container {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding: 32px 0;
+  }
+
+  #kc-header {
+    order: 1;
+  }
+
+  .pf-v5-c-login__main,
+  .login-pf-page .card-pf {
+    order: 2;
+  }
+
+  #kc-header-wrapper {
+    text-align: center;
+  }
+
+  #kc-header-wrapper::before {
+    margin-inline: auto;
+  }
 }

@@ -30,8 +30,8 @@ async function bootstrap() {
   document.title = tenant.kind === "clinic" ? `${tenant.shortName} | OpenHealth Bridge` : "OpenHealth Bridge";
   elements.eyebrow.textContent = tenant.landing.eyebrow;
   elements.title.textContent = tenant.landing.title;
-  elements.copy.textContent = tenant.landing.copy;
-  elements.status.textContent = tenant.landing.status;
+  elements.copy.textContent = "";
+  elements.status.textContent = "";
   applyTenantBrand();
 
   await session.bootstrap();
@@ -57,8 +57,9 @@ function renderSignedOut(message) {
   elements.loginButton.classList.remove("hidden");
   elements.logoutButton.classList.add("hidden");
   elements.sessionPanel.classList.add("hidden");
+  elements.status.classList.add("hidden");
   elements.workspaceGrid.innerHTML = "";
-  elements.status.textContent = message;
+  elements.status.textContent = "";
 }
 
 function renderDashboard() {
@@ -74,11 +75,13 @@ function renderDashboard() {
   elements.roleList.innerHTML = actor.roles.map((role) => `<span class="pill">${escapeHtml(humanizeRole(role))}</span>`).join("");
 
   if (visibleCards.length === 0) {
+    elements.status.classList.remove("hidden");
     elements.status.textContent = "Tu usuario no tiene un modulo asignado. Pedile a IT que revise tus permisos.";
     elements.workspaceGrid.innerHTML = "";
     return;
   }
 
+  elements.status.classList.remove("hidden");
   elements.status.textContent = "Sesion segura activa. Elegi una seccion para trabajar.";
   elements.workspaceGrid.innerHTML = visibleCards.map(renderWorkspaceCard).join("");
 }
