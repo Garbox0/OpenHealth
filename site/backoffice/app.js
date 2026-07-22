@@ -1,4 +1,4 @@
-import { createPlatformSession, escapeHtml, humanizeError, optionalValue } from "/shared/platform.js?v=20260722-workspace-nav";
+import { createPlatformSession, escapeHtml, humanizeError, optionalValue } from "/shared/platform.js?v=20260722-workspace-views";
 
 const session = createPlatformSession({ moduleId: "backoffice" });
 
@@ -46,7 +46,10 @@ const elements = {
   tenantSupport: document.querySelector("#tenant-support"),
   userMeta: document.querySelector("#user-meta"),
   userName: document.querySelector("#user-name"),
+  workspaceContent: document.querySelector(".workspace-content"),
+  workspaceHomeButton: document.querySelector("#workspace-home-button"),
   workspaceNav: document.querySelector("#workspace-nav"),
+  workspaceViewTitle: document.querySelector("#workspace-view-title"),
 };
 
 bootstrap().catch((error) => {

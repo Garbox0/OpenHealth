@@ -924,19 +924,136 @@ body.workspace-active .workspace-nav {
 
 body.workspace-active .workspace-section-link {
   display: block;
+  width: 100%;
   padding: 0.7rem 0.75rem;
+  border: 0;
   border-radius: 9px;
   color: var(--muted);
+  background: transparent;
   font-size: 0.88rem;
   font-weight: 750;
+  text-align: left;
   text-decoration: none;
 }
 
 body.workspace-active .workspace-section-link:hover,
-body.workspace-active .workspace-section-link:focus-visible {
+body.workspace-active .workspace-section-link:focus-visible,
+body.workspace-active .workspace-section-link.active {
   color: var(--brand-dark);
   background: rgba(231, 244, 246, 0.9);
   outline: none;
+}
+
+body.workspace-active .workspace-breadcrumb {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  min-height: 34px;
+  margin-bottom: 12px;
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+body.workspace-active .workspace-breadcrumb button {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  color: var(--brand-dark);
+  background: transparent;
+  font-weight: 800;
+}
+
+body.workspace-active .workspace-home {
+  max-width: 820px;
+  min-height: 380px;
+  padding: clamp(28px, 5vw, 54px);
+}
+
+body.workspace-active .workspace-home > p:not(.eyebrow) {
+  margin-top: 12px;
+  max-width: 60ch;
+}
+
+body.workspace-active .workspace-home-list {
+  display: grid;
+  gap: 0;
+  margin: 30px 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+
+body.workspace-active .workspace-home-list li {
+  display: grid;
+  grid-template-columns: minmax(170px, 0.35fr) 1fr;
+  gap: 18px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+body.workspace-active .workspace-home-list span {
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+body.workspace-active .workspace-content[data-active-view="home"] .workspace,
+body.workspace-active .workspace-content[data-active-view="home"] .user-panel {
+  display: none;
+}
+
+body.workspace-active .workspace-content:not([data-active-view="home"]) .workspace-home {
+  display: none;
+}
+
+body.workspace-active .workspace-content[data-active-view="admission"] .workspace {
+  grid-template-columns: minmax(0, 860px);
+}
+
+body.workspace-active .workspace-content[data-active-view="admission"] .workspace > .wide {
+  display: none;
+}
+
+html[data-module="backoffice"] body.workspace-active .workspace-content[data-active-view="cases"] .workspace,
+html[data-module="backoffice"] body.workspace-active .workspace-content[data-active-view="tracking"] .workspace {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+html[data-module="backoffice"] body.workspace-active .workspace-content[data-active-view="cases"] .workspace > .column:not(.wide),
+html[data-module="backoffice"] body.workspace-active .workspace-content[data-active-view="tracking"] .workspace > .column:not(.wide) {
+  display: none;
+}
+
+html[data-module="medicos"] body.workspace-active .workspace-content[data-active-view="records"] .workspace {
+  grid-template-columns: minmax(0, 920px);
+}
+
+html[data-module="medicos"] body.workspace-active .workspace-content[data-active-view="records"] .workspace > .wide,
+html[data-module="medicos"] body.workspace-active .workspace-content[data-active-view="records"] #clinical-queue {
+  display: none;
+}
+
+html[data-module="medicos"] body.workspace-active .workspace-content[data-active-view="document"] .workspace > .column:not(.wide) > .patient-search-panel,
+html[data-module="medicos"] body.workspace-active .workspace-content[data-active-view="document"] .workspace > .column:not(.wide) > .patient-record-panel,
+html[data-module="medicos"] body.workspace-active .workspace-content[data-active-view="cases"] .workspace > .column:not(.wide) > .patient-search-panel,
+html[data-module="medicos"] body.workspace-active .workspace-content[data-active-view="cases"] .workspace > .column:not(.wide) > .patient-record-panel {
+  display: none;
+}
+
+html[data-module="seguridad"] body.workspace-active .workspace-content[data-active-view="new-user"] .workspace,
+html[data-module="seguridad"] body.workspace-active .workspace-content[data-active-view="groups"] .workspace,
+html[data-module="seguridad"] body.workspace-active .workspace-content[data-active-view="users"] .workspace {
+  grid-template-columns: minmax(0, 920px);
+}
+
+html[data-module="seguridad"] body.workspace-active .workspace-content[data-active-view="new-user"] .workspace > .wide,
+html[data-module="seguridad"] body.workspace-active .workspace-content[data-active-view="groups"] .workspace > .wide {
+  display: none;
+}
+
+html[data-module="seguridad"] body.workspace-active .workspace-content[data-active-view="new-user"] #groups,
+html[data-module="seguridad"] body.workspace-active .workspace-content[data-active-view="groups"] #new-user,
+html[data-module="seguridad"] body.workspace-active .workspace-content[data-active-view="users"] .workspace > .column:not(.wide) {
+  display: none;
 }
 
 body.workspace-active .user-panel {
@@ -1120,6 +1237,11 @@ body.workspace-active textarea {
 
   body.workspace-active .workspace-section-link {
     white-space: nowrap;
+  }
+
+  body.workspace-active .workspace-home-list li {
+    grid-template-columns: 1fr;
+    gap: 6px;
   }
 }
 

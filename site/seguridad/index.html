@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>OpenHealth Bridge | Seguridad</title>
-  <link rel="stylesheet" href="/backoffice/styles.css?v=20260722-workspace-nav">
+  <link rel="stylesheet" href="/backoffice/styles.css?v=20260722-workspace-views">
 </head>
 <body>
   <div class="shell">
@@ -54,7 +54,22 @@
 
     <section id="app-shell" class="hidden">
       <nav id="workspace-nav" class="workspace-nav hidden" aria-label="Secciones del workspace"></nav>
-      <main class="workspace-content">
+      <main class="workspace-content" data-active-view="home">
+      <nav class="workspace-breadcrumb" aria-label="Ubicacion actual">
+        <button id="workspace-home-button" type="button">Inicio</button>
+        <span aria-hidden="true">/</span>
+        <strong id="workspace-view-title">Inicio</strong>
+      </nav>
+      <section id="workspace-home" class="panel workspace-home" data-workspace-view="home">
+        <p class="eyebrow">Seguridad e IT</p>
+        <h2>Administración de accesos</h2>
+        <p>Gestioná el equipo de la clínica desde este espacio: usuarios, altas y pertenencia a los grupos operativos.</p>
+        <ul class="workspace-home-list">
+          <li><strong>Usuarios</strong><span>Consultar y administrar los accesos existentes.</span></li>
+          <li><strong>Nuevo usuario</strong><span>Crear un acceso para un integrante del equipo.</span></li>
+          <li><strong>Grupos y roles</strong><span>Definir a qué área operativa pertenece cada usuario.</span></li>
+        </ul>
+      </section>
       <section class="panel user-panel">
         <div>
           <p class="eyebrow">Sesion</p>
@@ -68,7 +83,7 @@
         </div>
       </section>
 
-      <div class="workspace">
+      <div class="workspace" data-workspace-view="work">
         <section class="column">
           <section id="new-user" class="panel">
             <div class="section-heading">
@@ -164,6 +179,6 @@
     </section>
   </div>
 
-  <script type="module" src="/seguridad/app.js?v=20260722-workspace-nav"></script>
+  <script type="module" src="/seguridad/app.js?v=20260722-workspace-views"></script>
 </body>
 </html>

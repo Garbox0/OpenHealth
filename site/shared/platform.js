@@ -39,20 +39,19 @@ export const PLATFORM_MODULES = {
 
 const WORKSPACE_SECTIONS = {
   backoffice: [
-    ["Admisión", "#create-panel"],
-    ["Pacientes", "#patient-section"],
-    ["Bandeja", "#case-queue"],
-    ["Seguimiento", "#case-detail-panel"],
+    ["Admisión", "admission"],
+    ["Bandeja", "cases"],
+    ["Seguimiento", "tracking"],
   ],
   medicos: [
-    ["Casos activos", "#clinical-queue"],
-    ["Historias clínicas", "#patient-search-panel"],
-    ["Documentar", "#case-detail-panel"],
+    ["Casos activos", "cases"],
+    ["Historias clínicas", "records"],
+    ["Documentar", "document"],
   ],
   seguridad: [
-    ["Usuarios", "#users"],
-    ["Nuevo usuario", "#new-user"],
-    ["Grupos y roles", "#groups"],
+    ["Usuarios", "users"],
+    ["Nuevo usuario", "new-user"],
+    ["Grupos y roles", "groups"],
   ],
 };
 
@@ -315,22 +314,35 @@ export function createPlatformSession({ moduleId }) {
       const sections = WORKSPACE_SECTIONS[moduleId] || [];
       elements.workspaceNav.innerHTML = sections
         .map(
-          ([label, target]) => `
-            <a class="workspace-section-link" href="${target}">${escapeHtml(label)}</a>
+          ([label, view]) => `
+            <button class="workspace-section-link" data-workspace-view="${escapeHtml(view)}" type="button">${escapeHtml(label)}</button>
           `,
         )
         .join("");
       for (const link of elements.workspaceNav.querySelectorAll(".workspace-section-link")) {
-        link.addEventListener("click", (event) => {
-          const target = document.querySelector(link.getAttribute("href"));
-          if (!target || target.classList.contains("hidden")) {
-            return;
-          }
-          event.preventDefault();
-          target.scrollIntoView({ behavior: "smooth", block: "start" });
-        });
+        link.addEventListener("click", () => activateWorkspaceView(link.dataset.workspaceView));
       }
       elements.workspaceNav.classList.toggle("hidden", sections.length === 0);
+
+      if (elements.workspaceHomeButton) {
+        elements.workspaceHomeButton.addEventListener("click", () => activateWorkspaceView("home"));
+      }
+
+      activateWorkspaceView("home");
+
+      function activateWorkspaceView(view) {
+        if (!elements.workspaceContent) {
+          return;
+        }
+        elements.workspaceContent.dataset.activeView = view;
+        const activeLink = elements.workspaceNav.querySelector(`[data-workspace-view="${view}"]`);
+        for (const link of elements.workspaceNav.querySelectorAll(".workspace-section-link")) {
+          link.classList.toggle("active", link === activeLink);
+        }
+        if (elements.workspaceViewTitle) {
+          elements.workspaceViewTitle.textContent = activeLink ? activeLink.textContent : "Inicio";
+        }
+      }
     }
   }
 
@@ -355,6 +367,7 @@ export function createPlatformSession({ moduleId }) {
 
   function applyTenantBrand() {
     document.documentElement.dataset.tenant = tenant.id;
+    document.documentElement.dataset.module = moduleId;
   }
 
   function renderTenantLogo(element) {

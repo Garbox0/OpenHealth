@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>OpenHealth Bridge | Portal medico</title>
-  <link rel="stylesheet" href="/backoffice/styles.css?v=20260722-workspace-nav">
-  <link rel="stylesheet" href="/medicos/styles.css?v=20260722-workspace-nav">
+  <link rel="stylesheet" href="/backoffice/styles.css?v=20260722-workspace-views">
+  <link rel="stylesheet" href="/medicos/styles.css?v=20260722-workspace-views">
 </head>
 <body>
   <div class="shell">
@@ -73,7 +73,22 @@
 
     <section id="app-shell" class="hidden">
       <nav id="workspace-nav" class="workspace-nav hidden" aria-label="Secciones del workspace"></nav>
-      <main class="workspace-content">
+      <main class="workspace-content" data-active-view="home">
+      <nav class="workspace-breadcrumb" aria-label="Ubicacion actual">
+        <button id="workspace-home-button" type="button">Inicio</button>
+        <span aria-hidden="true">/</span>
+        <strong id="workspace-view-title">Inicio</strong>
+      </nav>
+      <section id="workspace-home" class="panel workspace-home" data-workspace-view="home">
+        <p class="eyebrow">Estacion medica</p>
+        <h2>Espacio de trabajo clínico</h2>
+        <p>Elegí una herramienta del menú para revisar una historia clínica, continuar un caso o documentar una atención.</p>
+        <ul class="workspace-home-list">
+          <li><strong>Casos activos</strong><span>Priorizar las atenciones que requieren lectura clínica.</span></li>
+          <li><strong>Historias clínicas</strong><span>Buscar un paciente y abrir su expediente longitudinal.</span></li>
+          <li><strong>Documentar</strong><span>Registrar evolución, derivación, documentos y firma de trazabilidad.</span></li>
+        </ul>
+      </section>
       <section class="panel user-panel">
         <div>
           <p class="eyebrow">Sesion</p>
@@ -124,7 +139,7 @@
         </article>
       </section>
 
-      <div class="workspace">
+      <div class="workspace" data-workspace-view="work">
         <section class="column">
           <section id="patient-search-panel" class="panel patient-search-panel">
             <div class="section-heading">
@@ -365,6 +380,6 @@
     </section>
   </div>
 
-  <script type="module" src="/medicos/app.js?v=20260722-workspace-nav"></script>
+  <script type="module" src="/medicos/app.js?v=20260722-workspace-views"></script>
 </body>
 </html>
