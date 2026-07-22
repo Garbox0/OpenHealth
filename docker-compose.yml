@@ -76,6 +76,7 @@ services:
       - --import-realm
     volumes:
       - ./docker/keycloak/realm-openhealth.json:/opt/keycloak/data/import/realm-openhealth.json:ro
+      - ./docker/keycloak/themes/openhealth:/opt/keycloak/themes/openhealth:ro
       - ${KEYCLOAK_DATA_DIR_HOST:-keycloak_data}:/opt/keycloak/data
 
   keycloak-setup:

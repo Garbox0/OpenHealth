@@ -1,0 +1,152 @@
+:root {
+  --ohb-bg: #eef5f3;
+  --ohb-card: rgba(250, 253, 252, 0.94);
+  --ohb-ink: #10212b;
+  --ohb-muted: #57707a;
+  --ohb-line: rgba(16, 33, 43, 0.12);
+  --ohb-brand: #006d77;
+  --ohb-accent: #2a9d8f;
+}
+
+body {
+  color: var(--ohb-ink);
+  font-family: "Aptos Display", "Segoe UI Variable Text", "Trebuchet MS", sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(0, 109, 119, 0.18), transparent 26%),
+    radial-gradient(circle at bottom right, rgba(42, 157, 143, 0.18), transparent 30%),
+    linear-gradient(rgba(0, 109, 119, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 109, 119, 0.055) 1px, transparent 1px),
+    var(--ohb-bg);
+  background-size: auto, auto, 34px 34px, 34px 34px;
+}
+
+.pf-v5-theme-dark {
+  color-scheme: light;
+}
+
+.login-pf body {
+  background: transparent;
+}
+
+#kc-header {
+  margin-bottom: 28px;
+}
+
+#kc-header-wrapper {
+  color: var(--ohb-ink);
+  font-size: clamp(2.9rem, 7vw, 5.6rem);
+  font-weight: 900;
+  letter-spacing: -0.07em;
+  line-height: 0.9;
+  text-transform: none;
+}
+
+#kc-header-wrapper::before {
+  content: "CS";
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 20px;
+  border-radius: 22px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--ohb-brand), var(--ohb-accent));
+  box-shadow: 0 16px 34px rgba(0, 109, 119, 0.26);
+  font-size: 1.4rem;
+  letter-spacing: -0.08em;
+}
+
+#kc-header-wrapper::after {
+  content: "Acceso institucional seguro";
+  display: block;
+  margin-top: 16px;
+  color: var(--ohb-brand);
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.pf-v5-c-login__main,
+.login-pf-page .card-pf {
+  overflow: hidden;
+  border: 1px solid var(--ohb-line);
+  border-top: 6px solid var(--ohb-brand);
+  border-radius: 28px;
+  background: var(--ohb-card);
+  box-shadow: 0 26px 80px rgba(17, 55, 67, 0.14);
+  backdrop-filter: blur(14px);
+}
+
+.pf-v5-c-login__main::after,
+.login-pf-page .card-pf::after {
+  content: "";
+  position: absolute;
+  right: 26px;
+  bottom: 26px;
+  width: 82px;
+  height: 82px;
+  border-radius: 24px;
+  background:
+    linear-gradient(90deg, transparent 42%, rgba(0, 109, 119, 0.13) 42% 58%, transparent 58%),
+    linear-gradient(0deg, transparent 42%, rgba(0, 109, 119, 0.13) 42% 58%, transparent 58%);
+  pointer-events: none;
+}
+
+.pf-v5-c-login__main-header,
+.login-pf-header {
+  padding-top: 34px;
+}
+
+#kc-page-title,
+.login-pf-header h1 {
+  color: var(--ohb-ink);
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 900;
+  letter-spacing: -0.055em;
+}
+
+.pf-v5-c-form__label,
+.pf-v5-c-form__label-text,
+label {
+  color: var(--ohb-ink);
+  font-weight: 800;
+}
+
+.pf-v5-c-form-control,
+.pf-c-form-control,
+input[type="text"],
+input[type="password"] {
+  color: var(--ohb-ink);
+  border: 1px solid var(--ohb-line);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.pf-v5-c-button.pf-m-primary,
+.pf-c-button.pf-m-primary,
+#kc-login {
+  border: 0;
+  border-radius: 14px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--ohb-brand), #088c99);
+  box-shadow: 0 14px 30px rgba(0, 109, 119, 0.25);
+  font-weight: 900;
+}
+
+.pf-v5-c-button.pf-m-primary:hover,
+.pf-c-button.pf-m-primary:hover,
+#kc-login:hover {
+  filter: brightness(1.03);
+}
+
+a {
+  color: var(--ohb-brand);
+  font-weight: 800;
+}
+
+.pf-v5-c-login__main-footer-band,
+.login-pf-signup {
+  background: rgba(0, 109, 119, 0.07);
+}

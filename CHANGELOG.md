@@ -7,6 +7,8 @@
 - se evoluciono el backoffice administrativo con tablero operativo, busqueda contextual y pendientes de carga;
 - se reemplazo la redireccion automatica post-login por un dashboard por rol con secciones de trabajo;
 - se endurecio la landing quitando CSS inline, sacando `unsafe-inline` del CSP y moviendo tokens web a `sessionStorage`;
+- se agrego theme propio de Keycloak para que el login use marca, colores y tipografia de OpenHealth/Central Salud;
+- se localizaron los textos principales del login de Keycloak para que no aparezca como pantalla generica en ingles;
 - se eliminaron passwords demo hardcodeadas del repo y el stack Docker ahora exige secretos por entorno;
 - se movieron credenciales administrativas runtime de Keycloak a un `env_file` no versionado;
 - se movieron credenciales bootstrap de Keycloak a un `env_file` no versionado;

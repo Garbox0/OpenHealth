@@ -12,6 +12,8 @@ until "$kcadm" config credentials --server "$server" --realm master --user "$adm
   sleep 2
 done
 
+"$kcadm" update "realms/$realm" -s loginTheme=openhealth -s displayName="Central Salud" -s displayNameHtml="Central Salud" >/dev/null
+
 set_password() {
   "$kcadm" set-password -r "$realm" --username "$1" --new-password "$2" >/dev/null
 }

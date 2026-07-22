@@ -1,6 +1,9 @@
 {
   "realm": "openhealth",
   "enabled": true,
+  "displayName": "Central Salud",
+  "displayNameHtml": "Central Salud",
+  "loginTheme": "openhealth",
   "bruteForceProtected": true,
   "failureFactor": 5,
   "waitIncrementSeconds": 60,

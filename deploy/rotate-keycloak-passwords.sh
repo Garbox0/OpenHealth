@@ -44,6 +44,10 @@ tunnel_token="$(require_env CLOUDFLARE_TUNNEL_TOKEN)"
 postgres_data_dir="$(get_env POSTGRES_DATA_DIR_HOST postgres_data)"
 keycloak_data_dir="$(get_env KEYCLOAK_DATA_DIR_HOST keycloak_data)"
 postgres_backup_dir="$(get_env POSTGRES_BACKUP_DIR_HOST ./backups/postgres)"
+database_url="$(get_env OPENHEALTH_DATABASE_URL)"
+postgres_user="$(get_env POSTGRES_USER)"
+postgres_password="$(get_env POSTGRES_PASSWORD)"
+postgres_db="$(get_env POSTGRES_DB)"
 
 new_admin_password="$(gen_password)"
 new_admission_password="$(gen_password)"
@@ -67,6 +71,20 @@ POSTGRES_DATA_DIR_HOST=${postgres_data_dir}
 KEYCLOAK_DATA_DIR_HOST=${keycloak_data_dir}
 POSTGRES_BACKUP_DIR_HOST=${postgres_backup_dir}
 EOF
+
+if [ -n "$database_url" ]; then
+  echo "OPENHEALTH_DATABASE_URL=${database_url}" >> "$env_file"
+fi
+if [ -n "$postgres_user" ]; then
+  echo "POSTGRES_USER=${postgres_user}" >> "$env_file"
+fi
+if [ -n "$postgres_password" ]; then
+  echo "POSTGRES_PASSWORD=${postgres_password}" >> "$env_file"
+fi
+if [ -n "$postgres_db" ]; then
+  echo "POSTGRES_DB=${postgres_db}" >> "$env_file"
+fi
+echo "OPENHEALTH_KEYCLOAK_ADMIN_PASSWORD=${new_admin_password}" >> "$env_file"
 
 docker exec "$keycloak_container" /opt/keycloak/bin/kcadm.sh config credentials \
   --server http://localhost:8080 \
