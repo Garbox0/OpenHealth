@@ -22,19 +22,6 @@ body {
   min-height: 100vh;
 }
 
-body::before {
-  content: "";
-  position: fixed;
-  inset: 9vh 7vw auto auto;
-  width: 34vw;
-  height: 34vw;
-  border-radius: 999px;
-  background:
-    linear-gradient(90deg, transparent 44%, rgba(0, 109, 119, 0.08) 44% 56%, transparent 56%),
-    linear-gradient(0deg, transparent 44%, rgba(0, 109, 119, 0.08) 44% 56%, transparent 56%);
-  pointer-events: none;
-}
-
 .pf-v5-theme-dark {
   color-scheme: light;
 }
@@ -111,14 +98,14 @@ body::before {
 .login-pf-page .card-pf::after {
   content: "";
   position: absolute;
-  right: 26px;
-  bottom: 26px;
-  width: 82px;
-  height: 82px;
-  border-radius: 24px;
+  right: 30px;
+  bottom: 30px;
+  width: 58px;
+  height: 58px;
+  border-radius: 18px;
   background:
-    linear-gradient(90deg, transparent 42%, rgba(0, 109, 119, 0.13) 42% 58%, transparent 58%),
-    linear-gradient(0deg, transparent 42%, rgba(0, 109, 119, 0.13) 42% 58%, transparent 58%);
+    linear-gradient(90deg, transparent 42%, rgba(0, 109, 119, 0.08) 42% 58%, transparent 58%),
+    linear-gradient(0deg, transparent 42%, rgba(0, 109, 119, 0.08) 42% 58%, transparent 58%);
   pointer-events: none;
 }
 
@@ -227,16 +214,6 @@ a {
 .pf-v5-c-login__main-footer-band,
 .login-pf-signup {
   background: rgba(0, 109, 119, 0.07);
-}
-
-.pf-v5-c-login__main-footer::after {
-  content: "";
-  display: block;
-  width: 180px;
-  height: 54px;
-  margin: 20px clamp(26px, 4vw, 60px) 0;
-  background: url("../img/openhealth-wordmark.svg") left center / contain no-repeat;
-  opacity: 0.82;
 }
 
 @media (max-width: 960px) {

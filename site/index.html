@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>OpenHealth Bridge</title>
-  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/styles.css?v=20260722-landing">
 </head>
 <body>
   <main class="site-shell">
@@ -25,6 +25,42 @@
       <p id="landing-copy" class="hidden">
         Plataforma interna para profesionales, administracion y soporte IT. Inicia sesion y entra directo a tu area de trabajo.
       </p>
+
+      <section id="marketing-panel" class="marketing-panel hidden">
+        <p class="marketing-lead">
+          Plataforma para medicina laboral: expediente, documentos, derivaciones y operacion diaria en un workspace por clinica.
+        </p>
+
+        <div class="marketing-actions">
+          <a class="primary button-link" href="https://centralsalud.aerosftp.com/">Ver demo Central Salud</a>
+          <a class="ghost button-link" href="mailto:admin@aerosftp.com?subject=Demo%20OpenHealth%20Bridge">Pedir una demo</a>
+        </div>
+
+        <div class="market-grid" aria-label="Modulos principales">
+          <article>
+            <span>01</span>
+            <strong>Medicos</strong>
+            <p>Bandeja de pacientes, expediente, notas, documentos, derivaciones y firma de trazabilidad.</p>
+          </article>
+          <article>
+            <span>02</span>
+            <strong>Administracion</strong>
+            <p>Admision, seguimiento de casos, documentacion pendiente y circuitos con ART preparados.</p>
+          </article>
+          <article>
+            <span>03</span>
+            <strong>IT de la clinica</strong>
+            <p>Usuarios, roles y permisos gestionados desde la plataforma, sin mandar a todos a Keycloak.</p>
+          </article>
+        </div>
+
+        <div class="landing-proof">
+          <span>Multi-clinica</span>
+          <span>SSO por rol</span>
+          <span>Datos aislados por tenant</span>
+          <span>Preparada para ART</span>
+        </div>
+      </section>
 
       <section id="session-panel" class="dashboard hidden" aria-live="polite">
         <div class="session-summary">
@@ -52,12 +88,12 @@
       <p id="landing-status" class="status hidden"></p>
 
       <div class="product-signature" aria-label="Plataforma OpenHealth Bridge">
-        <span>Powered by</span>
+        <span id="signature-label">Powered by</span>
         <img src="/assets/openhealth-wordmark.svg" alt="OpenHealth Bridge">
       </div>
     </section>
   </main>
 
-  <script type="module" src="/app.js"></script>
+  <script type="module" src="/app.js?v=20260722-landing"></script>
 </body>
 </html>

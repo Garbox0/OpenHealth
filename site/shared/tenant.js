@@ -38,9 +38,9 @@ const DEFAULT_TENANT = {
   },
   landing: {
     eyebrow: "OpenHealth Bridge",
-    title: "Una sola base para operacion, medicos y pacientes.",
+    title: "Software medico laboral para operar sin perseguir papeles.",
     copy:
-      "Ya esta corriendo el nucleo real del producto para casos ART e incidentes. Este primer sitio deja visibles las puertas de entrada verdaderas mientras consolidamos la operacion y el trabajo clinico.",
+      "OpenHealth Bridge unifica el trabajo de medicos, administrativos e IT con expediente por paciente, documentos y permisos por rol.",
     status: "Estado actual: plataforma real online con backoffice, portal medico y modulo IT en marcha.",
   },
 };

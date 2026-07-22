@@ -45,8 +45,12 @@ button {
   font-weight: 800;
 }
 
+a {
+  color: inherit;
+}
+
 .site-shell {
-  width: min(1040px, calc(100% - 32px));
+  width: min(1180px, calc(100% - 32px));
   margin: 0 auto;
   padding: 48px 0;
 }
@@ -131,7 +135,8 @@ p {
 }
 
 h1 {
-  font-size: clamp(3rem, 9vw, 6.2rem);
+  max-width: 12ch;
+  font-size: clamp(3rem, 8vw, 6.2rem);
   letter-spacing: -0.07em;
   line-height: 0.9;
 }
@@ -163,6 +168,86 @@ p {
   color: var(--ink);
   background: rgba(255, 255, 255, 0.64);
   border: 1px solid var(--line);
+}
+
+.button-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  border-radius: 14px;
+  padding: 1rem 1.22rem;
+  text-decoration: none;
+  font-weight: 900;
+}
+
+.marketing-panel {
+  display: grid;
+  gap: 24px;
+  margin-top: 30px;
+}
+
+.marketing-lead {
+  max-width: 58ch;
+  color: var(--muted);
+  font-size: clamp(1.15rem, 2vw, 1.35rem);
+}
+
+.marketing-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.market-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.market-grid article {
+  display: grid;
+  gap: 12px;
+  min-height: 220px;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at top right, rgba(0, 109, 119, 0.08), transparent 34%),
+    rgba(255, 255, 255, 0.7);
+}
+
+.market-grid span {
+  color: var(--brand);
+  font-size: 0.8rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+}
+
+.market-grid strong {
+  font-size: 1.45rem;
+  letter-spacing: -0.04em;
+}
+
+.market-grid p {
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+.landing-proof {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding-top: 4px;
+}
+
+.landing-proof span {
+  border-radius: 999px;
+  padding: 0.62rem 0.86rem;
+  color: var(--brand);
+  background: rgba(0, 109, 119, 0.08);
+  font-size: 0.86rem;
+  font-weight: 900;
 }
 
 .dashboard {
@@ -284,6 +369,10 @@ p {
   }
 
   .workspace-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .market-grid {
     grid-template-columns: 1fr;
   }
 }

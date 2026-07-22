@@ -1,5 +1,5 @@
 import { createPlatformSession, escapeHtml, humanizeError } from "/shared/platform.js";
-import { getTenantContext, getTenantModuleCards } from "/shared/tenant.js";
+import { getTenantContext, getTenantModuleCards } from "/shared/tenant.js?v=20260722-landing";
 
 const tenant = getTenantContext();
 const session = createPlatformSession({ moduleId: "home" });
@@ -9,8 +9,10 @@ const elements = {
   loginButton: document.querySelector("#login-button"),
   logoutButton: document.querySelector("#logout-button"),
   copy: document.querySelector("#landing-copy"),
+  marketingPanel: document.querySelector("#marketing-panel"),
   roleList: document.querySelector("#role-list"),
   sessionPanel: document.querySelector("#session-panel"),
+  signatureLabel: document.querySelector("#signature-label"),
   status: document.querySelector("#landing-status"),
   title: document.querySelector("#landing-title"),
   tenantLogo: document.querySelector("#tenant-logo"),
@@ -30,13 +32,14 @@ async function bootstrap() {
   document.title = tenant.kind === "clinic" ? `${tenant.shortName} | OpenHealth Bridge` : "OpenHealth Bridge";
   elements.eyebrow.textContent = tenant.landing.eyebrow;
   elements.title.textContent = tenant.landing.title;
-  elements.copy.textContent = "";
+  elements.copy.textContent = tenant.kind === "clinic" ? "" : tenant.landing.copy;
   elements.status.textContent = "";
+  elements.signatureLabel.textContent = tenant.kind === "clinic" ? "Powered by" : "Producto";
   applyTenantBrand();
 
   await session.bootstrap();
   if (!session.isAuthenticated()) {
-    renderSignedOut("Inicia sesion con tu usuario institucional. Despues ves solo las secciones habilitadas para tu rol.");
+    renderSignedOut();
     return;
   }
 
@@ -53,9 +56,10 @@ function applyTenantBrand() {
   elements.tenantLogo.textContent = brand.mark || tenant.shortName.slice(0, 2).toUpperCase();
 }
 
-function renderSignedOut(message) {
+function renderSignedOut() {
   elements.loginButton.classList.remove("hidden");
   elements.logoutButton.classList.add("hidden");
+  elements.marketingPanel.classList.toggle("hidden", tenant.kind !== "platform");
   elements.sessionPanel.classList.add("hidden");
   elements.status.classList.add("hidden");
   elements.workspaceGrid.innerHTML = "";
@@ -70,6 +74,7 @@ function renderDashboard() {
 
   elements.loginButton.classList.add("hidden");
   elements.logoutButton.classList.remove("hidden");
+  elements.marketingPanel.classList.add("hidden");
   elements.sessionPanel.classList.remove("hidden");
   elements.userName.textContent = actor.username;
   elements.roleList.innerHTML = actor.roles.map((role) => `<span class="pill">${escapeHtml(humanizeRole(role))}</span>`).join("");
@@ -82,7 +87,7 @@ function renderDashboard() {
   }
 
   elements.status.classList.remove("hidden");
-  elements.status.textContent = "Sesion segura activa. Elegi una seccion para trabajar.";
+  elements.status.textContent = "Sesion activa. Elegi una seccion para trabajar.";
   elements.workspaceGrid.innerHTML = visibleCards.map(renderWorkspaceCard).join("");
 }
 

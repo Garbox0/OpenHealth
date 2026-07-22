@@ -15,6 +15,8 @@
 - se documento el rol de cada hostname publico del tunnel y se apago la documentacion OpenAPI en el stack Docker real.
 - se agrego al dashboard medico una tarjeta de proxima accion por expediente para orientar nota, documentacion, derivacion o firma.
 - se simplifico el login de Keycloak y se desactivo cache de theme en Docker para iterar marca sin CSS viejo del navegador.
+- se separo la landing comercial de `aerosftp.com` del acceso institucional de cada clinica, con propuesta de valor y CTAs de demo.
+- se versionaron assets de la landing y se desactivo cache del site en Caddy durante la etapa de iteracion visual.
 - se eliminaron passwords demo hardcodeadas del repo y el stack Docker ahora exige secretos por entorno;
 - se movieron credenciales administrativas runtime de Keycloak a un `env_file` no versionado;
 - se movieron credenciales bootstrap de Keycloak a un `env_file` no versionado;
