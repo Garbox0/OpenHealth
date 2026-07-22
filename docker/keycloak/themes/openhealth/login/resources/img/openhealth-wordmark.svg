@@ -1,16 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 96" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 276 64" role="img" aria-labelledby="title desc">
   <title id="title">OpenHealth Bridge</title>
   <desc id="desc">OpenHealth Bridge wordmark.</desc>
   <defs>
-    <linearGradient id="g" x1="18" y1="18" x2="78" y2="78" gradientUnits="userSpaceOnUse">
+    <linearGradient id="g" x1="4" y1="10" x2="52" y2="58" gradientUnits="userSpaceOnUse">
       <stop stop-color="#006D77"/>
       <stop offset="1" stop-color="#2A9D8F"/>
     </linearGradient>
   </defs>
-  <rect x="16" y="18" width="60" height="60" rx="16" fill="url(#g)"/>
-  <path d="M33 33h13v11h11V33h13v30H57V52H46v11H33V33Z" fill="#F8FEFC"/>
-  <path d="M45 28h12v40H45z" fill="#F8FEFC" opacity=".58"/>
-  <path d="M28 44h46v12H28z" fill="#F8FEFC" opacity=".58"/>
-  <text x="94" y="48" fill="#10212B" font-family="Aptos Display, Segoe UI, sans-serif" font-size="28" font-weight="800">OpenHealth</text>
-  <text x="96" y="70" fill="#006D77" font-family="Aptos Display, Segoe UI, sans-serif" font-size="11" font-weight="900" letter-spacing="5">BRIDGE</text>
+  <rect x="0" y="8" width="52" height="52" rx="16" fill="url(#g)"/>
+  <path d="M12 34C12 26.268 18.268 20 26 20C33.732 20 40 26.268 40 34C40 41.732 33.732 48 26 48C18.268 48 12 41.732 12 34Z" stroke="#F8FEFC" stroke-width="5"/>
+  <path d="M26 21V47" stroke="#F8FEFC" stroke-width="5" stroke-linecap="round"/>
+  <path d="M16 34H36" stroke="#F8FEFC" stroke-width="5" stroke-linecap="round"/>
+  <path d="M30 20C35.1 22 38.6 27.2 38.6 34C38.6 40.8 35.1 46 30 48" stroke="#10212B" stroke-width="3" stroke-linecap="round" opacity=".9"/>
+  <text x="68" y="33" fill="#10212B" font-family="Aptos Display, Bahnschrift, Trebuchet MS, sans-serif" font-size="25" font-weight="900" letter-spacing="-1.3">OpenHealth</text>
+  <text x="70" y="51" fill="#006D77" font-family="Aptos, Segoe UI, sans-serif" font-size="11" font-weight="900" letter-spacing="3.6">BRIDGE</text>
 </svg>

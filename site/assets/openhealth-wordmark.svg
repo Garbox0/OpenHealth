@@ -1,13 +1,17 @@
 <svg width="276" height="64" viewBox="0 0 276 64" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
   <title id="title">OpenHealth Bridge</title>
   <desc id="desc">OpenHealth Bridge wordmark.</desc>
-  <g>
-    <rect width="48" height="48" x="0" y="8" rx="15" fill="#EEF5F3"/>
-    <path d="M12 18C12 15.2386 14.2386 13 17 13H19C21.7614 13 24 15.2386 24 18V46C24 48.7614 21.7614 51 19 51H17C14.2386 51 12 48.7614 12 46V18Z" fill="#006D77"/>
-    <path d="M24 18C24 15.2386 26.2386 13 29 13H31C33.7614 13 36 15.2386 36 18V46C36 48.7614 33.7614 51 31 51H29C26.2386 51 24 48.7614 24 46V18Z" fill="#2A9D8F"/>
-    <path d="M15 32C15 29.7909 16.7909 28 19 28H29C31.2091 28 33 29.7909 33 32C33 34.2091 31.2091 36 29 36H19C16.7909 36 15 34.2091 15 32Z" fill="#F8FCFB"/>
-    <path d="M24 24C28.4183 24 32 27.5817 32 32C32 36.4183 28.4183 40 24 40" stroke="#10212B" stroke-width="2.5" stroke-linecap="round"/>
-  </g>
-  <text x="62" y="31" fill="#10212B" font-family="Aptos Display, Bahnschrift, Trebuchet MS, sans-serif" font-size="24" font-weight="800" letter-spacing="-1.2">OpenHealth</text>
-  <text x="64" y="49" fill="#006D77" font-family="Aptos, Segoe UI, sans-serif" font-size="12" font-weight="800" letter-spacing="2.4">BRIDGE</text>
+  <defs>
+    <linearGradient id="g" x1="4" y1="10" x2="52" y2="58" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#006D77"/>
+      <stop offset="1" stop-color="#2A9D8F"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="8" width="52" height="52" rx="16" fill="url(#g)"/>
+  <path d="M12 34C12 26.268 18.268 20 26 20C33.732 20 40 26.268 40 34C40 41.732 33.732 48 26 48C18.268 48 12 41.732 12 34Z" stroke="#F8FEFC" stroke-width="5"/>
+  <path d="M26 21V47" stroke="#F8FEFC" stroke-width="5" stroke-linecap="round"/>
+  <path d="M16 34H36" stroke="#F8FEFC" stroke-width="5" stroke-linecap="round"/>
+  <path d="M30 20C35.1 22 38.6 27.2 38.6 34C38.6 40.8 35.1 46 30 48" stroke="#10212B" stroke-width="3" stroke-linecap="round" opacity=".9"/>
+  <text x="68" y="33" fill="#10212B" font-family="Aptos Display, Bahnschrift, Trebuchet MS, sans-serif" font-size="25" font-weight="900" letter-spacing="-1.3">OpenHealth</text>
+  <text x="70" y="51" fill="#006D77" font-family="Aptos, Segoe UI, sans-serif" font-size="11" font-weight="900" letter-spacing="3.6">BRIDGE</text>
 </svg>

@@ -17,6 +17,7 @@
 - se simplifico el login de Keycloak y se desactivo cache de theme en Docker para iterar marca sin CSS viejo del navegador.
 - se separo la landing comercial de `aerosftp.com` del acceso institucional de cada clinica, con propuesta de valor y CTAs de demo.
 - se versionaron assets de la landing y se desactivo cache del site en Caddy durante la etapa de iteracion visual.
+- se alineo el lockup de Central Salud en el login, se agrego un unico powered by y se unifico la marca OpenHealth.
 - se eliminaron passwords demo hardcodeadas del repo y el stack Docker ahora exige secretos por entorno;
 - se movieron credenciales administrativas runtime de Keycloak a un `env_file` no versionado;
 - se movieron credenciales bootstrap de Keycloak a un `env_file` no versionado;
