@@ -19,7 +19,7 @@ Central Salud:
 - monograma: `CS`
 - acento: `#006d77`
 - logo actual: `site/assets/tenants/central-salud-mark.svg`
-- firma de plataforma: `site/assets/openhealth-wordmark.svg`
+- firma de plataforma: `site/assets/openhealth-logo.svg`
 - theme login: `docker/keycloak/themes/openhealth`
 
 ## Implementacion actual

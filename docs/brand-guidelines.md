@@ -20,10 +20,11 @@ Jerarquia recomendada:
 - Logo OpenHealth Bridge: firma de plataforma, visible pero secundaria.
 - Color acento del tenant: puede adaptar detalles, sin romper la paleta base.
 
-## Assets actuales
+## Asset oficial
 
-- `site/assets/openhealth-mark.svg`
-- `site/assets/openhealth-wordmark.svg`
+- `site/assets/openhealth-logo.svg`
+
+No crear variantes paralelas del logo. Si hay que cambiar marca, se actualiza este asset y su copia identica en el theme de Keycloak.
 
 ## Criterio
 
