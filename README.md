@@ -317,6 +317,9 @@ El backoffice actual permite:
 
 - iniciar sesion una sola vez con Keycloak;
 - crear paciente, atencion y caso en un solo flujo;
+- buscar casos por paciente, documento, profesional o ART;
+- ver tablero operativo de admision y seguimiento;
+- detectar datos administrativos faltantes;
 - listar casos por filtros;
 - ver detalle, eventos y documentos;
 - actualizar estado;

@@ -5,6 +5,7 @@ const session = createPlatformSession({ moduleId: "backoffice" });
 const state = {
   selectedCaseId: null,
   selectedCase: null,
+  caseSummaries: [],
 };
 
 const elements = {
@@ -27,6 +28,9 @@ const elements = {
   moduleNav: document.querySelector("#module-nav"),
   noteFeedback: document.querySelector("#note-feedback"),
   noteForm: document.querySelector("#case-note-form"),
+  adminWorklist: document.querySelector("#admin-worklist"),
+  detailFlags: document.querySelector("#detail-flags"),
+  operationStats: document.querySelector("#operation-stats"),
   refreshCasesButton: document.querySelector("#refresh-cases-button"),
   roleList: document.querySelector("#role-list"),
   statusFeedback: document.querySelector("#status-feedback"),
@@ -74,32 +78,46 @@ async function loadCases() {
 
   const filters = new FormData(elements.filtersForm);
   const params = new URLSearchParams();
+  const searchTerm = optionalValue(filters.get("q"))?.toLowerCase() || "";
 
   for (const [key, value] of filters.entries()) {
-    if (value) {
+    if (key !== "q" && value) {
       params.set(key, value);
     }
   }
 
   const cases = await session.apiFetch(`/incident-cases${params.size ? `?${params}` : ""}`);
-  renderCaseList(cases);
+  const summaries = await Promise.all(
+    cases.map(async (incidentCase) => {
+      const [patient, encounter] = await Promise.all([
+        session.apiFetch(`/patients/${incidentCase.patient_id}`),
+        session.apiFetch(`/encounters/${incidentCase.encounter_id}`),
+      ]);
+      return { encounter, incidentCase, patient };
+    }),
+  );
+
+  state.caseSummaries = summaries.filter((item) => matchesSearch(item, searchTerm));
+  renderOperationalOverview();
+  renderCaseList(state.caseSummaries);
 
   if (state.selectedCaseId) {
-    const stillExists = cases.find((item) => item.id === state.selectedCaseId);
+    const stillExists = state.caseSummaries.find((item) => item.incidentCase.id === state.selectedCaseId);
     if (stillExists) {
       await loadCaseDetail(state.selectedCaseId);
       return;
     }
   }
 
-  if (cases.length > 0) {
-    await loadCaseDetail(cases[0].id);
+  if (state.caseSummaries.length > 0) {
+    await loadCaseDetail(state.caseSummaries[0].incidentCase.id);
     return;
   }
 
   state.selectedCaseId = null;
   state.selectedCase = null;
   elements.detailPanel.classList.add("hidden");
+  elements.detailFlags.innerHTML = "";
 }
 
 async function loadCaseDetail(caseId) {
@@ -255,24 +273,71 @@ function renderSignedIn() {
   elements.statusForm.classList.toggle("hidden", !canMutateCases());
 }
 
-function renderCaseList(cases) {
-  if (cases.length === 0) {
+function renderOperationalOverview() {
+  if (state.caseSummaries.length === 0) {
+    elements.operationStats.innerHTML = renderEmpty("No hay casos para este filtro.");
+    elements.adminWorklist.innerHTML = renderEmpty("Sin pendientes visibles.");
+    return;
+  }
+
+  const open = state.caseSummaries.filter((item) => item.incidentCase.status === "open").length;
+  const art = state.caseSummaries.filter((item) => item.incidentCase.coverage_type === "art").length;
+  const missingArt = state.caseSummaries.filter(needsArtData).length;
+  const missingContact = state.caseSummaries.filter(needsContact).length;
+
+  elements.operationStats.innerHTML = [
+    metricCard("Casos filtrados", state.caseSummaries.length, "Expedientes visibles para este tenant."),
+    metricCard("Abiertos", open, "Casos pendientes de circuito operativo."),
+    metricCard("ART", art, "Casos con cobertura de aseguradora laboral."),
+    metricCard("Datos faltantes", missingArt + missingContact, "Pendientes que frenan auditoria o seguimiento."),
+  ].join("");
+
+  elements.adminWorklist.innerHTML = [
+    workItem("Completar ART", missingArt, "Casos ART sin numero de siniestro.", missingArt > 0),
+    workItem("Contacto paciente", missingContact, "Expedientes sin telefono ni email.", missingContact > 0),
+    workItem(
+      "Asignar profesional",
+      state.caseSummaries.filter((item) => !optionalValue(item.encounter.practitioner_name)).length,
+      "Atenciones sin profesional cargado.",
+      true,
+    ),
+    workItem(
+      "Derivados",
+      state.caseSummaries.filter((item) => optionalValue(item.incidentCase.current_owner_role)).length,
+      "Casos con buzon responsable.",
+      false,
+    ),
+  ].join("");
+}
+
+function renderCaseList(summaries) {
+  if (summaries.length === 0) {
     elements.caseList.innerHTML = renderEmpty("No hay casos para esos filtros.");
     return;
   }
 
-  elements.caseList.innerHTML = cases
+  elements.caseList.innerHTML = summaries
     .map(
-      (item) => `
-        <article class="case-card" data-case-id="${item.id}">
+      ({ encounter, incidentCase, patient }) => `
+        <article class="case-card ${escapeHtml(getAdministrativeTone({ encounter, incidentCase, patient }))}" data-case-id="${incidentCase.id}">
           <header>
-            <strong>${escapeHtml(item.art_name || "Caso sin ART cargada")}</strong>
-            <span class="pill">${escapeHtml(item.status)}</span>
+            <div>
+              <strong>${escapeHtml(formatPatientName(patient))}</strong>
+              <p>${escapeHtml(patient.document_type || "doc")} ${escapeHtml(patient.document_number || "sin numero")}</p>
+            </div>
+            <span class="status-chip ${escapeHtml(incidentCase.status)}">${escapeHtml(humanizeStatus(incidentCase.status))}</span>
           </header>
-          <p><strong>Incidente:</strong> ${escapeHtml(item.incident_type)}</p>
-          <p><strong>Fecha:</strong> ${escapeHtml(item.incident_date)}</p>
-          <p><strong>Paciente:</strong> ${escapeHtml(item.patient_id)}</p>
-          <p><strong>Owner:</strong> ${escapeHtml(item.current_owner_role || "sin asignar")}</p>
+          <div class="case-meta-grid">
+            <p><strong>Motivo:</strong> ${escapeHtml(optionalValue(encounter.chief_complaint) || "Sin motivo")}</p>
+            <p><strong>Incidente:</strong> ${escapeHtml(humanizeIncidentType(incidentCase.incident_type))}</p>
+            <p><strong>Fecha:</strong> ${escapeHtml(incidentCase.incident_date)}</p>
+            <p><strong>Owner:</strong> ${escapeHtml(humanizeOwnerRole(incidentCase.current_owner_role))}</p>
+            <p><strong>Cobertura:</strong> ${escapeHtml(optionalValue(incidentCase.art_name) || humanizeCoverage(incidentCase.coverage_type))}</p>
+            <p><strong>Profesional:</strong> ${escapeHtml(optionalValue(encounter.practitioner_name) || "Sin asignar")}</p>
+          </div>
+          <div class="flag-list mini">
+            ${renderMiniFlags({ encounter, incidentCase, patient })}
+          </div>
         </article>
       `,
     )
@@ -301,6 +366,9 @@ function renderCaseDetail() {
     detailCard("Estado", formatLines([incidentCase.status, incidentCase.current_owner_role || "-"])),
     detailCard("Notas", escapeHtml(incidentCase.notes || "Sin notas")),
   ].join("");
+  elements.detailFlags.innerHTML = buildAdminFlags({ documents, encounter, incidentCase, patient })
+    .map(renderFlag)
+    .join("");
 
   elements.statusForm.querySelector("[name='status']").value = incidentCase.status;
   elements.statusForm.querySelector("[name='current_owner_role']").value = incidentCase.current_owner_role || "admission";
@@ -334,6 +402,137 @@ function renderCaseDetail() {
             `,
           )
           .join("");
+}
+
+function matchesSearch(item, searchTerm) {
+  if (!searchTerm) {
+    return true;
+  }
+  const fields = [
+    item.patient.family_name,
+    item.patient.given_names,
+    item.patient.document_number,
+    item.patient.phone,
+    item.patient.email,
+    item.encounter.practitioner_name,
+    item.encounter.provider_name,
+    item.encounter.chief_complaint,
+    item.incidentCase.art_name,
+    item.incidentCase.claim_number,
+    item.incidentCase.employer_name,
+    item.incidentCase.status,
+  ];
+  return fields.some((value) => String(value || "").toLowerCase().includes(searchTerm));
+}
+
+function metricCard(label, value, copy) {
+  return `
+    <article class="metric-card">
+      <span>${escapeHtml(label)}</span>
+      <strong>${escapeHtml(value)}</strong>
+      <p>${escapeHtml(copy)}</p>
+    </article>
+  `;
+}
+
+function workItem(label, value, copy, warning) {
+  return `
+    <article class="work-item ${warning && value > 0 ? "warning" : "ok"}">
+      <span>${escapeHtml(label)}</span>
+      <strong>${escapeHtml(value)}</strong>
+      <p>${escapeHtml(copy)}</p>
+    </article>
+  `;
+}
+
+function buildAdminFlags({ documents, encounter, incidentCase, patient }) {
+  const flags = [];
+  if (needsArtData({ incidentCase })) {
+    flags.push({ tone: "warning", text: "Falta numero de siniestro ART." });
+  }
+  if (needsContact({ patient })) {
+    flags.push({ tone: "warning", text: "Falta telefono o email del paciente." });
+  }
+  if (!optionalValue(encounter.practitioner_name)) {
+    flags.push({ tone: "warning", text: "Falta profesional asignado." });
+  }
+  if (documents.length === 0) {
+    flags.push({ tone: "warning", text: "No hay documentacion adjunta." });
+  }
+  if (flags.length === 0) {
+    flags.push({ tone: "ok", text: "Datos administrativos minimos completos." });
+  }
+  return flags;
+}
+
+function renderMiniFlags(item) {
+  return buildAdminFlags({ documents: [], ...item })
+    .slice(0, 3)
+    .map(renderFlag)
+    .join("");
+}
+
+function renderFlag(flag) {
+  return `<span class="flag ${escapeHtml(flag.tone)}">${escapeHtml(flag.text)}</span>`;
+}
+
+function needsArtData({ incidentCase }) {
+  return incidentCase.coverage_type === "art" && !optionalValue(incidentCase.claim_number);
+}
+
+function needsContact({ patient }) {
+  return !optionalValue(patient.phone) && !optionalValue(patient.email);
+}
+
+function getAdministrativeTone({ encounter, incidentCase, patient }) {
+  if (needsArtData({ incidentCase }) || needsContact({ patient }) || !optionalValue(encounter.practitioner_name)) {
+    return "warning";
+  }
+  return "ok";
+}
+
+function formatPatientName(patient) {
+  return `${patient.family_name}, ${patient.given_names}`;
+}
+
+function humanizeStatus(status) {
+  const labels = {
+    open: "Abierto",
+    in_review: "En revision",
+    authorized: "Autorizado",
+    rejected: "Rechazado",
+    closed: "Cerrado",
+  };
+  return labels[status] || status;
+}
+
+function humanizeCoverage(coverageType) {
+  const labels = {
+    art: "ART",
+    private: "Privada",
+    unknown: "Desconocida",
+  };
+  return labels[coverageType] || coverageType;
+}
+
+function humanizeIncidentType(incidentType) {
+  const labels = {
+    work_accident: "Accidente laboral",
+    commute_accident: "Accidente in itinere",
+    occupational_exposure: "Exposicion ocupacional",
+    other: "Otro evento",
+  };
+  return labels[incidentType] || incidentType;
+}
+
+function humanizeOwnerRole(ownerRole) {
+  const labels = {
+    admission: "Admision",
+    medical_auditor: "Auditoria medica",
+    billing: "Facturacion",
+    support: "Soporte",
+  };
+  return ownerRole ? labels[ownerRole] || ownerRole : "Sin asignar";
 }
 
 function canAccessModule() {

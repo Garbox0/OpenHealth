@@ -56,6 +56,28 @@
         </div>
       </section>
 
+      <section class="admin-command-center">
+        <article class="panel">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Operacion diaria</p>
+              <h2>Tablero de admision y seguimiento</h2>
+            </div>
+          </div>
+          <div id="operation-stats" class="operation-grid"></div>
+        </article>
+
+        <article class="panel">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Pendientes</p>
+              <h2>Que falta completar</h2>
+            </div>
+          </div>
+          <div id="admin-worklist" class="admin-worklist"></div>
+        </article>
+      </section>
+
       <div class="workspace">
         <section class="column">
           <section id="create-panel" class="panel">
@@ -191,6 +213,11 @@
 
             <form id="filters-form" class="filter-bar">
               <label>
+                <span>Buscar</span>
+                <input name="q" placeholder="Paciente, DNI, profesional, ART">
+              </label>
+
+              <label>
                 <span>Estado</span>
                 <select name="status">
                   <option value="">Todos</option>
@@ -240,6 +267,7 @@
             </div>
 
             <div id="detail-summary" class="detail-grid"></div>
+            <div id="detail-flags" class="flag-list"></div>
 
             <form id="case-status-form" class="stack-form inline-form">
               <div class="grid two">

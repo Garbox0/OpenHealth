@@ -4,6 +4,7 @@
 
 ### Fase 3
 
+- se evoluciono el backoffice administrativo con tablero operativo, busqueda contextual y pendientes de carga;
 - se eliminaron passwords demo hardcodeadas del repo y el stack Docker ahora exige secretos por entorno;
 - se movieron credenciales administrativas runtime de Keycloak a un `env_file` no versionado;
 - se movieron credenciales bootstrap de Keycloak a un `env_file` no versionado;
