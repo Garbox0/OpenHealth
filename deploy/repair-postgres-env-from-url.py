@@ -31,8 +31,7 @@ for key in ("POSTGRES_USER", "POSTGRES_PASSWORD", "POSTGRES_DB"):
 env_path.write_text("\n".join(f"{key}={pairs[key]}" for key in keys if key in pairs) + "\n")
 Path(".env.postgres").write_text(
     "\n".join(
-        f"{key}={pairs[key]}"
-        for key in ("POSTGRES_DB", "POSTGRES_USER", "POSTGRES_PASSWORD")
+        f"{key}={pairs[key]}" for key in ("POSTGRES_DB", "POSTGRES_USER", "POSTGRES_PASSWORD")
     )
     + "\n",
 )
