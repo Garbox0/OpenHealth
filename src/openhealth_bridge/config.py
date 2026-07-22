@@ -10,6 +10,7 @@ class Settings(BaseSettings):
     database_echo: bool = False
     frontend_origins: str = "https://www.aerosftp.com,https://centralsalud.aerosftp.com"
     require_auth: bool = True
+    enable_api_docs: bool = True
     oidc_issuer_url: str = "http://127.0.0.1:8081/realms/openhealth"
     oidc_jwks_url: str | None = None
     oidc_client_id: str = "openhealth-dev"

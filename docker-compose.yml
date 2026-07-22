@@ -9,6 +9,7 @@ services:
     environment:
       OPENHEALTH_DATABASE_URL: ${OPENHEALTH_DATABASE_URL:?set OPENHEALTH_DATABASE_URL}
       OPENHEALTH_DATABASE_ECHO: "false"
+      OPENHEALTH_ENABLE_API_DOCS: "false"
       OPENHEALTH_REQUIRE_AUTH: "true"
       OPENHEALTH_OIDC_ISSUER_URL: http://localhost:8081/realms/openhealth
       OPENHEALTH_OIDC_JWKS_URL: http://keycloak:8080/realms/openhealth/protocol/openid-connect/certs
@@ -74,6 +75,9 @@ services:
     command:
       - start-dev
       - --import-realm
+      - --spi-theme-cache-themes=false
+      - --spi-theme-cache-templates=false
+      - --spi-theme-static-max-age=-1
     volumes:
       - ./docker/keycloak/realm-openhealth.json:/opt/keycloak/data/import/realm-openhealth.json:ro
       - ./docker/keycloak/themes/openhealth:/opt/keycloak/themes/openhealth:ro

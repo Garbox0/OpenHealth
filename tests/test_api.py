@@ -11,7 +11,7 @@ from fastapi.testclient import TestClient
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 
 from openhealth_bridge.auth import ActorContext, get_actor_context, get_jwks_url
-from openhealth_bridge.config import Settings
+from openhealth_bridge.config import Settings, get_settings
 from openhealth_bridge.db import create_session_factory, get_db_session
 from openhealth_bridge.main import create_app
 from openhealth_bridge.models import Base
@@ -68,6 +68,19 @@ def test_live_returns_ok(client: TestClient) -> None:
 
     assert response.status_code == 200
     assert response.json() == {"status": "ok"}
+
+
+def test_api_docs_can_be_disabled(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("OPENHEALTH_ENABLE_API_DOCS", "false")
+    get_settings.cache_clear()
+    app = create_app()
+
+    try:
+        with TestClient(app) as test_client:
+            assert test_client.get("/docs").status_code == 404
+            assert test_client.get("/openapi.json").status_code == 404
+    finally:
+        get_settings.cache_clear()
 
 
 def test_api_accepts_explicit_tenant_header_for_shared_api_domain(client: TestClient) -> None:

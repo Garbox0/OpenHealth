@@ -12,6 +12,9 @@
 - se ajusto la composicion del login para incluir marca de clinica y firma OpenHealth, y se simplifico la landing sin texto explicativo innecesario;
 - se simplifico el CTA de acceso institucional para evitar copy de seguridad innecesario.
 - se retiro copy de seguridad innecesario tambien del login institucional de Keycloak.
+- se documento el rol de cada hostname publico del tunnel y se apago la documentacion OpenAPI en el stack Docker real.
+- se agrego al dashboard medico una tarjeta de proxima accion por expediente para orientar nota, documentacion, derivacion o firma.
+- se simplifico el login de Keycloak y se desactivo cache de theme en Docker para iterar marca sin CSS viejo del navegador.
 - se eliminaron passwords demo hardcodeadas del repo y el stack Docker ahora exige secretos por entorno;
 - se movieron credenciales administrativas runtime de Keycloak a un `env_file` no versionado;
 - se movieron credenciales bootstrap de Keycloak a un `env_file` no versionado;

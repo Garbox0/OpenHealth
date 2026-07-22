@@ -36,7 +36,16 @@ async def lifespan(_: FastAPI) -> AsyncIterator[None]:
 
 def create_app() -> FastAPI:
     settings = get_settings()
-    app = FastAPI(title=settings.app_name, lifespan=lifespan)
+    docs_url = "/docs" if settings.enable_api_docs else None
+    redoc_url = "/redoc" if settings.enable_api_docs else None
+    openapi_url = "/openapi.json" if settings.enable_api_docs else None
+    app = FastAPI(
+        title=settings.app_name,
+        lifespan=lifespan,
+        docs_url=docs_url,
+        redoc_url=redoc_url,
+        openapi_url=openapi_url,
+    )
     app.add_middleware(SecurityHeadersMiddleware)
     app.add_middleware(
         CORSMiddleware,
@@ -48,11 +57,13 @@ def create_app() -> FastAPI:
 
     @app.get("/", tags=["root"])
     async def root() -> dict[str, str]:
-        return {
+        payload = {
             "name": settings.app_name,
             "status": "ok",
-            "docs": "/docs",
         }
+        if settings.enable_api_docs:
+            payload["docs"] = "/docs"
+        return payload
 
     @app.get("/health/live", tags=["health"])
     async def live() -> dict[str, str]:

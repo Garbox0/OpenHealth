@@ -69,6 +69,15 @@ Dentro del tunnel, agregar estos public hostnames:
 - `api.aerosftp.com` -> `http://api:8000`
 - `auth.aerosftp.com` -> `http://keycloak:8080`
 
+## Inventario de hostnames
+
+Todos estos hostnames son publicos porque Cloudflare los resuelve en Internet. Lo importante es que el origen no queda expuesto directo y que cada servicio valide autenticacion, permisos y tenant.
+
+- `centralsalud.aerosftp.com`: workspace de la clinica demo. Publico como pantalla de login; los datos requieren token, rol y tenant.
+- `auth.aerosftp.com`: login OIDC/Keycloak. Debe ser publico para que los usuarios inicien sesion. El admin de Keycloak debe quedar bloqueado por WAF salvo IP/VPN.
+- `api.aerosftp.com`: API compartida. Debe ser publica para la web, pero los endpoints de negocio exigen bearer token y `X-OpenHealth-Tenant`; en produccion no publica `/docs`, `/redoc` ni `/openapi.json`.
+- `aerosftp.com` y `www.aerosftp.com`: entrada general del producto. Hoy apuntan al site; no deben mostrar datos internos. Mas adelante pueden ser landing comercial o redireccionar a un tenant.
+
 La documentacion oficial para publicar aplicaciones es:
 
 - https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/routing-to-tunnel/

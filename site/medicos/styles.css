@@ -327,6 +327,53 @@
   border-color: rgba(0, 109, 119, 0.18);
 }
 
+.next-action-panel {
+  margin: 14px 0 2px;
+}
+
+.next-action-card {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: center;
+  padding: 18px 20px;
+  border-radius: 22px;
+  border: 1px solid rgba(0, 109, 119, 0.14);
+  background:
+    radial-gradient(circle at top right, rgba(0, 109, 119, 0.12), transparent 34%),
+    rgba(255, 255, 255, 0.92);
+}
+
+.next-action-card.warning {
+  border-color: rgba(183, 121, 31, 0.24);
+  background:
+    radial-gradient(circle at top right, rgba(255, 247, 225, 0.92), transparent 34%),
+    rgba(255, 255, 255, 0.94);
+}
+
+.next-action-card.info {
+  background:
+    radial-gradient(circle at top right, rgba(231, 244, 246, 0.95), transparent 34%),
+    rgba(255, 255, 255, 0.94);
+}
+
+.next-action-card strong {
+  display: block;
+  margin-bottom: 6px;
+  font-family: "Aptos Display", "Bahnschrift", "Trebuchet MS", sans-serif;
+  font-size: 1.18rem;
+}
+
+.next-action-card p {
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.next-action-link {
+  flex: 0 0 auto;
+  text-decoration: none;
+}
+
 .medical-case-list {
   gap: 14px;
 }
@@ -585,6 +632,7 @@
 
   .attention-banner,
   .record-banner,
+  .next-action-card,
   .event-topline,
   .document-topline,
   .detail-row {

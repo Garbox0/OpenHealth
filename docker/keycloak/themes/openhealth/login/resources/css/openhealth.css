@@ -22,6 +22,19 @@ body {
   min-height: 100vh;
 }
 
+body::before {
+  content: "";
+  position: fixed;
+  inset: 9vh 7vw auto auto;
+  width: 34vw;
+  height: 34vw;
+  border-radius: 999px;
+  background:
+    linear-gradient(90deg, transparent 44%, rgba(0, 109, 119, 0.08) 44% 56%, transparent 56%),
+    linear-gradient(0deg, transparent 44%, rgba(0, 109, 119, 0.08) 44% 56%, transparent 56%);
+  pointer-events: none;
+}
+
 .pf-v5-theme-dark {
   color-scheme: light;
 }
@@ -36,11 +49,11 @@ body {
 
 .pf-v5-c-login__container {
   display: grid;
-  grid-template-columns: minmax(320px, 680px) minmax(280px, 520px);
-  gap: clamp(42px, 7vw, 96px);
+  grid-template-columns: minmax(320px, 620px) minmax(280px, 520px);
+  gap: clamp(42px, 6vw, 84px);
   align-items: center;
-  justify-content: center;
-  width: min(1360px, calc(100% - 48px));
+  justify-content: start;
+  width: min(1280px, calc(100% - 48px));
   margin: 0 auto;
 }
 
@@ -75,15 +88,8 @@ body {
 }
 
 #kc-header-wrapper::after {
-  content: "Acceso institucional";
-  display: block;
-  margin-top: 16px;
-  color: var(--ohb-brand);
-  font-size: 0.82rem;
-  font-weight: 900;
-  letter-spacing: 0.14em;
-  line-height: 1.4;
-  text-transform: uppercase;
+  content: "";
+  display: none;
 }
 
 .pf-v5-c-login__main,
@@ -97,8 +103,8 @@ body {
   background: var(--ohb-card);
   box-shadow: 0 26px 80px rgba(17, 55, 67, 0.14);
   backdrop-filter: blur(14px);
-  width: min(680px, 100%);
-  padding-bottom: 22px;
+  width: min(620px, 100%);
+  padding-bottom: 34px;
 }
 
 .pf-v5-c-login__main::after,
@@ -119,7 +125,7 @@ body {
 .pf-v5-c-login__main-header,
 .login-pf-header,
 .pf-v5-c-login__main-body {
-  padding-inline: clamp(26px, 4vw, 60px);
+  padding-inline: clamp(28px, 4vw, 54px);
 }
 
 .pf-v5-c-login__main-header,
@@ -130,19 +136,25 @@ body {
 #kc-page-title,
 .login-pf-header h1 {
   color: var(--ohb-ink);
-  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 900;
   letter-spacing: -0.055em;
 }
 
 #kc-page-title::after {
-  content: "Usa tu usuario institucional.";
-  display: block;
-  margin-top: 12px;
-  color: var(--ohb-muted);
-  font-size: 1rem;
-  font-weight: 600;
-  letter-spacing: 0;
+  content: "";
+  display: none;
+}
+
+#kc-form-login,
+.pf-v5-c-form {
+  display: grid;
+  gap: 22px;
+}
+
+.pf-v5-c-form__group,
+.form-group {
+  margin-bottom: 0;
 }
 
 .pf-v5-c-form__label,
@@ -161,12 +173,38 @@ input[type="password"] {
   border: 1px solid var(--ohb-line);
   border-radius: 14px;
   background: #fff;
+  box-shadow: 0 6px 18px rgba(17, 55, 67, 0.04);
+}
+
+.pf-v5-c-input-group,
+.pf-c-input-group {
+  display: flex;
+  align-items: stretch;
+}
+
+.pf-v5-c-input-group input,
+.pf-c-input-group input {
+  border-radius: 14px 0 0 14px;
+}
+
+.pf-v5-c-input-group .pf-v5-c-button,
+.pf-c-input-group .pf-c-button,
+button[data-password-toggle] {
+  min-width: 56px;
+  min-height: 52px;
+  border: 1px solid var(--ohb-line);
+  border-left: 0;
+  border-radius: 0 14px 14px 0;
+  color: var(--ohb-ink);
+  background: #fff;
+  box-shadow: 0 6px 18px rgba(17, 55, 67, 0.04);
 }
 
 .pf-v5-c-button.pf-m-primary,
 .pf-c-button.pf-m-primary,
 #kc-login {
   min-height: 52px;
+  width: 100%;
   border: 0;
   border-radius: 14px;
   color: #fff;

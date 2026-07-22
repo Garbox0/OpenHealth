@@ -37,6 +37,7 @@ const elements = {
   moduleNav: document.querySelector("#module-nav"),
   noteFeedback: document.querySelector("#note-feedback"),
   noteForm: document.querySelector("#case-note-form"),
+  nextActionPanel: document.querySelector("#next-action-panel"),
   overviewStats: document.querySelector("#overview-stats"),
   priorityList: document.querySelector("#priority-list"),
   referralFeedback: document.querySelector("#referral-feedback"),
@@ -453,6 +454,9 @@ function renderCaseDetail() {
     </div>
   `;
   elements.selectedCaseAlerts.innerHTML = clinicalAlerts.map(renderFlag).join("");
+  elements.nextActionPanel.innerHTML = renderNextActionPanel(
+    getNextAction({ documents, encounter, events, incidentCase, patient }),
+  );
   elements.selectedCaseWorklist.innerHTML = renderSelectedCaseWorklist({
     documents,
     events,
@@ -606,6 +610,83 @@ function renderSelectedCaseWorklist({ documents, events, incidentCase, patient }
       ${checks.map(renderChecklistItem).join("")}
     </section>
   `;
+}
+
+function renderNextActionPanel(action) {
+  return `
+    <section class="next-action-card ${escapeHtml(action.tone)}">
+      <div>
+        <p class="eyebrow">Proxima accion</p>
+        <strong>${escapeHtml(action.title)}</strong>
+        <p>${escapeHtml(action.copy)}</p>
+      </div>
+      <a class="secondary next-action-link" href="${escapeHtml(action.href)}">${escapeHtml(action.cta)}</a>
+    </section>
+  `;
+}
+
+function getNextAction({ documents, encounter, events, incidentCase, patient }) {
+  if (!events.some((event) => event.event_type === "clinical_note")) {
+    return {
+      copy: "Todavia no hay evolucion clinica en la linea de tiempo.",
+      cta: "Escribir nota",
+      href: "#case-note-form",
+      title: "Registrar evolucion",
+      tone: "warning",
+    };
+  }
+  if (documents.length === 0) {
+    return {
+      copy: "Adjunta estudios, formularios o referencia PACS/RX al expediente.",
+      cta: "Adjuntar",
+      href: "#case-document-form",
+      title: "Completar documentacion",
+      tone: "warning",
+    };
+  }
+  if (incidentCase.coverage_type === "art" && !optionalValue(incidentCase.claim_number)) {
+    return {
+      copy: "El caso ART necesita numero de siniestro para seguir administrativo/auditoria.",
+      cta: "Derivar",
+      href: "#case-referral-form",
+      title: "Derivar a administracion",
+      tone: "warning",
+    };
+  }
+  if (!optionalValue(encounter.practitioner_name)) {
+    return {
+      copy: "La atencion no tiene profesional tratante cargado.",
+      cta: "Derivar",
+      href: "#case-referral-form",
+      title: "Asignar responsable",
+      tone: "info",
+    };
+  }
+  if (!optionalValue(patient.phone) && !optionalValue(patient.email)) {
+    return {
+      copy: "Falta un dato minimo de contacto para seguimiento.",
+      cta: "Derivar",
+      href: "#case-referral-form",
+      title: "Completar contacto",
+      tone: "info",
+    };
+  }
+  if (!events.some((event) => event.event_type === "clinical_signature")) {
+    return {
+      copy: "El expediente ya tiene datos minimos; falta firmar la trazabilidad.",
+      cta: "Firmar",
+      href: "#signature-button",
+      title: "Firmar evento",
+      tone: "ok",
+    };
+  }
+  return {
+    copy: "No hay bloqueos minimos visibles para este expediente.",
+    cta: "Ver timeline",
+    href: "#event-list",
+    title: "Continuar seguimiento",
+    tone: "ok",
+  };
 }
 
 function renderChecklistItem(item) {
