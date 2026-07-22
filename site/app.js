@@ -1,5 +1,5 @@
-import { createPlatformSession, escapeHtml, humanizeError } from "/shared/platform.js";
-import { getTenantContext, getTenantDefaultModuleHref } from "/shared/tenant.js?v=20260722-role-routing";
+import { createPlatformSession, escapeHtml, humanizeError } from "/shared/platform.js?v=20260722-three-roles";
+import { getTenantContext, getTenantDefaultModuleHref } from "/shared/tenant.js?v=20260722-three-roles";
 
 const tenant = getTenantContext();
 const session = createPlatformSession({ moduleId: "home" });

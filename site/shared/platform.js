@@ -1,4 +1,4 @@
-import { getTenantContext } from "/shared/tenant.js";
+import { getTenantContext } from "/shared/tenant.js?v=20260722-three-roles";
 
 const AUTH_CONFIG = {
   issuer: "https://auth.aerosftp.com/realms/openhealth",

@@ -1,4 +1,4 @@
-import { createPlatformSession, escapeHtml, humanizeError, optionalValue } from "/shared/platform.js";
+import { createPlatformSession, escapeHtml, humanizeError, optionalValue } from "/shared/platform.js?v=20260722-three-roles";
 
 const session = createPlatformSession({ moduleId: "seguridad" });
 
