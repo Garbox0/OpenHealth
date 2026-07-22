@@ -60,12 +60,12 @@ async function bootstrap() {
   await session.bootstrap();
 
   if (!session.isAuthenticated()) {
-    renderSignedOut("Entramos una sola vez con usuarios reales del realm openhealth.");
+    window.location.replace("/");
     return;
   }
 
   if (!canAccessModule()) {
-    renderAccessDenied();
+    window.location.replace("/");
     return;
   }
 
@@ -253,14 +253,6 @@ function renderSignedOut(message) {
   elements.heroLoginButton.classList.remove("hidden");
   showAuthMessage(message);
   session.renderSignedOutChrome(elements);
-}
-
-function renderAccessDenied() {
-  elements.appShell.classList.add("hidden");
-  elements.authPanel.classList.remove("hidden");
-  elements.heroLoginButton.classList.add("hidden");
-  showAuthMessage("Tu sesion esta activa, pero este modulo no esta habilitado para tu rol. Usa la barra superior para entrar en una seccion permitida.");
-  session.renderSignedInChrome(elements);
 }
 
 function renderSignedIn() {

@@ -89,12 +89,12 @@ async function bootstrap() {
   await session.bootstrap();
 
   if (!session.isAuthenticated()) {
-    renderSignedOut("Una sola sesion habilita el trabajo medico segun tu rol.");
+    window.location.replace("/");
     return;
   }
 
   if (!canAccessModule()) {
-    renderAccessDenied();
+    window.location.replace("/");
     return;
   }
 
@@ -351,16 +351,6 @@ function renderSignedOut(message) {
   elements.heroLoginButton.classList.remove("hidden");
   showAuthMessage(message);
   session.renderSignedOutChrome(elements);
-}
-
-function renderAccessDenied() {
-  elements.appShell.classList.add("hidden");
-  elements.authPanel.classList.remove("hidden");
-  elements.heroLoginButton.classList.add("hidden");
-  showAuthMessage(
-    "Tu sesion esta activa, pero este modulo es solo para medicos o IT. Usa la barra superior para ir a una seccion permitida.",
-  );
-  session.renderSignedInChrome(elements);
 }
 
 function renderSignedIn() {

@@ -19,7 +19,6 @@ export const PLATFORM_MODULES = {
     href: "/",
     label: "Inicio",
     roles: ["admin", "admission", "medical_auditor", "billing", "support", "doctor", "patient"],
-    hiddenFromNav: true,
   },
   backoffice: {
     href: "/backoffice/",
@@ -277,7 +276,8 @@ export function createPlatformSession({ moduleId }) {
       elements.roleList.innerHTML = state.actor.roles.map(renderRolePill).join("");
     }
     if (elements.moduleNav) {
-      renderModuleNav(elements.moduleNav);
+      elements.moduleNav.classList.add("hidden");
+      elements.moduleNav.innerHTML = "";
     }
   }
 
@@ -311,25 +311,6 @@ export function createPlatformSession({ moduleId }) {
       return;
     }
     element.textContent = brand.mark || tenant.shortName.slice(0, 2).toUpperCase();
-  }
-
-  function renderModuleNav(container) {
-    const visibleModules = Object.entries(PLATFORM_MODULES).filter(
-      ([, module]) => !module.hiddenFromNav && hasAnyRole(module.roles),
-    );
-    if (visibleModules.length === 0) {
-      container.classList.add("hidden");
-      container.innerHTML = "";
-      return;
-    }
-
-    container.classList.remove("hidden");
-    container.innerHTML = visibleModules
-      .map(([id, module]) => {
-        const activeClass = id === moduleId ? " active" : "";
-        return `<a class="module-link${activeClass}" href="${module.href}">${escapeHtml(module.label)}</a>`;
-      })
-      .join("");
   }
 
   async function logout() {

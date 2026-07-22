@@ -341,6 +341,10 @@ Primer corte clinico real:
 - registrar firma simple de trazabilidad;
 - consultar documentos ya asociados al caso.
 
+El ingreso de una clinica se realiza siempre desde su hostname, por ejemplo
+`https://centralsalud.aerosftp.com/`. El login redirige automaticamente a cada
+usuario segun su rol; las rutas internas no son puntos de acceso separados.
+
 ## Seguridad e IT
 
 Primer corte de gestion propia sobre identidad:

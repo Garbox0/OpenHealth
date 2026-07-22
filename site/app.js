@@ -1,5 +1,5 @@
 import { createPlatformSession, escapeHtml, humanizeError } from "/shared/platform.js";
-import { getTenantContext, getTenantModuleCards } from "/shared/tenant.js?v=20260722-landing";
+import { getTenantContext, getTenantDefaultModuleHref } from "/shared/tenant.js?v=20260722-role-routing";
 
 const tenant = getTenantContext();
 const session = createPlatformSession({ moduleId: "home" });
@@ -43,7 +43,13 @@ async function bootstrap() {
     return;
   }
 
-  renderDashboard();
+  const workspaceHref = getTenantDefaultModuleHref(session.state.actor.roles);
+  if (workspaceHref) {
+    window.location.replace(workspaceHref);
+    return;
+  }
+
+  renderNoWorkspace();
 }
 
 function applyTenantBrand() {
@@ -66,11 +72,8 @@ function renderSignedOut() {
   elements.status.textContent = "";
 }
 
-function renderDashboard() {
+function renderNoWorkspace() {
   const actor = session.state.actor;
-  const visibleCards = getTenantModuleCards(tenant).filter((card) =>
-    actor.roles.some((role) => card.roles.includes(role)),
-  );
 
   elements.loginButton.classList.add("hidden");
   elements.logoutButton.classList.remove("hidden");
@@ -79,28 +82,9 @@ function renderDashboard() {
   elements.userName.textContent = actor.username;
   elements.roleList.innerHTML = actor.roles.map((role) => `<span class="pill">${escapeHtml(humanizeRole(role))}</span>`).join("");
 
-  if (visibleCards.length === 0) {
-    elements.status.classList.remove("hidden");
-    elements.status.textContent = "Tu usuario no tiene un modulo asignado. Pedile a IT que revise tus permisos.";
-    elements.workspaceGrid.innerHTML = "";
-    return;
-  }
-
   elements.status.classList.remove("hidden");
-  elements.status.textContent = "Sesion activa. Elegi una seccion para trabajar.";
-  elements.workspaceGrid.innerHTML = visibleCards.map(renderWorkspaceCard).join("");
-}
-
-function renderWorkspaceCard(card) {
-  const roleText = card.roles.map(humanizeRole).join(", ");
-  return `
-    <a class="workspace-card" href="${escapeHtml(card.href)}">
-      <small>${escapeHtml(roleText)}</small>
-      <strong>${escapeHtml(card.title)}</strong>
-      <span>${escapeHtml(card.description)}</span>
-      <span>${escapeHtml(card.features.join(" / "))}</span>
-    </a>
-  `;
+  elements.status.textContent = "Tu usuario no tiene un espacio de trabajo asignado. Pedi a IT que revise tus permisos.";
+  elements.workspaceGrid.innerHTML = "";
 }
 
 function humanizeRole(role) {

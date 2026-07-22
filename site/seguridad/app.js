@@ -46,12 +46,12 @@ async function bootstrap() {
   await session.bootstrap();
 
   if (!session.isAuthenticated()) {
-    renderSignedOut("Una sola sesion habilita la gestion de accesos segun tu rol.");
+    window.location.replace("/");
     return;
   }
 
   if (!session.hasRole("admin")) {
-    renderAccessDenied();
+    window.location.replace("/");
     return;
   }
 
@@ -142,14 +142,6 @@ function renderSignedOut(message) {
   elements.heroLoginButton.classList.remove("hidden");
   showAuthMessage(message);
   session.renderSignedOutChrome(elements);
-}
-
-function renderAccessDenied() {
-  elements.appShell.classList.add("hidden");
-  elements.authPanel.classList.remove("hidden");
-  elements.heroLoginButton.classList.add("hidden");
-  showAuthMessage("Tu sesion esta activa, pero este modulo es solo para IT. Usa la barra superior para ir a un modulo permitido.");
-  session.renderSignedInChrome(elements);
 }
 
 function renderSignedIn() {

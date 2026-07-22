@@ -81,6 +81,19 @@ export function getTenantModuleCards(tenant) {
   ];
 }
 
+export function getTenantDefaultModuleHref(roles) {
+  if (roles.includes("admin")) {
+    return "/seguridad/";
+  }
+  if (roles.includes("doctor")) {
+    return "/medicos/";
+  }
+  if (roles.some((role) => ["admission", "medical_auditor", "billing", "support"].includes(role))) {
+    return "/backoffice/";
+  }
+  return null;
+}
+
 export function getPlatformCards() {
   return [
     ...getTenantModuleCards(DEFAULT_TENANT),
