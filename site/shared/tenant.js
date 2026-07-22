@@ -10,7 +10,7 @@ const TENANTS = [
     brand: {
       accent: "#006d77",
       mark: "CS",
-      logoUrl: null,
+      logoUrl: "/assets/tenants/central-salud-mark.svg",
     },
     landing: {
       eyebrow: "Acceso institucional",

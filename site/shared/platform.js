@@ -282,6 +282,12 @@ export function createPlatformSession({ moduleId }) {
   }
 
   function renderTenantChrome(elements) {
+    applyTenantBrand();
+    document.title = `${tenant.shortName} | ${currentModule.label}`;
+    document.querySelectorAll("[data-tenant-name]").forEach((element) => {
+      element.textContent = tenant.shortName;
+    });
+    document.querySelectorAll("[data-tenant-logo]").forEach(renderTenantLogo);
     if (elements.tenantBadge) {
       elements.tenantBadge.textContent =
         tenant.kind === "clinic" ? `${tenant.shortName} | Espacio institucional` : "Tenant base de plataforma";
@@ -292,6 +298,22 @@ export function createPlatformSession({ moduleId }) {
     if (elements.tenantSupport) {
       elements.tenantSupport.textContent = tenant.supportEmail;
     }
+  }
+
+  function applyTenantBrand() {
+    const brand = tenant.brand || {};
+    if (brand.accent) {
+      document.documentElement.style.setProperty("--brand", brand.accent);
+    }
+  }
+
+  function renderTenantLogo(element) {
+    const brand = tenant.brand || {};
+    if (brand.logoUrl) {
+      element.innerHTML = `<img src="${escapeHtml(brand.logoUrl)}" alt="">`;
+      return;
+    }
+    element.textContent = brand.mark || tenant.shortName.slice(0, 2).toUpperCase();
   }
 
   function renderModuleNav(container) {

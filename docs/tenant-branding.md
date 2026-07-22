@@ -18,7 +18,7 @@ Central Salud:
 - nombre: `Central Salud`
 - monograma: `CS`
 - acento: `#006d77`
-- logo real: pendiente
+- logo actual: `site/assets/tenants/central-salud-mark.svg`
 - firma de plataforma: `site/assets/openhealth-wordmark.svg`
 
 ## Implementacion actual
@@ -29,7 +29,7 @@ El branding vive en `site/shared/tenant.js`:
 brand: {
   accent: "#006d77",
   mark: "CS",
-  logoUrl: null,
+  logoUrl: "/assets/tenants/central-salud-mark.svg",
 }
 ```
 

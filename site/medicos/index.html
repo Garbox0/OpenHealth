@@ -12,12 +12,19 @@
     <header class="topbar">
       <div class="brand-stack">
         <div>
+          <div class="tenant-lockup">
+            <div class="tenant-logo" data-tenant-logo aria-hidden="true">CS</div>
+            <div>
+              <p class="eyebrow">Espacio institucional</p>
+              <h1 data-tenant-name>Central Salud</h1>
+              <p id="tenant-badge" class="tenant-badge"></p>
+            </div>
+          </div>
+          <p class="module-kicker">Portal medico</p>
           <div class="product-lockup">
+            <span>Powered by</span>
             <img src="/assets/openhealth-wordmark.svg" alt="OpenHealth Bridge">
           </div>
-          <p class="eyebrow">OpenHealth Bridge</p>
-          <h1>Portal medico</h1>
-          <p id="tenant-badge" class="tenant-badge"></p>
         </div>
         <nav id="module-nav" class="module-nav hidden" aria-label="Modulos"></nav>
       </div>
@@ -30,15 +37,18 @@
 
     <section id="auth-panel" class="panel hero medical-hero">
       <div class="medical-hero-copy">
-        <p class="eyebrow">Trabajo clinico</p>
-        <h2>Una estacion clinica pensada para revisar, documentar y derivar sin friccion.</h2>
+        <div class="auth-lockup">
+          <div class="tenant-logo small" data-tenant-logo aria-hidden="true">CS</div>
+          <p class="eyebrow"><span data-tenant-name>Central Salud</span> | Trabajo clinico</p>
+        </div>
+        <h2>Estacion clinica de <span data-tenant-name>Central Salud</span>.</h2>
         <p id="auth-copy">
-          Este portal reutiliza la misma sesion del tenant y ordena el caso clinico para que el
-          profesional vea rapido el contexto, deje trazabilidad y siga trabajando sin saltar entre sistemas.
+          Revisa pacientes, expedientes, documentos y derivaciones desde el mismo espacio institucional.
+          El acceso es unico y las funciones aparecen segun el rol del profesional.
         </p>
 
         <div class="hero-actions">
-          <button id="hero-login-button" class="primary">Entrar al portal medico</button>
+          <button id="hero-login-button" class="primary">Ingresar a Central Salud</button>
         </div>
       </div>
 
