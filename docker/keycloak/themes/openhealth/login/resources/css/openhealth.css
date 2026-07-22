@@ -75,7 +75,7 @@ body {
 }
 
 #kc-header-wrapper::after {
-  content: "Acceso institucional seguro";
+  content: "Acceso institucional";
   display: block;
   margin-top: 16px;
   color: var(--ohb-brand);
