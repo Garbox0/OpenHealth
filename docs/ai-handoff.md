@@ -43,6 +43,7 @@ El modelo objetivo es:
 - base multi-tenant con `tenant_id`;
 - membresias por tenant;
 - API tenant-scoped.
+- shell de workspace compartida: navegacion interna visible solo para los modulos del rol, bandeja y detalle en el mismo espacio de trabajo.
 
 ### Todavia falta
 

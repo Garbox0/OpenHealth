@@ -777,3 +777,51 @@
     text-align: left;
   }
 }
+
+/* Turn the clinical priority area into a readable work queue, not a tile wall. */
+body.workspace-active .priority-list {
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+body.workspace-active .priority-item {
+  grid-template-columns: auto minmax(150px, 0.8fr) minmax(0, 1.6fr);
+  min-height: 0;
+  align-items: center;
+  padding: 12px 14px;
+  border-radius: 12px;
+  box-shadow: none;
+}
+
+body.workspace-active .priority-item strong {
+  font-size: 1rem;
+}
+
+body.workspace-active .priority-item span:not(.priority-rank) {
+  text-align: left;
+}
+
+body.workspace-active .clinical-command-center .panel {
+  padding: 18px;
+}
+
+body.workspace-active .patient-card,
+body.workspace-active .record-card {
+  border-radius: 12px;
+  box-shadow: none;
+}
+
+body.workspace-active .clinical-actions {
+  grid-template-columns: 1fr;
+}
+
+body.workspace-active .action-card {
+  border-radius: 12px;
+}
+
+@media (max-width: 760px) {
+  body.workspace-active .priority-item {
+    grid-template-columns: 1fr;
+    justify-items: start;
+  }
+}

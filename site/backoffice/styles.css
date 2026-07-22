@@ -813,3 +813,296 @@ textarea {
     transform: translateY(0);
   }
 }
+
+/* Shared workspace shell: the same authenticated application for the three roles. */
+body.workspace-active {
+  background: #f2f7f6;
+}
+
+body.workspace-active::before,
+body.workspace-active::after {
+  opacity: 0.24;
+}
+
+body.workspace-active .shell {
+  width: min(1640px, calc(100% - 32px));
+  padding-top: 12px;
+}
+
+body.workspace-active .topbar {
+  position: sticky;
+  top: 12px;
+  z-index: 20;
+  min-height: 76px;
+  padding: 12px 16px;
+  border-top-width: 3px;
+  border-radius: 18px;
+  box-shadow: 0 14px 32px rgba(17, 55, 67, 0.1);
+}
+
+body.workspace-active .topbar::before {
+  display: none;
+}
+
+body.workspace-active .brand-stack {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 28px;
+  min-width: 0;
+}
+
+body.workspace-active .tenant-lockup {
+  gap: 10px;
+  min-width: max-content;
+}
+
+body.workspace-active .tenant-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 13px;
+  box-shadow: none;
+}
+
+body.workspace-active .tenant-lockup .eyebrow,
+body.workspace-active .tenant-badge,
+body.workspace-active .module-kicker,
+body.workspace-active .product-lockup {
+  display: none;
+}
+
+body.workspace-active h1 {
+  font-size: 1.1rem;
+  letter-spacing: -0.02em;
+}
+
+body.workspace-active .module-nav {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 2px;
+}
+
+body.workspace-active .module-link {
+  min-height: 38px;
+  padding: 0.58rem 0.8rem;
+  border-radius: 11px;
+  box-shadow: none;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+body.workspace-active .topbar-actions {
+  margin-left: auto;
+}
+
+body.workspace-active #app-shell {
+  display: grid;
+  gap: 16px;
+}
+
+body.workspace-active .user-panel {
+  display: flex;
+  min-height: 0;
+  align-items: center;
+  padding: 12px 18px;
+  border-left: 0;
+  border-radius: 16px;
+  box-shadow: none;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+body.workspace-active .user-panel .eyebrow,
+body.workspace-active .tenant-meta {
+  display: none;
+}
+
+body.workspace-active .user-panel strong {
+  font-size: 0.94rem;
+}
+
+body.workspace-active .user-panel p {
+  margin: 2px 0 0;
+  font-size: 0.82rem;
+}
+
+body.workspace-active .user-panel .pill-row {
+  margin-left: auto;
+}
+
+body.workspace-active .panel,
+body.workspace-active .subpanel {
+  border-radius: 16px;
+  box-shadow: 0 8px 22px rgba(17, 55, 67, 0.06);
+  backdrop-filter: none;
+}
+
+body.workspace-active .panel {
+  padding: 20px;
+}
+
+body.workspace-active .admin-command-center,
+body.workspace-active .clinical-command-center {
+  grid-template-columns: minmax(0, 1.7fr) minmax(300px, 0.9fr);
+  gap: 16px;
+  margin-bottom: 0;
+}
+
+body.workspace-active .section-heading,
+body.workspace-active .split-heading {
+  margin-bottom: 14px;
+}
+
+body.workspace-active .section-heading h2,
+body.workspace-active .split-heading h2 {
+  font-size: 1.35rem;
+}
+
+body.workspace-active .operation-grid,
+body.workspace-active .admin-worklist,
+body.workspace-active .overview-grid,
+body.workspace-active .workflow-summary {
+  gap: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+body.workspace-active .operation-grid,
+body.workspace-active .overview-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+body.workspace-active .admin-worklist,
+body.workspace-active .workflow-summary {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+body.workspace-active .metric-card,
+body.workspace-active .work-item,
+body.workspace-active .workflow-item {
+  min-height: 118px;
+  padding: 14px 16px;
+  border: 0;
+  border-radius: 0;
+  border-right: 1px solid var(--line);
+  box-shadow: none;
+  background: transparent;
+}
+
+body.workspace-active .metric-card:last-child,
+body.workspace-active .work-item:nth-child(2n),
+body.workspace-active .workflow-item:nth-child(2n) {
+  border-right: 0;
+}
+
+body.workspace-active .workspace {
+  grid-template-columns: minmax(320px, 0.78fr) minmax(0, 1.6fr);
+  gap: 16px;
+}
+
+body.workspace-active .column,
+body.workspace-active .wide {
+  gap: 16px;
+}
+
+body.workspace-active .case-list {
+  gap: 8px;
+}
+
+body.workspace-active .case-card,
+body.workspace-active .event-card,
+body.workspace-active .document-card,
+body.workspace-active .detail-card,
+body.workspace-active .group-card,
+body.workspace-active .user-card {
+  padding: 14px 16px;
+  border-radius: 12px;
+  box-shadow: none;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+body.workspace-active .case-card {
+  border-left-width: 3px;
+}
+
+body.workspace-active .case-card.active {
+  box-shadow: inset 4px 0 0 rgba(0, 109, 119, 0.76);
+}
+
+body.workspace-active .detail-grid {
+  gap: 8px;
+}
+
+body.workspace-active .detail-card {
+  min-height: 100%;
+}
+
+body.workspace-active .patient-picker,
+body.workspace-active .subpanel {
+  border-radius: 12px;
+}
+
+body.workspace-active .filter-bar {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(231, 244, 246, 0.42);
+}
+
+body.workspace-active input,
+body.workspace-active select,
+body.workspace-active textarea {
+  border-radius: 10px;
+  padding: 0.72rem 0.8rem;
+}
+
+@media (max-width: 1180px) {
+  body.workspace-active .brand-stack {
+    gap: 14px;
+  }
+
+  body.workspace-active .admin-command-center,
+  body.workspace-active .clinical-command-center,
+  body.workspace-active .workspace {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  body.workspace-active .shell {
+    width: min(100% - 16px, 1640px);
+  }
+
+  body.workspace-active .topbar,
+  body.workspace-active .brand-stack,
+  body.workspace-active .user-panel {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  body.workspace-active .module-nav {
+    width: 100%;
+  }
+
+  body.workspace-active .topbar-actions,
+  body.workspace-active .user-panel .pill-row {
+    margin-left: 0;
+  }
+
+  body.workspace-active .operation-grid,
+  body.workspace-active .overview-grid,
+  body.workspace-active .admin-worklist,
+  body.workspace-active .workflow-summary {
+    grid-template-columns: 1fr;
+  }
+
+  body.workspace-active .metric-card,
+  body.workspace-active .work-item,
+  body.workspace-active .workflow-item {
+    min-height: auto;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+}

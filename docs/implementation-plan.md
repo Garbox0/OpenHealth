@@ -85,6 +85,16 @@ Siguiente paso:
 - cerrar Seguridad e IT como modulo propio tenant-aware;
 - preparar integraciones ART sin prometer conectividad real hasta tener convenio o canal tecnico.
 
+## Corte en curso: demo operativa para clinicas
+
+El siguiente corte no agrega modulos especulativos. Convierte el flujo ya implementado en una demo que una clinica pueda recorrer:
+
+1. Administrativo crea o reutiliza un paciente, registra la atencion y abre el caso ART/incidente.
+2. Medico encuentra el expediente, revisa el contexto, deja una evolucion, adjunta una referencia documental, deriva o firma la trazabilidad.
+3. IT administra los tres roles iniciales desde la plataforma: `admin`, `administrative` y `doctor`.
+
+La UI debe ser una aplicacion unica por tenant: navegacion persistente segun rol, bandeja de trabajo y detalle del expediente; no una coleccion de landings o tarjetas independientes.
+
 ## Norte funcional
 
 La primera venta apunta a clinicas. La plataforma debe sentirse como el espacio de trabajo de cada clinica: login unico, roles internos, expediente usable, trazabilidad y casos ART/incidente preparados.

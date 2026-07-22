@@ -240,6 +240,7 @@ export function createPlatformSession({ moduleId }) {
   }
 
   function renderSignedOutChrome(elements) {
+    document.body.classList.remove("workspace-active");
     if (elements.loginButton) {
       elements.loginButton.classList.remove("hidden");
     }
@@ -275,9 +276,21 @@ export function createPlatformSession({ moduleId }) {
     if (elements.roleList) {
       elements.roleList.innerHTML = state.actor.roles.map(renderRolePill).join("");
     }
+    document.body.classList.add("workspace-active");
     if (elements.moduleNav) {
-      elements.moduleNav.classList.add("hidden");
-      elements.moduleNav.innerHTML = "";
+      const modules = Object.entries(PLATFORM_MODULES).filter(
+        ([moduleId, module]) => moduleId !== "home" && state.actor.roles.some((role) => module.roles.includes(role)),
+      );
+      elements.moduleNav.innerHTML = modules
+        .map(
+          ([candidateModuleId, module]) => `
+            <a class="module-link ${candidateModuleId === moduleId ? "active" : ""}" href="${module.href}">
+              ${escapeHtml(module.label)}
+            </a>
+          `,
+        )
+        .join("");
+      elements.moduleNav.classList.toggle("hidden", modules.length === 0);
     }
   }
 
