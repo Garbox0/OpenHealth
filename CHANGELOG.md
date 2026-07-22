@@ -23,6 +23,7 @@
 - se agrego ficha de expediente en el portal medico con datos de contacto, atenciones y casos asociados, siempre filtrados por tenant.
 - se agrego listado de atenciones por paciente para que el portal consulte el historial sin cruzar clinicas.
 - se dejo el hostname de cada clinica como unico punto de entrada: tras el login, cada rol se redirige automaticamente a su espacio y las rutas internas ya no muestran login ni selector de modulos.
+- admision ahora puede buscar y reutilizar un expediente existente al crear una atencion y un caso, evitando duplicar pacientes dentro de la clinica.
 - se eliminaron passwords demo hardcodeadas del repo y el stack Docker ahora exige secretos por entorno;
 - se movieron credenciales administrativas runtime de Keycloak a un `env_file` no versionado;
 - se movieron credenciales bootstrap de Keycloak a un `env_file` no versionado;

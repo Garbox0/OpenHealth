@@ -98,8 +98,29 @@
               </div>
             </div>
 
+            <section class="patient-picker" aria-labelledby="patient-picker-title">
+              <div class="section-heading compact-heading">
+                <div>
+                  <p class="eyebrow">Expediente existente</p>
+                  <h3 id="patient-picker-title">Buscar antes de crear</h3>
+                </div>
+                <p class="inline-copy">Evita duplicados y conserva el historial del paciente.</p>
+              </div>
+
+              <form id="patient-search-form" class="patient-search-form">
+                <label>
+                  <span>Paciente o documento</span>
+                  <input name="q" placeholder="Apellido, DNI, email o telefono">
+                </label>
+                <button class="secondary" type="submit">Buscar</button>
+              </form>
+
+              <div id="selected-patient" class="selected-patient hidden"></div>
+              <div id="patient-search-results" class="patient-search-results"></div>
+            </section>
+
             <form id="case-create-form" class="stack-form">
-              <div class="grid two">
+              <div class="grid two" data-patient-fields>
                 <label>
                   <span>Apellido</span>
                   <input name="family_name" required>

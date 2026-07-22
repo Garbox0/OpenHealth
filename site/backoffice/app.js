@@ -6,6 +6,8 @@ const state = {
   selectedCaseId: null,
   selectedCase: null,
   caseSummaries: [],
+  patientSearchResults: [],
+  selectedPatient: null,
 };
 
 const elements = {
@@ -31,10 +33,14 @@ const elements = {
   adminWorklist: document.querySelector("#admin-worklist"),
   detailFlags: document.querySelector("#detail-flags"),
   operationStats: document.querySelector("#operation-stats"),
+  patientSearchForm: document.querySelector("#patient-search-form"),
+  patientSearchResults: document.querySelector("#patient-search-results"),
+  patientFields: document.querySelector("[data-patient-fields]"),
   refreshCasesButton: document.querySelector("#refresh-cases-button"),
   roleList: document.querySelector("#role-list"),
   statusFeedback: document.querySelector("#status-feedback"),
   statusForm: document.querySelector("#case-status-form"),
+  selectedPatient: document.querySelector("#selected-patient"),
   tenantBadge: document.querySelector("#tenant-badge"),
   tenantName: document.querySelector("#tenant-name"),
   tenantSupport: document.querySelector("#tenant-support"),
@@ -53,6 +59,7 @@ elements.heroLoginButton.addEventListener("click", () => session.startLogin());
 elements.loginButton.addEventListener("click", () => session.startLogin());
 elements.logoutButton.addEventListener("click", () => session.logout());
 elements.noteForm.addEventListener("submit", handleAddNote);
+elements.patientSearchForm.addEventListener("submit", handlePatientSearch);
 elements.refreshCasesButton.addEventListener("click", () => loadCases());
 elements.statusForm.addEventListener("submit", handleStatusUpdate);
 
@@ -135,21 +142,26 @@ async function loadCaseDetail(caseId) {
 
 async function handleCreateCase(event) {
   event.preventDefault();
-  setFeedback(elements.createFeedback, "Creando paciente, atencion y caso...");
+  setFeedback(
+    elements.createFeedback,
+    state.selectedPatient ? "Creando atencion y caso..." : "Creando paciente, atencion y caso...",
+  );
 
   try {
     const form = new FormData(elements.createForm);
-    const patient = await session.apiFetch("/patients", {
-      method: "POST",
-      body: JSON.stringify({
-        family_name: form.get("family_name"),
-        given_names: form.get("given_names"),
-        document_type: optionalValue(form.get("document_type")),
-        document_number: optionalValue(form.get("document_number")),
-        phone: optionalValue(form.get("phone")),
-        email: optionalValue(form.get("email")),
-      }),
-    });
+    const patient =
+      state.selectedPatient ||
+      (await session.apiFetch("/patients", {
+        method: "POST",
+        body: JSON.stringify({
+          family_name: form.get("family_name"),
+          given_names: form.get("given_names"),
+          document_type: optionalValue(form.get("document_type")),
+          document_number: optionalValue(form.get("document_number")),
+          phone: optionalValue(form.get("phone")),
+          email: optionalValue(form.get("email")),
+        }),
+      }));
 
     const encounter = await session.apiFetch("/encounters", {
       method: "POST",
@@ -177,17 +189,115 @@ async function handleCreateCase(event) {
       }),
     });
 
-    elements.createForm.reset();
-    elements.createForm.querySelector("[name='coverage_type']").value = "art";
-    elements.createForm.querySelector("[name='incident_type']").value = "work_accident";
-    elements.createForm.querySelector("[name='current_owner_role']").value = "admission";
-    elements.createForm.querySelector("[name='document_type']").value = "dni";
-    elements.createForm.querySelector("[name='incident_date']").value = todayIso();
+    selectPatient(patient);
+    resetCaseForm();
     setFeedback(elements.createFeedback, `Caso ${incidentCase.id.slice(0, 8)} creado correctamente.`, true);
     await loadCases();
     await loadCaseDetail(incidentCase.id);
   } catch (error) {
     setFeedback(elements.createFeedback, humanizeError(error), false);
+  }
+}
+
+async function handlePatientSearch(event) {
+  event.preventDefault();
+  const form = new FormData(elements.patientSearchForm);
+  const query = optionalValue(form.get("q"));
+  if (!query) {
+    state.patientSearchResults = [];
+    renderPatientSearchResults();
+    return;
+  }
+
+  elements.patientSearchResults.innerHTML = renderEmpty("Buscando expedientes...");
+  try {
+    state.patientSearchResults = await session.apiFetch(`/patients?q=${encodeURIComponent(query)}`);
+    renderPatientSearchResults();
+  } catch (error) {
+    elements.patientSearchResults.innerHTML = renderEmpty(humanizeError(error));
+  }
+}
+
+function selectPatient(patient) {
+  state.selectedPatient = patient;
+  for (const input of elements.patientFields.querySelectorAll("input")) {
+    input.disabled = true;
+  }
+  elements.createForm.elements.family_name.value = patient.family_name;
+  elements.createForm.elements.given_names.value = patient.given_names;
+  elements.createForm.elements.document_type.value = patient.document_type || "dni";
+  elements.createForm.elements.document_number.value = patient.document_number || "";
+  elements.createForm.elements.phone.value = patient.phone || "";
+  elements.createForm.elements.email.value = patient.email || "";
+  elements.selectedPatient.classList.remove("hidden");
+  elements.selectedPatient.innerHTML = `
+    <div>
+      <strong>${escapeHtml(formatPatientName(patient))}</strong>
+      <p>${escapeHtml(`${patient.document_type || "doc"} ${patient.document_number || "sin numero"}`)}</p>
+    </div>
+    <button id="clear-selected-patient" class="ghost" type="button">Cambiar paciente</button>
+  `;
+  elements.selectedPatient.querySelector("#clear-selected-patient").addEventListener("click", clearSelectedPatient);
+  state.patientSearchResults = [];
+  renderPatientSearchResults();
+}
+
+function clearSelectedPatient() {
+  state.selectedPatient = null;
+  elements.selectedPatient.classList.add("hidden");
+  elements.selectedPatient.innerHTML = "";
+  for (const input of elements.patientFields.querySelectorAll("input")) {
+    input.disabled = false;
+  }
+  resetCaseForm();
+}
+
+function resetCaseForm() {
+  elements.createForm.reset();
+  if (state.selectedPatient) {
+    const patient = state.selectedPatient;
+    elements.createForm.elements.family_name.value = patient.family_name;
+    elements.createForm.elements.given_names.value = patient.given_names;
+    elements.createForm.elements.document_type.value = patient.document_type || "dni";
+    elements.createForm.elements.document_number.value = patient.document_number || "";
+    elements.createForm.elements.phone.value = patient.phone || "";
+    elements.createForm.elements.email.value = patient.email || "";
+  }
+  elements.createForm.querySelector("[name='coverage_type']").value = "art";
+  elements.createForm.querySelector("[name='incident_type']").value = "work_accident";
+  elements.createForm.querySelector("[name='current_owner_role']").value = "admission";
+  elements.createForm.querySelector("[name='incident_date']").value = todayIso();
+}
+
+function renderPatientSearchResults() {
+  if (state.patientSearchResults.length === 0) {
+    elements.patientSearchResults.innerHTML = "";
+    return;
+  }
+
+  elements.patientSearchResults.innerHTML = state.patientSearchResults
+    .map(
+      (patient) => `
+        <article class="patient-search-result">
+          <div>
+            <strong>${escapeHtml(formatPatientName(patient))}</strong>
+            <p>${escapeHtml(`${patient.document_type || "doc"} ${patient.document_number || "sin numero"}`)}</p>
+          </div>
+          <button class="ghost select-patient-button" type="button" data-patient-id="${patient.id}">
+            Usar expediente
+          </button>
+        </article>
+      `,
+    )
+    .join("");
+
+  for (const button of elements.patientSearchResults.querySelectorAll(".select-patient-button")) {
+    button.addEventListener("click", () => {
+      const patient = state.patientSearchResults.find((item) => item.id === button.dataset.patientId);
+      if (patient) {
+        selectPatient(patient);
+      }
+    });
   }
 }
 

@@ -307,16 +307,17 @@ Primer acceso operativo real:
 
 - landing: `https://www.aerosftp.com`
 - tenant demo: `https://centralsalud.aerosftp.com/`
-- backoffice: `https://www.aerosftp.com/backoffice/`
-- portal medico: `https://www.aerosftp.com/medicos/`
-- seguridad IT: `https://www.aerosftp.com/seguridad/`
-- API: `https://api.aerosftp.com/docs`
-- identidad: `https://auth.aerosftp.com/admin/`
+- API operativa: `https://api.aerosftp.com/health/ready`
+
+Cada clinica ingresa por su propio hostname. Tras iniciar sesion, OpenHealth
+resuelve el rol y abre automaticamente el espacio de trabajo habilitado; las
+rutas internas no se anuncian como accesos separados.
 
 El backoffice actual permite:
 
 - iniciar sesion una sola vez con Keycloak;
 - crear paciente, atencion y caso en un solo flujo;
+- buscar y reutilizar un expediente del mismo tenant antes de crear una nueva atencion;
 - buscar casos por paciente, documento, profesional o ART;
 - ver tablero operativo de admision y seguimiento;
 - detectar datos administrativos faltantes;
@@ -385,11 +386,11 @@ Primer corte de gestion propia sobre identidad:
 ## Limitaciones de esta fase
 
 - la autenticacion actual usa un realm local de Keycloak, no un IdP productivo;
-- `Central Salud` ya existe como tenant demo por subdominio y experiencia propia, pero el aislamiento real de datos por clinica todavia no esta implementado en backend;
+- `Central Salud` es un tenant demo por subdominio; el backend ya aplica aislamiento por `tenant_id` y hostname, aunque faltan defensas y operacion de produccion;
 - el portal medico actual usa una bandeja compartida, todavia sin asignacion por profesional o equipo;
 - no hay portal paciente;
 - no hay upload binario real de archivos;
-- ya existe aislamiento multi-tenant en el backend por `tenant_id` y `hostname`, pero todavia falta cerrar administracion tenant-aware, storage por tenant y mas defensas de produccion;
+- falta cerrar administracion tenant-aware, storage por tenant y mas defensas de produccion;
 - no hay integracion con ART ni sistemas legacy;
 - el modulo IT todavia depende de Keycloak como backend de identidad.
 

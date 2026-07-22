@@ -538,6 +538,57 @@ textarea {
   margin-bottom: 18px;
 }
 
+.patient-picker {
+  display: grid;
+  gap: 14px;
+  margin: 0 0 20px;
+  padding: 18px;
+  border: 1px solid rgba(0, 109, 119, 0.14);
+  border-radius: 20px;
+  background: rgba(231, 244, 246, 0.64);
+}
+
+.patient-search-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: end;
+}
+
+.patient-search-results {
+  display: grid;
+  gap: 10px;
+}
+
+.patient-search-result,
+.selected-patient {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: center;
+  padding: 14px;
+  border: 1px solid rgba(0, 109, 119, 0.14);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.patient-search-result strong,
+.selected-patient strong {
+  display: block;
+}
+
+.patient-search-result p,
+.selected-patient p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.selected-patient {
+  border-color: rgba(0, 109, 119, 0.32);
+  box-shadow: inset 4px 0 0 var(--brand);
+}
+
 .case-list,
 .timeline,
 .document-list {
@@ -723,6 +774,7 @@ textarea {
   .operation-grid,
   .admin-worklist,
   .filter-bar,
+  .patient-search-form,
   .grid.two,
   .detail-grid,
   .case-meta-grid {
@@ -733,7 +785,9 @@ textarea {
   .topbar,
   .user-panel,
   .section-heading,
-  .split-heading {
+  .split-heading,
+  .patient-search-result,
+  .selected-patient {
     align-items: start;
     flex-direction: column;
   }
